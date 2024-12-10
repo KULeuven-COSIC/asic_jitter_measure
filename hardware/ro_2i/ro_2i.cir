@@ -1,15 +1,5 @@
-# `inv_conf` Module
-![Layout](inv_conf.png)
+* Top cell name: ro_2i
 
-## Cell Hierarchy
-
-`inv_conf` **9** (number MOS pairs)
-- `p_mos` **0** *x9*
-- `n_mos` **0** *x9*
-
-## Netlist
-
-```
 .SUBCKT inv_conf CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF<0> CONF<1> CONF<2> CONF<3> IN OUT VDD VSS
     Mm16 OUT IN VDD VDD p_mos l=60n w=120.0n m=1
     Mm7 OUT IN net16 VDD p_mos l=60n w=120.0n m=1
@@ -30,4 +20,18 @@
     Mm9 net23 CONF<0> VSS VSS n_mos l=60n w=120.0n m=1
     Mm8 OUT IN net23 VSS n_mos l=60n w=120.0n m=1
 .ENDS
-```
+
+.SUBCKT nand2 IN0 IN1 OUT VDD VSS
+    Mm1 net13 IN1 VSS VSS n_mos l=60n w=240.0n m=1
+    Mm0 OUT IN0 net13 VSS n_mos l=60n w=240.0n m=1
+    Mm3 OUT IN1 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm2 OUT IN0 VDD VDD p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT ro_2i CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF'<4> CONF'<5> CONF'<6> CONF'<7> CONF<0>
+              + CONF<1> CONF<2> CONF<3> CONF<4> CONF<5> CONF<6> CONF<7> ENABLE OUT VDD VSS
+    Xi1 CONF'<4> CONF'<5> CONF'<6> CONF'<7> CONF<4> CONF<5> CONF<6> CONF<7> INT OUT VDD VSS inv_conf
+    Xi0 CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF<0> CONF<1> CONF<2> CONF<3> NAND_OUT INT VDD VSS
+        + inv_conf
+    Xi2 OUT ENABLE NAND_OUT VDD VSS nand2
+.ENDS

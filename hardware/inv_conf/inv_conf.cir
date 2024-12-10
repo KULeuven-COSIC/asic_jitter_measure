@@ -1,15 +1,5 @@
-# `inv_conf` Module
-![Layout](inv_conf.png)
+* Top cell name: inv_conf
 
-## Cell Hierarchy
-
-`inv_conf` **9** (number MOS pairs)
-- `p_mos` **0** *x9*
-- `n_mos` **0** *x9*
-
-## Netlist
-
-```
 .SUBCKT inv_conf CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF<0> CONF<1> CONF<2> CONF<3> IN OUT VDD VSS
     Mm16 OUT IN VDD VDD p_mos l=60n w=120.0n m=1
     Mm7 OUT IN net16 VDD p_mos l=60n w=120.0n m=1
@@ -30,4 +20,3 @@
     Mm9 net23 CONF<0> VSS VSS n_mos l=60n w=120.0n m=1
     Mm8 OUT IN net23 VSS n_mos l=60n w=120.0n m=1
 .ENDS
-```

@@ -7,6 +7,11 @@
         "crtmom": "cap"
     },
     "modules": {
-        "ap_toplevel": "top_level"
+        "ap_toplevel": "top_level",
+        "freqscaler16": "freq_scaler16",
+        "freqscaler8": "freq_scaler8",
+        "freqscaler4": "freq_scaler4",
+        "freqscaler2": "freq_scaler2",
+        "clkmanager": "clk_manager"
     }
 }

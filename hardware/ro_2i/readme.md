@@ -1,10 +1,12 @@
 # `ro_2i` Module
 ![Layout](ro_2i.png)
+
 ## Cell Hierarchy
 
 `ro_2i` **20** (number MOS pairs)
 - `inv_conf` **9** *x2*
-- `nand2` **2** *x1*
+- `nand2` **2**
+
 ## Netlist
 
 ```

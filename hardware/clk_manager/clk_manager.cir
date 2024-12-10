@@ -1,0 +1,162 @@
+* Top cell name: clk_manager
+
+.SUBCKT inv_conf CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF<0> CONF<1> CONF<2> CONF<3> IN OUT VDD VSS
+    Mm16 OUT IN VDD VDD p_mos l=60n w=120.0n m=1
+    Mm7 OUT IN net16 VDD p_mos l=60n w=120.0n m=1
+    Mm6 OUT IN net17 VDD p_mos l=60n w=120.0n m=1
+    Mm5 OUT IN net18 VDD p_mos l=60n w=120.0n m=1
+    Mm4 OUT IN net19 VDD p_mos l=60n w=120.0n m=1
+    Mm3 net16 CONF'<3> VDD VDD p_mos l=60n w=120.0n m=1
+    Mm2 net17 CONF'<2> VDD VDD p_mos l=60n w=120.0n m=1
+    Mm1 net18 CONF'<1> VDD VDD p_mos l=60n w=120.0n m=1
+    Mm0 net19 CONF'<0> VDD VDD p_mos l=60n w=120.0n m=1
+    Mm17 OUT IN VSS VSS n_mos l=60n w=120.0n m=1
+    Mm15 net20 CONF<3> VSS VSS n_mos l=60n w=120.0n m=1
+    Mm14 OUT IN net20 VSS n_mos l=60n w=120.0n m=1
+    Mm13 net21 CONF<2> VSS VSS n_mos l=60n w=120.0n m=1
+    Mm12 OUT IN net21 VSS n_mos l=60n w=120.0n m=1
+    Mm11 net22 CONF<1> VSS VSS n_mos l=60n w=120.0n m=1
+    Mm10 OUT IN net22 VSS n_mos l=60n w=120.0n m=1
+    Mm9 net23 CONF<0> VSS VSS n_mos l=60n w=120.0n m=1
+    Mm8 OUT IN net23 VSS n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT nand2 IN0 IN1 OUT VDD VSS
+    Mm1 net13 IN1 VSS VSS n_mos l=60n w=240.0n m=1
+    Mm0 OUT IN0 net13 VSS n_mos l=60n w=240.0n m=1
+    Mm3 OUT IN1 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm2 OUT IN0 VDD VDD p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT ro_2i CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF'<4> CONF'<5> CONF'<6> CONF'<7> CONF<0>
+              + CONF<1> CONF<2> CONF<3> CONF<4> CONF<5> CONF<6> CONF<7> ENABLE OUT VDD VSS
+    Xi1 CONF'<4> CONF'<5> CONF'<6> CONF'<7> CONF<4> CONF<5> CONF<6> CONF<7> INT OUT VDD VSS inv_conf
+    Xi0 CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF<0> CONF<1> CONF<2> CONF<3> NAND_OUT INT VDD VSS
+        + inv_conf
+    Xi2 OUT ENABLE NAND_OUT VDD VSS nand2
+.ENDS
+
+.SUBCKT nand3 IN0 IN1 IN2 OUT VDD VSS
+    Mm2 OUT IN2 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm1 OUT IN1 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm0 OUT IN0 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm5 net17 IN2 VSS VSS n_mos l=60n w=360.0n m=1
+    Mm4 net18 IN1 net17 VSS n_mos l=60n w=360.0n m=1
+    Mm3 OUT IN0 net18 VSS n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r IN0 IN1 IN2 OUT RST VDD VSS
+    Mm3 OUT RST VSS VSS n_mos l=60n w=360.0n m=1
+    Mm2 net5 IN2 VSS VSS n_mos l=60n w=360.0n m=1
+    Mm1 net16 IN1 net5 VSS n_mos l=60n w=360.0n m=1
+    Mm0 OUT IN0 net16 VSS n_mos l=60n w=360.0n m=1
+    Mm7 net32 RST VDD VDD p_mos l=60n w=480.0n m=1
+    Mm6 OUT IN2 net32 VDD p_mos l=60n w=480.0n m=1
+    Mm5 OUT IN1 net32 VDD p_mos l=60n w=480.0n m=1
+    Mm4 OUT IN0 net32 VDD p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar CLK D Q Q' RST RST' VDD VSS
+    Xi5 Q N1 Q' VDD VSS nand2
+    Xi4 N0 Q' Q VDD VSS nand2
+    Xi3 N1 D N3 VDD VSS nand2
+    Xi0 N3 N0 N2 VDD VSS nand2
+    Xi1 CLK N2 RST' N0 VDD VSS nand3
+    Xi2 CLK N0 N3 N1 RST VDD VSS nand3_r
+.ENDS
+
+.SUBCKT tff_st_ar CLK Q Q' RST RST' VDD VSS
+    Xi0 CLK Q' Q Q' RST RST' VDD VSS dff_st_ar
+.ENDS
+
+.SUBCKT freq_scaler2 CLK OUT<0> OUT<1> Q' RST RST' VDD VSS
+    Xi1 INT OUT<1> Q' RST RST' VDD VSS tff_st_ar
+    Xi0 CLK OUT<0> INT RST RST' VDD VSS tff_st_ar
+.ENDS
+
+.SUBCKT freq_scaler4 CLK OUT<0> OUT<1> OUT<2> OUT<3> Q' RST RST' VDD VSS
+    Xi1 net17 OUT<2> OUT<3> Q' RST RST' VDD VSS freq_scaler2
+    Xi0 CLK OUT<0> OUT<1> net17 RST RST' VDD VSS freq_scaler2
+.ENDS
+
+.SUBCKT freq_scaler8 CLK OUT<0> OUT<1> OUT<2> OUT<3> OUT<4> OUT<5> OUT<6> OUT<7> Q' RST RST' VDD VSS
+    Xi1 net17 OUT<4> OUT<5> OUT<6> OUT<7> Q' RST RST' VDD VSS freq_scaler4
+    Xi0 CLK OUT<0> OUT<1> OUT<2> OUT<3> net17 RST RST' VDD VSS freq_scaler4
+.ENDS
+
+.SUBCKT freq_scaler16 CLK OUT<0> OUT<1> OUT<2> OUT<3> OUT<4> OUT<5> OUT<6> OUT<7> OUT<8> OUT<9>
+                      + OUT<10> OUT<11> OUT<12> OUT<13> OUT<14> OUT<15> Q' RST RST' VDD VSS
+    Xi1 net17 OUT<8> OUT<9> OUT<10> OUT<11> OUT<12> OUT<13> OUT<14> OUT<15> Q' RST RST' VDD VSS
+        + freq_scaler8
+    Xi0 CLK OUT<0> OUT<1> OUT<2> OUT<3> OUT<4> OUT<5> OUT<6> OUT<7> net17 RST RST' VDD VSS
+        + freq_scaler8
+.ENDS
+
+.SUBCKT mux2 IN0 IN1 OUT SEL VDD VSS
+    Xi2 net16 net15 OUT VDD VSS nand2
+    Xi1 SEL IN1 net15 VDD VSS nand2
+    Xi0 IN0 net14 net16 VDD VSS nand2
+    Mm0 net14 SEL VDD VDD p_mos l=60n w=240.0n m=1
+    Mm1 net14 SEL VSS VSS n_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT mux4 IN<0> IN<1> IN<2> IN<3> OUT SEL<0> SEL<1> VDD VSS
+    Xi2 net8 net7 OUT SEL<1> VDD VSS mux2
+    Xi1 IN<2> IN<3> net7 SEL<0> VDD VSS mux2
+    Xi0 IN<0> IN<1> net8 SEL<0> VDD VSS mux2
+.ENDS
+
+.SUBCKT mux16 IN<0> IN<1> IN<2> IN<3> IN<4> IN<5> IN<6> IN<7> IN<8> IN<9> IN<10> IN<11> IN<12>
+              + IN<13> IN<14> IN<15> OUT SEL<0> SEL<1> SEL<2> SEL<3> VDD VSS
+    Xi4 IN<12> IN<13> IN<14> IN<15> INT<3> SEL<0> SEL<1> VDD VSS mux4
+    Xi3 IN<8> IN<9> IN<10> IN<11> INT<2> SEL<0> SEL<1> VDD VSS mux4
+    Xi5 INT<0> INT<1> INT<2> INT<3> OUT SEL<2> SEL<3> VDD VSS mux4
+    Xi1 IN<4> IN<5> IN<6> IN<7> INT<1> SEL<0> SEL<1> VDD VSS mux4
+    Xi0 IN<0> IN<1> IN<2> IN<3> INT<0> SEL<0> SEL<1> VDD VSS mux4
+.ENDS
+
+.SUBCKT buffer_large IN OUT VDD VSS
+    Mm7 OUT INT<2> VSS VSS n_mos l=60n w=480.0n m=16
+    Mm5 INT<2> INT<1> VSS VSS n_mos l=60n w=480.0n m=4
+    Mm2 INT<1> INT<0> VSS VSS n_mos l=60n w=480.0n m=1
+    Mm0 INT<0> IN VSS VSS n_mos l=60n w=120.0n m=1
+    Mm6 OUT INT<2> VDD VDD p_mos l=60n w=480.0n m=16
+    Mm4 INT<2> INT<1> VDD VDD p_mos l=60n w=480.0n m=4
+    Mm3 INT<1> INT<0> VDD VDD p_mos l=60n w=480.0n m=1
+    Mm1 INT<0> IN VDD VDD p_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT inv IN OUT VDD VSS
+    Mm0 OUT IN VSS VSS n_mos l=60n w=120.0n m=1
+    Mm1 OUT IN VDD VDD p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT inv_bank_8 IN<0> IN<1> IN<2> IN<3> IN<4> IN<5> IN<6> IN<7> OUT<0> OUT<1> OUT<2> OUT<3>
+                   + OUT<4> OUT<5> OUT<6> OUT<7> VDD VSS
+    Xi7 IN<7> OUT<7> VDD VSS inv
+    Xi6 IN<6> OUT<6> VDD VSS inv
+    Xi5 IN<5> OUT<5> VDD VSS inv
+    Xi4 IN<4> OUT<4> VDD VSS inv
+    Xi3 IN<3> OUT<3> VDD VSS inv
+    Xi2 IN<2> OUT<2> VDD VSS inv
+    Xi1 IN<1> OUT<1> VDD VSS inv
+    Xi0 IN<0> OUT<0> VDD VSS inv
+.ENDS
+
+.SUBCKT clk_manager CLK CONF_CLK<0> CONF_CLK<1> CONF_CLK<2> CONF_CLK<3> CONF_CLK<4> CONF_CLK<5>
+                    + CONF_CLK<6> CONF_CLK<7> CONF_CLK<8> CONF_CLK<9> CONF_CLK<10> CONF_CLK<11>
+                    + ENABLE RST RST' VDD VSS
+    Xi0 CONF_CLK'<0> CONF_CLK'<1> CONF_CLK'<2> CONF_CLK'<3> CONF_CLK'<4> CONF_CLK'<5> CONF_CLK'<6>
+        + CONF_CLK'<7> CONF_CLK<0> CONF_CLK<1> CONF_CLK<2> CONF_CLK<3> CONF_CLK<4> CONF_CLK<5>
+        + CONF_CLK<6> CONF_CLK<7> ENABLE MUX_IN<15> VDD VSS ro_2i
+    Xi1 MUX_IN<15> MUX_IN<0> MUX_IN<1> MUX_IN<2> MUX_IN<3> MUX_IN<4> MUX_IN<5> MUX_IN<6> MUX_IN<7>
+        + MUX_IN<8> MUX_IN<9> MUX_IN<10> MUX_IN<11> MUX_IN<12> MUX_IN<13> MUX_IN<14> net010 net11
+        + RST RST' VDD VSS freq_scaler16
+    Xi3 MUX_IN<0> MUX_IN<1> MUX_IN<2> MUX_IN<3> MUX_IN<4> MUX_IN<5> MUX_IN<6> MUX_IN<7> MUX_IN<8>
+        + MUX_IN<9> MUX_IN<10> MUX_IN<11> MUX_IN<12> MUX_IN<13> MUX_IN<14> MUX_IN<15> net17
+        + CONF_CLK<8> CONF_CLK<9> CONF_CLK<10> CONF_CLK<11> VDD VSS mux16
+    Xi2 net17 CLK VDD VSS buffer_large
+    Xi4 CONF_CLK<0> CONF_CLK<1> CONF_CLK<2> CONF_CLK<3> CONF_CLK<4> CONF_CLK<5> CONF_CLK<6>
+        + CONF_CLK<7> CONF_CLK'<0> CONF_CLK'<1> CONF_CLK'<2> CONF_CLK'<3> CONF_CLK'<4> CONF_CLK'<5>
+        + CONF_CLK'<6> CONF_CLK'<7> VDD VSS inv_bank_8
+.ENDS

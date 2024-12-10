@@ -46,6 +46,7 @@ $(HW_DIR)%.cir: $(HW_DIR)%.rcir
 $(HW_DIR)%/readme.md: $(HW_DIR)$$*/$$*.png
 	echo '# `$*` Module' > $@
 	echo '![Layout]($*.png)' >> $@
+	echo '' >> $@
 	python3 lib/circ_parser.py -m $* -a
 
 $(HW_DIR)readme.md:
@@ -77,6 +78,11 @@ $(HW_DIR)readme.md:
 	echo '- `clean_hw`: Remove all PNGs and readmes.' >> $@
 	echo '- `realclean_hw`: `clean_hw` and remove netlists.' >> $@
 	echo '- `mrproper_hw`: `realclean_hw`, remove this readme and remove SVGs, note that regenerating the SVGs might take a long time!' >> $@
+
+$(HW_DIR)%/:
+	mkdir $@
+	scp -rp apeeterm@ssh.esat.kuleuven.be:/users/cosic/apeeterm/Desktop/$*.gds $@.
+	scp -rp apeeterm@ssh.esat.kuleuven.be:/users/cosic/apeeterm/Desktop/$*.rcir $@.
 
 fig: $(FIG_PY_PDFS) $(FIG_SVG_PDFS)
 

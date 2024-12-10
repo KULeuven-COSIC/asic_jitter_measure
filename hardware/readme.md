@@ -5982,16 +5982,16 @@ The following hierarchy is used in the ASIC (each cell can be expanded to show i
 </blockquote>
 </details>
 <details>
-<summary><mark>freqscaler16</mark> <b>240</b> <i></i></summary>
+<summary><mark>freq_scaler16</mark> <b>240</b> <i></i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler8</mark> <b>120</b> <i>x2</i></summary>
+<summary><mark>freq_scaler8</mark> <b>120</b> <i>x2</i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler4</mark> <b>60</b> <i>x2</i></summary>
+<summary><mark>freq_scaler4</mark> <b>60</b> <i>x2</i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler2</mark> <b>30</b> <i>x2</i></summary>
+<summary><mark>freq_scaler2</mark> <b>30</b> <i>x2</i></summary>
 <blockquote>
 <details>
 <summary><mark>tff_st_ar</mark> <b>15</b> <i>x2</i></summary>
@@ -6102,16 +6102,16 @@ The following hierarchy is used in the ASIC (each cell can be expanded to show i
 </blockquote>
 </details>
 <details>
-<summary><mark>freqscaler16</mark> <b>240</b> <i></i></summary>
+<summary><mark>freq_scaler16</mark> <b>240</b> <i></i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler8</mark> <b>120</b> <i>x2</i></summary>
+<summary><mark>freq_scaler8</mark> <b>120</b> <i>x2</i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler4</mark> <b>60</b> <i>x2</i></summary>
+<summary><mark>freq_scaler4</mark> <b>60</b> <i>x2</i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler2</mark> <b>30</b> <i>x2</i></summary>
+<summary><mark>freq_scaler2</mark> <b>30</b> <i>x2</i></summary>
 <blockquote>
 <details>
 <summary><mark>tff_st_ar</mark> <b>15</b> <i>x2</i></summary>
@@ -6685,16 +6685,16 @@ The following hierarchy is used in the ASIC (each cell can be expanded to show i
 </blockquote>
 </details>
 <details>
-<summary><mark>freqscaler16</mark> <b>240</b> <i></i></summary>
+<summary><mark>freq_scaler16</mark> <b>240</b> <i></i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler8</mark> <b>120</b> <i>x2</i></summary>
+<summary><mark>freq_scaler8</mark> <b>120</b> <i>x2</i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler4</mark> <b>60</b> <i>x2</i></summary>
+<summary><mark>freq_scaler4</mark> <b>60</b> <i>x2</i></summary>
 <blockquote>
 <details>
-<summary><mark>freqscaler2</mark> <b>30</b> <i>x2</i></summary>
+<summary><mark>freq_scaler2</mark> <b>30</b> <i>x2</i></summary>
 <blockquote>
 <details>
 <summary><mark>tff_st_ar</mark> <b>15</b> <i>x2</i></summary>

@@ -1,10 +1,12 @@
 # `buffer_large` Module
 ![Layout](buffer_large.png)
+
 ## Cell Hierarchy
 
 `buffer_large` **4** (number MOS pairs)
 - `n_mos` **0** *x4*
 - `p_mos` **0** *x4*
+
 ## Netlist
 
 ```

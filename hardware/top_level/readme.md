@@ -1,10 +1,13 @@
-# `top_level`
+# `top_level` Module
+![Layout](top_level.png)
+
 ## Cell Hierarchy
 
 `top_level` **34631** (number MOS pairs)
-- `padframe_v1` **25** *x1*
-- `top_core` **34606** *x1*
+- `padframe_v1` **25**
+- `top_core` **34606**
 - `decouplecap` **0** *x6*
+
 ## Netlist
 
 ```

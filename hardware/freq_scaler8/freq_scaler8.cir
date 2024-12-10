@@ -1,0 +1,56 @@
+* Top cell name: freq_scaler8
+
+.SUBCKT nand2 IN0 IN1 OUT VDD VSS
+    Mm1 net13 IN1 VSS VSS n_mos l=60n w=240.0n m=1
+    Mm0 OUT IN0 net13 VSS n_mos l=60n w=240.0n m=1
+    Mm3 OUT IN1 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm2 OUT IN0 VDD VDD p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 IN0 IN1 IN2 OUT VDD VSS
+    Mm2 OUT IN2 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm1 OUT IN1 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm0 OUT IN0 VDD VDD p_mos l=60n w=240.0n m=1
+    Mm5 net17 IN2 VSS VSS n_mos l=60n w=360.0n m=1
+    Mm4 net18 IN1 net17 VSS n_mos l=60n w=360.0n m=1
+    Mm3 OUT IN0 net18 VSS n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r IN0 IN1 IN2 OUT RST VDD VSS
+    Mm3 OUT RST VSS VSS n_mos l=60n w=360.0n m=1
+    Mm2 net5 IN2 VSS VSS n_mos l=60n w=360.0n m=1
+    Mm1 net16 IN1 net5 VSS n_mos l=60n w=360.0n m=1
+    Mm0 OUT IN0 net16 VSS n_mos l=60n w=360.0n m=1
+    Mm7 net32 RST VDD VDD p_mos l=60n w=480.0n m=1
+    Mm6 OUT IN2 net32 VDD p_mos l=60n w=480.0n m=1
+    Mm5 OUT IN1 net32 VDD p_mos l=60n w=480.0n m=1
+    Mm4 OUT IN0 net32 VDD p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar CLK D Q Q' RST RST' VDD VSS
+    Xi5 Q N1 Q' VDD VSS nand2
+    Xi4 N0 Q' Q VDD VSS nand2
+    Xi3 N1 D N3 VDD VSS nand2
+    Xi0 N3 N0 N2 VDD VSS nand2
+    Xi1 CLK N2 RST' N0 VDD VSS nand3
+    Xi2 CLK N0 N3 N1 RST VDD VSS nand3_r
+.ENDS
+
+.SUBCKT tff_st_ar CLK Q Q' RST RST' VDD VSS
+    Xi0 CLK Q' Q Q' RST RST' VDD VSS dff_st_ar
+.ENDS
+
+.SUBCKT freq_scaler2 CLK OUT<0> OUT<1> Q' RST RST' VDD VSS
+    Xi1 INT OUT<1> Q' RST RST' VDD VSS tff_st_ar
+    Xi0 CLK OUT<0> INT RST RST' VDD VSS tff_st_ar
+.ENDS
+
+.SUBCKT freq_scaler4 CLK OUT<0> OUT<1> OUT<2> OUT<3> Q' RST RST' VDD VSS
+    Xi1 net17 OUT<2> OUT<3> Q' RST RST' VDD VSS freq_scaler2
+    Xi0 CLK OUT<0> OUT<1> net17 RST RST' VDD VSS freq_scaler2
+.ENDS
+
+.SUBCKT freq_scaler8 CLK OUT<0> OUT<1> OUT<2> OUT<3> OUT<4> OUT<5> OUT<6> OUT<7> Q' RST RST' VDD VSS
+    Xi1 net17 OUT<4> OUT<5> OUT<6> OUT<7> Q' RST RST' VDD VSS freq_scaler4
+    Xi0 CLK OUT<0> OUT<1> OUT<2> OUT<3> net17 RST RST' VDD VSS freq_scaler4
+.ENDS

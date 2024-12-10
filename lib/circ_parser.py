@@ -63,6 +63,7 @@ class CircParser:
         tree = CircParser._get_node_tree(self._module_name, cells_flat)
         with open(self._md_file, 'a', encoding='utf-8') as md_file:
             md_file.write(CircParser._cell_hierarchy_txt(tree, self._module_name))
+            md_file.write('\n')
             md_file.write(self._cell_netlist_txt())
 
     @staticmethod
@@ -175,8 +176,8 @@ class CircParser:
                   f'`{module}` **{nb_top_pairs:d}** (number MOS pairs)\n')
         for child, (nb_child, child_tree) in tree.items():
             nb_child_pairs = CircParser._get_primitive_cnt(child_tree, 'n_mos')
-            nb_str = f'x{nb_child:d}' if nb_child > 1 else ''
-            result += (f'- `{child}` **{nb_child_pairs:d}** *{nb_str}*\n')
+            nb_str = f' *x{nb_child:d}*' if nb_child > 1 else ''
+            result += (f'- `{child}` **{nb_child_pairs:d}**{nb_str}\n')
         return result
 
     @staticmethod

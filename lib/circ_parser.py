@@ -74,7 +74,7 @@ class CircParser:
         tree = circ_parser._get_node_tree(module, cells_flat)
         mos_pairs = CircParser._get_primitive_cnt(tree, 'n_mos')
         # mos_pairs = CircParser._get_primitives(tree)['n_mos']
-        hier_txt = CircParser._get_hierarchy_tree(tree, module, mos_pairs)
+        hier_txt = CircParser._get_hierarchy_tree(tree, module, mos_pairs, -1)
         with open(join(circ_parser._HW_FOLDER, 'readme.md'), 'a', encoding='utf-8') as md_file:
             md_file.write('## ASIC Hierarchy\n\n')
             md_file.write('The following hierarchy is used in the ASIC '
@@ -83,29 +83,26 @@ class CircParser:
             md_file.write('\n')
 
     @staticmethod
-    def _get_hierarchy_tree(tree: TREE_TYPE, cell_name: str, mos_pairs: int) -> str:
+    def _get_hierarchy_tree(tree: TREE_TYPE, cell_name: str, mos_pairs: int, nb_repeats: int) -> str:
         """Get the hierarchy for the given tree."""
+        repeat_str = f'x{nb_repeats}' if nb_repeats > 1 else ''
         if not tree:
-            return f'<li>`{cell_name}` **{mos_pairs:d}**</li>\n'
-        result = f'<details>\n<summary>`{cell_name}` **{mos_pairs:d}**</summary>\n<blockquote>\n'
+            return f'<li><mark>{cell_name}</mark> <b>{mos_pairs:d}</b> <i>{repeat_str}</i></li>\n'
+        result = f'<details>\n<summary><mark>{cell_name}</mark> <b>{mos_pairs:d}</b> <i>{repeat_str}</i></summary>\n<blockquote>\n'
         has_child_leafs = False
         for child, (nb_child, child_tree) in tree.items():
             if not child_tree:
                 has_child_leafs = True
                 continue
             mos_pairs = CircParser._get_primitive_cnt(child_tree, 'n_mos')
-            # mos_pairs = CircParser._get_primitives(child_tree)['n_mos']
-            for _ in range(nb_child):
-                result += CircParser._get_hierarchy_tree(child_tree, child, mos_pairs)
+            result += CircParser._get_hierarchy_tree(child_tree, child, mos_pairs, nb_child)
         if has_child_leafs:
             result += '<ul>\n'
             for child, (nb_child, child_tree) in tree.items():
                 if child_tree:
                     continue
                 mos_pairs = CircParser._get_primitive_cnt(child_tree, 'n_mos')
-                # mos_pairs = CircParser._get_primitives(child_tree)['n_mos']
-                for _ in range(nb_child):
-                    result += CircParser._get_hierarchy_tree(child_tree, child, mos_pairs)
+                result += CircParser._get_hierarchy_tree(child_tree, child, mos_pairs, nb_child)
             result += '</ul>\n'
         result += '</blockquote>\n</details>\n'
         return result
@@ -147,26 +144,6 @@ class CircParser:
         result += '\n'
         return result
 
-    # def write_cell_tree(self) -> None:
-    #     """Generate a cell tree and store in MD format."""
-    #     if not self._sub_circuits:
-    #         self._print('First parse the circuit.')
-    #         return
-    #     cells_flat = self._extract_cells_flat()
-    #     if self._module_name not in cells_flat:
-    #         self._print(f'Could not find top cell: {self._module_name}')
-    #         return
-    #     tree = CircParser._get_node_tree(self._module_name, cells_flat)
-    #     print(CircParser._cell_hierarchy_txt(tree, self._module_name))
-
-    # def write_cell_netlist(self) -> None:
-    #     """Generate a netlist and store in MD format."""
-    #     if not self._sub_circuits:
-    #         self._print('First parse the circuit.')
-    #         return
-    #     netlist_txt = self._cell_netlist_txt()
-        # print(netlist_txt)
-
     def _cell_netlist_txt(self) -> str:
         """Generate the cell netlist for the readme."""
         result = '## Netlist\n\n'
@@ -194,20 +171,12 @@ class CircParser:
     def _cell_hierarchy_txt(tree: TREE_TYPE, module: str) -> str:
         """Generate the cell hierarchy for the readme."""
         nb_top_pairs = CircParser._get_primitive_cnt(tree, 'n_mos')
-        # if 'n_mos' not in top_primitives:
-        #     nb_top_pairs = 0
-        # else:
-        #     nb_top_pairs = top_primitives['n_mos']
         result = ('## Cell Hierarchy\n\n'
                   f'`{module}` **{nb_top_pairs:d}** (number MOS pairs)\n')
         for child, (nb_child, child_tree) in tree.items():
             nb_child_pairs = CircParser._get_primitive_cnt(child_tree, 'n_mos')
-            # child_primitives = CircParser._get_primitives(child_tree)
-            # if 'n_mos' not in child_primitives:
-            #     nb_child_pairs = 0
-            # else:
-            #     nb_child_pairs = child_primitives['n_mos']
-            result += (f'- `{child}` **{nb_child_pairs:d}** *x{nb_child:d}*\n')
+            nb_str = f'x{nb_child:d}' if nb_child > 1 else ''
+            result += (f'- `{child}` **{nb_child_pairs:d}** *{nb_str}*\n')
         return result
 
     @staticmethod

@@ -1,0 +1,484 @@
+{
+    "layers": {
+        "1": {
+            "name": "DNW",
+            "long_name": "deep n-well",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#d4ac0d",
+                        "fill-opacity": 0.05,
+                        "stroke-width": 10,
+                        "stroke": "#d4ac0d",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0.7
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "3": {
+            "name": "NW",
+            "long_name": "n-well",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#fef9e7",
+                        "fill-opacity": 0.5,
+                        "stroke-width": 10,
+                        "stroke": "#f1c40f",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0.2
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "25": {
+            "name": "PP",
+            "long_name": "p+ implantation",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#8e44ad",
+                        "fill-opacity": 0.05,
+                        "stroke-width": 10,
+                        "stroke": "#8e44ad",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "26": {
+            "name": "NP",
+            "long_name": "n+ implantation",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#ccd1d1",
+                        "fill-opacity": 0.05,
+                        "stroke-width": 10,
+                        "stroke": "#ccd1d1",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "6": {
+            "name": "OD",
+            "long_name": "active diffusion",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#f5b7b1",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#e74c3c",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "17": {
+            "name": "PO",
+            "long_name": "poly",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#2980b9",
+                        "fill-opacity": 1,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                },
+                "7": {
+                    "style": {
+                        "fill": "#2980b9",
+                        "fill-opacity": 1,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "dummy"
+                }
+            }
+        },
+        "30": {
+            "name": "CO",
+            "long_name": "contact opening",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#27ae60",
+                        "fill-opacity": 1,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "31": {
+            "name": "M1",
+            "long_name": "metal 1",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#85c1e9",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "51": {
+            "name": "VIA1",
+            "long_name": "via 1",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#f39c12",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#f39c12",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "32": {
+            "name": "M2",
+            "long_name": "metal 2",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#f7dc6f",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "52": {
+            "name": "VIA2",
+            "long_name": "via 2",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#a04000",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#a04000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "33": {
+            "name": "M3",
+            "long_name": "metal 3",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#16a085",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "53": {
+            "name": "VIA3",
+            "long_name": "via 3",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#8e44ad",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#8e44ad",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "34": {
+            "name": "M4",
+            "long_name": "metal 4",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#d2b4de",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "54": {
+            "name": "VIA4",
+            "long_name": "via 4",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#d0d3d4",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#d0d3d4",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "35": {
+            "name": "M5",
+            "long_name": "metal 5",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#d5dbdb",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "55": {
+            "name": "VIA5",
+            "long_name": "via 5",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#95a5a6",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#95a5a6",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "36": {
+            "name": "M6",
+            "long_name": "metal 6",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#f7dc6f",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "56": {
+            "name": "VIA6",
+            "long_name": "via 6",
+            "data_types": {
+                "20": {
+                    "style": {
+                        "fill": "#d4ac0d",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#d4ac0d",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "37": {
+            "name": "M7",
+            "long_name": "metal 7",
+            "data_types": {
+                "20": {
+                    "style": {
+                        "fill": "#52be80",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "57": {
+            "name": "VIA7",
+            "long_name": "via 7",
+            "data_types": {
+                "20": {
+                    "style": {
+                        "fill": "#f5cba7",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#f5cba7",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "38": {
+            "name": "M8",
+            "long_name": "metal 8",
+            "data_types": {
+                "20": {
+                    "style": {
+                        "fill": "#b3b6b7",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "58": {
+            "name": "VIA8",
+            "long_name": "via 8",
+            "data_types": {
+                "80": {
+                    "style": {
+                        "fill": "#2c3e50",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#2c3e50",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "39": {
+            "name": "M9",
+            "long_name": "metal 9",
+            "data_types": {
+                "80": {
+                    "style": {
+                        "fill": "#17a589",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "59": {
+            "name": "VIA9",
+            "long_name": "via 9",
+            "data_types": {
+                "80": {
+                    "style": {
+                        "fill": "#1f618d",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#1f618d",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "40": {
+            "name": "M10",
+            "long_name": "metal 10",
+            "data_types": {
+                "80": {
+                    "style": {
+                        "fill": "#2471a3",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        }
+    }
+}

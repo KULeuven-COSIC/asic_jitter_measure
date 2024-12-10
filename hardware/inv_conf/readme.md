@@ -1,0 +1,31 @@
+# `inv_conf` Module
+![Layout](inv_conf.png)
+## Cell Hierarchy
+
+`inv_conf` **9** (number MOS pairs)
+- `p_mos` **0** *x9*
+- `n_mos` **0** *x9*
+## Netlist
+
+```
+.SUBCKT inv_conf CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF<0> CONF<1> CONF<2> CONF<3> IN OUT VDD VSS
+    Mm16 OUT IN VDD VDD p_mos l=60n w=120.0n m=1
+    Mm7 OUT IN net16 VDD p_mos l=60n w=120.0n m=1
+    Mm6 OUT IN net17 VDD p_mos l=60n w=120.0n m=1
+    Mm5 OUT IN net18 VDD p_mos l=60n w=120.0n m=1
+    Mm4 OUT IN net19 VDD p_mos l=60n w=120.0n m=1
+    Mm3 net16 CONF'<3> VDD VDD p_mos l=60n w=120.0n m=1
+    Mm2 net17 CONF'<2> VDD VDD p_mos l=60n w=120.0n m=1
+    Mm1 net18 CONF'<1> VDD VDD p_mos l=60n w=120.0n m=1
+    Mm0 net19 CONF'<0> VDD VDD p_mos l=60n w=120.0n m=1
+    Mm17 OUT IN VSS VSS n_mos l=60n w=120.0n m=1
+    Mm15 net20 CONF<3> VSS VSS n_mos l=60n w=120.0n m=1
+    Mm14 OUT IN net20 VSS n_mos l=60n w=120.0n m=1
+    Mm13 net21 CONF<2> VSS VSS n_mos l=60n w=120.0n m=1
+    Mm12 OUT IN net21 VSS n_mos l=60n w=120.0n m=1
+    Mm11 net22 CONF<1> VSS VSS n_mos l=60n w=120.0n m=1
+    Mm10 OUT IN net22 VSS n_mos l=60n w=120.0n m=1
+    Mm9 net23 CONF<0> VSS VSS n_mos l=60n w=120.0n m=1
+    Mm8 OUT IN net23 VSS n_mos l=60n w=120.0n m=1
+.ENDS
+```

@@ -1,0 +1,12 @@
+{
+    "models": {
+        "nch_25": "n_mos_io",
+        "pch_25": "p_mos_io",
+        "nch": "n_mos",
+        "pch": "p_mos",
+        "crtmom": "cap"
+    },
+    "modules": {
+        "ap_toplevel": "top_level"
+    }
+}

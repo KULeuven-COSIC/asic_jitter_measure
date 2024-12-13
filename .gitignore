@@ -8,6 +8,5 @@ hardware/top_level/
 hardware/esd_n_diode/
 hardware/esd_p_diode/
 hardware/esd_signal_4x/
-hardware/ctrl_trng_combo/
 figures/pdf/
 figures/data/

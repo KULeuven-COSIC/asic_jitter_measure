@@ -1,12 +1,11 @@
 """Parse the netlist files."""
-from typing import Dict, List, Optional, Any, Union, Tuple
+from typing import Dict, List, Optional, Tuple
 import argparse
 import json
 from os.path import join
-from functools import reduce
 from PySpice.Spice import Parser # type: ignore
 
-TREE_TYPE = Dict[str, Tuple[int, 'TREE_TYPE']]
+TreeType = Dict[str, Tuple[int, 'TreeType']]
 
 TOP_MODULE = 'top_level'
 
@@ -69,27 +68,30 @@ class CircParser:
     @staticmethod
     def append_hierarchy(module: str=TOP_MODULE) -> None:
         """Append the hierarchy to the readme."""
-        circ_parser = CircParser(m_name)
-        circ_parser.parse()
-        cells_flat = circ_parser._extract_cells_flat()
-        tree = circ_parser._get_node_tree(module, cells_flat)
+        circ_parser_ = CircParser(module)
+        circ_parser_.parse()
+        cells_flat = circ_parser_._extract_cells_flat() # pylint: disable=protected-access
+        tree = circ_parser_._get_node_tree(module, cells_flat) # pylint: disable=protected-access
         mos_pairs = CircParser._get_primitive_cnt(tree, 'n_mos')
         # mos_pairs = CircParser._get_primitives(tree)['n_mos']
         hier_txt = CircParser._get_hierarchy_tree(tree, module, mos_pairs, -1)
-        with open(join(circ_parser._HW_FOLDER, 'readme.md'), 'a', encoding='utf-8') as md_file:
+        with open(join(circ_parser_._HW_FOLDER, # pylint: disable=protected-access
+                       'readme.md'), 'a', encoding='utf-8') as md_file:
             md_file.write('## ASIC Hierarchy\n\n')
-            md_file.write('The following hierarchy is used in the ASIC '
+            md_file.write('The following hierarchy is used in the ASIC, '
+                          'the number in bold gives the number of MOS pairs in that cell '
                           '(each cell can be expanded to show its components):\n\n')
             md_file.write(hier_txt)
             md_file.write('\n')
 
     @staticmethod
-    def _get_hierarchy_tree(tree: TREE_TYPE, cell_name: str, mos_pairs: int, nb_repeats: int) -> str:
+    def _get_hierarchy_tree(tree: TreeType, cell_name: str, mos_pairs: int, nb_repeats: int) -> str:
         """Get the hierarchy for the given tree."""
         repeat_str = f'x{nb_repeats}' if nb_repeats > 1 else ''
         if not tree:
             return f'<li><code>{cell_name}</code> <b>{mos_pairs:d}</b> <i>{repeat_str}</i></li>\n'
-        result = f'<details>\n<summary><code>{cell_name}</code> <b>{mos_pairs:d}</b> <i>{repeat_str}</i></summary>\n<blockquote>\n'
+        result = (f'<details>\n<summary><code>{cell_name}</code> <b>{mos_pairs:d}</b> '
+                  f'<i>{repeat_str}</i></summary>\n<blockquote>\n')
         has_child_leafs = False
         for child, (nb_child, child_tree) in tree.items():
             if not child_tree:
@@ -159,9 +161,9 @@ class CircParser:
                 result += '```\n'
                 return result
         return result + 'No netlist found.\n'
-    
+
     @staticmethod
-    def _get_primitive_cnt(tree: TREE_TYPE, prim_name: str) -> int:
+    def _get_primitive_cnt(tree: TreeType, prim_name: str) -> int:
         """Get the number of primitive in the given tree."""
         primitives = CircParser._get_primitives(tree)
         if prim_name not in primitives:
@@ -169,7 +171,7 @@ class CircParser:
         return primitives[prim_name]
 
     @staticmethod
-    def _cell_hierarchy_txt(tree: TREE_TYPE, module: str) -> str:
+    def _cell_hierarchy_txt(tree: TreeType, module: str) -> str:
         """Generate the cell hierarchy for the readme."""
         nb_top_pairs = CircParser._get_primitive_cnt(tree, 'n_mos')
         result = ('## Cell Hierarchy\n\n'
@@ -181,7 +183,7 @@ class CircParser:
         return result
 
     @staticmethod
-    def _get_primitives(tree: TREE_TYPE) -> Dict[str, int]:
+    def _get_primitives(tree: TreeType) -> Dict[str, int]:
         """Get the primitves in the given tree."""
         result: Dict[str, int] = {}
         for child, (nb_child, child_tree) in tree.items():
@@ -216,9 +218,9 @@ class CircParser:
         return cells_flat
 
     @staticmethod
-    def _get_node_tree(node_name: str, cells_flat: Dict[str, List[str]]) -> TREE_TYPE:
+    def _get_node_tree(node_name: str, cells_flat: Dict[str, List[str]]) -> TreeType:
         """Get the given node tree recursively."""
-        result: TREE_TYPE = {}
+        result: TreeType = {}
         if node_name not in cells_flat:
             return result
         children = cells_flat[node_name]
@@ -229,7 +231,7 @@ class CircParser:
                 child_tree = CircParser._get_node_tree(child, cells_flat)
                 result[child] = (1, child_tree)
         return result
-    
+
     @staticmethod
     def _add_to_line(line: str, add_str: str,
                      max_len: int, start: int=0) -> str:

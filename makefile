@@ -6,7 +6,7 @@ FIG_SVG_DIR := $(FIG_DIR)svg/
 FIG_PDF_DIR := $(FIG_DIR)pdf/
 FIG_DAT_DIR := $(FIG_DIR)data/
 
-HW_MODULES_IGNORE := top_level
+HW_MODULES_IGNORE := none
 
 HW_MODULES := $(filter-out $(HW_MODULES_IGNORE), $(shell basename $(shell find $(HW_DIR) -mindepth 1 -maxdepth 1 -type d)))
 HW_SVGS := $(join $(addprefix $(HW_DIR), $(addsuffix /, $(HW_MODULES))), $(addsuffix .svg, $(HW_MODULES)))

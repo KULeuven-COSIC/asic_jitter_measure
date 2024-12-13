@@ -156,24 +156,6 @@
                 }
             }
         },
-        "52": {
-            "name": "VIA2",
-            "long_name": "via 2",
-            "data_types": {
-                "0": {
-                    "style": {
-                        "fill": "#a04000",
-                        "fill-opacity": 1,
-                        "stroke-width": 10,
-                        "stroke": "#a04000",
-                        "stroke-linecap": "round",
-                        "stroke-linejoin": "round",
-                        "stroke-opacity": 1
-                    },
-                    "purpose": "draw"
-                }
-            }
-        },
         "33": {
             "name": "M3",
             "long_name": "metal 3",
@@ -187,24 +169,6 @@
                         "stroke-linecap": "round",
                         "stroke-linejoin": "round",
                         "stroke-opacity": 0
-                    },
-                    "purpose": "draw"
-                }
-            }
-        },
-        "53": {
-            "name": "VIA3",
-            "long_name": "via 3",
-            "data_types": {
-                "0": {
-                    "style": {
-                        "fill": "#8e44ad",
-                        "fill-opacity": 1,
-                        "stroke-width": 10,
-                        "stroke": "#8e44ad",
-                        "stroke-linecap": "round",
-                        "stroke-linejoin": "round",
-                        "stroke-opacity": 1
                     },
                     "purpose": "draw"
                 }

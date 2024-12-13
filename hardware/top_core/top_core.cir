@@ -1,0 +1,2788 @@
+* Top cell name: top_core
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT mux2 in0 in1 out sel vdd vss
+    Xi2 net16 net15 out vdd vss nand2
+    Xi1 sel in1 net15 vdd vss nand2
+    Xi0 in0 net14 net16 vdd vss nand2
+    Mm0 net14 sel vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 net14 sel vss vss n_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT mux2_10x in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in0<8> in0<9> in1<0> in1<1>
+                 + in1<2> in1<3> in1<4> in1<5> in1<6> in1<7> in1<8> in1<9> out<0> out<1> out<2>
+                 + out<3> out<4> out<5> out<6> out<7> out<8> out<9> sel vdd vss
+    Xi0 in0<0> in1<0> out<0> sel vdd vss mux2
+    Xi9 in0<9> in1<9> out<9> sel vdd vss mux2
+    Xi8 in0<8> in1<8> out<8> sel vdd vss mux2
+    Xi7 in0<7> in1<7> out<7> sel vdd vss mux2
+    Xi6 in0<6> in1<6> out<6> sel vdd vss mux2
+    Xi5 in0<5> in1<5> out<5> sel vdd vss mux2
+    Xi4 in0<4> in1<4> out<4> sel vdd vss mux2
+    Xi3 in0<3> in1<3> out<3> sel vdd vss mux2
+    Xi2 in0<2> in1<2> out<2> sel vdd vss mux2
+    Xi1 in0<1> in1<1> out<1> sel vdd vss mux2
+.ENDS
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nor2 in0 in1 out vdd vss
+    Mm1 out in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm2 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dec_stage conf_rand ff_in ff_prev out vdd vss
+    Xi0 ff_in net3 vdd vss inv
+    Xi1 ff_prev net3 net4 vdd vss nor2
+    Xi2 net4 conf_rand out vdd vss nand2
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT dec_6_conf_0 conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> conf_dec<4> conf_dec<5>
+                     + ff_in<0> ff_in<1> ff_in<2> ff_in<3> ff_in<4> ff_in<5> rand_out vdd vss
+    Xi23 conf_dec<5> ff_in<5> ff_in<4> stage<5> vdd vss dec_stage
+    Xi22 conf_dec<4> ff_in<4> ff_in<3> stage<4> vdd vss dec_stage
+    Xi21 conf_dec<3> ff_in<3> ff_in<2> stage<3> vdd vss dec_stage
+    Xi20 conf_dec<2> ff_in<2> ff_in<1> stage<2> vdd vss dec_stage
+    Xi19 conf_dec<1> ff_in<1> ff_in<0> stage<1> vdd vss dec_stage
+    Xi18 conf_dec<0> ff_in<0> ff_in<5> stage<0> vdd vss dec_stage
+    Xi25 stage<3> stage<4> stage<5> net023 vdd vss nand3
+    Xi24 stage<0> stage<1> stage<2> net026 vdd vss nand3
+    Xi26 net026 net023 rand_out vdd vss nor2
+.ENDS
+
+.SUBCKT nor3 in0 in1 in2 out vdd vss
+    Mm2 out in0 net6 vdd p_mos l=60n w=480.0n m=1
+    Mm1 net6 in1 net7 vdd p_mos l=60n w=480.0n m=1
+    Mm0 net7 in2 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in2 vss vss n_mos l=60n w=120.0n m=1
+    Mm4 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 out in1 vss vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT inv_wn in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=240.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar_dh clk q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+    Xi6 n1 n3 vdd vss inv_wn
+.ENDS
+
+.SUBCKT ff_ready ff0<0> ff0<1> ff0<2> ff1<0> ff1<1> ff1<2> ff_ready rst rst' vdd vss
+    Xi0 ff0<0> ff0<1> ff0<2> ff_nor0 vdd vss nor3
+    Xi1 ff1<0> ff1<1> ff1<2> ff_nor1 vdd vss nor3
+    Xi2 ff_nor0 ff_nor1 ff_nand vdd vss nand2
+    Xi3 ff_nand ff_ready net18 rst rst' vdd vss dff_st_ar_dh
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT tff_st_ar clk q q' rst rst' vdd vss
+    Xi0 clk q' q q' rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT async_counter_8 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> q' rst rst' vdd
+                        + vss
+    Xi7 net4 out<4> net5 rst rst' vdd vss tff_st_ar
+    Xi6 net6 out<6> net7 rst rst' vdd vss tff_st_ar
+    Xi5 net7 out<7> q' rst rst' vdd vss tff_st_ar
+    Xi4 net5 out<5> net6 rst rst' vdd vss tff_st_ar
+    Xi3 net2 out<2> net3 rst rst' vdd vss tff_st_ar
+    Xi2 net3 out<3> net4 rst rst' vdd vss tff_st_ar
+    Xi1 net1 out<1> net2 rst rst' vdd vss tff_st_ar
+    Xi0 clk out<0> net1 rst rst' vdd vss tff_st_ar
+.ENDS
+
+.SUBCKT nand4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in3 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net21 in3 vss vss n_mos l=60n w=480.0n m=1
+    Mm6 net22 in2 net21 vss n_mos l=60n w=480.0n m=1
+    Mm5 net23 in1 net22 vss n_mos l=60n w=480.0n m=1
+    Mm4 out in0 net23 vss n_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT max_ready conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2> conf_maxcycles<3>
+                  + conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7> int
+                  + max_ready rst rst' vdd vss
+    Xi0 int cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> net020 rst rst' vdd vss
+        + async_counter_8
+    Xi8 cnt<7> conf_maxcycles<7> cnt_high<7> vdd vss nand2
+    Xi7 cnt<6> conf_maxcycles<6> cnt_high<6> vdd vss nand2
+    Xi6 cnt<5> conf_maxcycles<5> cnt_high<5> vdd vss nand2
+    Xi5 cnt<4> conf_maxcycles<4> cnt_high<4> vdd vss nand2
+    Xi4 cnt<3> conf_maxcycles<3> cnt_high<3> vdd vss nand2
+    Xi3 cnt<2> conf_maxcycles<2> cnt_high<2> vdd vss nand2
+    Xi2 cnt<1> conf_maxcycles<1> cnt_high<1> vdd vss nand2
+    Xi1 cnt<0> conf_maxcycles<0> cnt_high<0> vdd vss nand2
+    Xi10 cnt_high<4> cnt_high<5> cnt_high<6> cnt_high<7> net09 vdd vss nand4
+    Xi9 cnt_high<0> cnt_high<1> cnt_high<2> cnt_high<3> net010 vdd vss nand4
+    Xi11 net010 net09 net021 vdd vss nor2
+    Xi12 net021 ready vdd vss inv
+    Xi13 ready max_ready net018 rst rst' vdd vss dff_st_ar_dh
+.ENDS
+
+.SUBCKT nor4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+    Mm2 net7 in1 net6 vdd p_mos l=60n w=480.0n m=1
+    Mm1 net6 in2 net5 vdd p_mos l=60n w=480.0n m=1
+    Mm0 net5 in3 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm7 out in3 vss vss n_mos l=60n w=120.0n m=1
+    Mm6 out in2 vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm4 out in1 vss vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT buffer in out vdd vss
+    Mm1 out int vss vss n_mos l=60n w=480.0n m=4
+    Mm0 int in vss vss n_mos l=60n w=480.0n m=1
+    Mm3 out int vdd vdd p_mos l=60n w=480.0n m=4
+    Mm2 int in vdd vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT wait_ready clk conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+                   + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7>
+                   + enable_e2l int rst rst' vdd vss wait_ready
+    Xi4 clk_int wait_cnt<0> wait_cnt<1> wait_cnt<2> wait_cnt<3> wait_cnt<4> wait_cnt<5> wait_cnt<6>
+        + wait_cnt<7> net044 cnt_rst cnt_rst' vdd vss async_counter_8
+    Xi26 clk net049 net052 vdd vss nand2
+    Xi19 wait_cnt<7> conf_waitcycles<7> waithigh<7> vdd vss nand2
+    Xi18 wait_cnt<6> conf_waitcycles<6> waithigh<6> vdd vss nand2
+    Xi17 wait_cnt<5> conf_waitcycles<5> waithigh<5> vdd vss nand2
+    Xi10 wait_cnt<4> conf_waitcycles<4> waithigh<4> vdd vss nand2
+    Xi3 wait_cnt<3> conf_waitcycles<3> waithigh<3> vdd vss nand2
+    Xi2 wait_cnt<2> conf_waitcycles<2> waithigh<2> vdd vss nand2
+    Xi1 wait_cnt<1> conf_waitcycles<1> waithigh<1> vdd vss nand2
+    Xi0 wait_cnt<0> conf_waitcycles<0> waithigh<0> vdd vss nand2
+    Xi15 net14 net13 wait_rst_rst' vdd vss nand2
+    Xi11 net19 net18 wait_rst vdd vss nand2
+    Xi5 wait_rst' rst' cnt_rst vdd vss nand2
+    Xi22 net025 net030 net029 vdd vss nor2
+    Xi12 edge edge' wait_rst' vdd vss nor2
+    Xi6 wait_rst rst cnt_rst' vdd vss nor2
+    Xi25 enable_e2l net049 net050 rst rst' vdd vss dff_st_ar_dh
+    Xi24 ready wait_ready net034 rst rst' vdd vss dff_st_ar_dh
+    Xi8 int edge net18 wait_rst_rst wait_rst_rst' vdd vss dff_st_ar_dh
+    Xi7 net15 edge' net19 wait_rst_rst wait_rst_rst' vdd vss dff_st_ar_dh
+    Xi23 net029 ready vdd vss inv
+    Xi16 wait_rst_rst' wait_rst_rst vdd vss inv
+    Xi9 int net15 vdd vss inv
+    Xi14 wait_cnt<4> wait_cnt<5> wait_cnt<6> wait_cnt<7> net13 vdd vss nor4
+    Xi13 wait_cnt<0> wait_cnt<1> wait_cnt<2> wait_cnt<3> net14 vdd vss nor4
+    Xi21 waithigh<0> waithigh<1> waithigh<2> waithigh<3> net025 vdd vss nand4
+    Xi20 waithigh<4> waithigh<5> waithigh<6> waithigh<7> net030 vdd vss nand4
+    Xi27 net052 clk_int vdd vss buffer
+.ENDS
+
+.SUBCKT tdc_ready alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+                  + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6>
+                  + conf_maxcycles<7> conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2>
+                  + conf_waitcycles<3> conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                  + conf_waitcycles<7> enable_e2l ff0<0> ff0<1> ff0<2> ff1<0> ff1<1> ff1<2> int
+                  + ready rst rst' vdd vss
+    Xi18 ff0<0> ff0<1> ff0<2> ff1<0> ff1<1> ff1<2> ff_ready rst rst' vdd vss ff_ready
+    Xi20 conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4>
+         + conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7> int net017 rst rst' vdd vss
+         + max_ready
+    Xi32 alarm<0> net19 net027 ready_i vdd vss nand3
+    Xi19 clk conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+         + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+         + int rst rst' vdd vss wait_ready wait_ready
+    Xi28 wait_ready net19 vdd vss inv
+    Xi27 ff_ready alarm<0> vdd vss inv
+    Xi30 ready_i ready ready' rst rst' vdd vss dff_st_ar_dh
+    Xi33 net017 ready' alarm<1> net027 rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT tdc_and_diff in0_n in0_p in1_n in1_p out_n out_p vdd vss
+    Mm3 net18 in1_p vss vss n_mos l=60n w=240.0n m=1
+    Mm2 out_n in0_p net18 vss n_mos l=60n w=240.0n m=1
+    Mm1 out_p in0_n vss vss n_mos l=60n w=120.0n m=1
+    Mm0 out_p in1_n vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out_n out_p vdd vdd p_mos l=60n w=120.0n m=1
+    Mm4 out_p out_n vdd vdd p_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT tdc_buf_diff_np_4lin conf_n<0> conf_n<1> conf_n<2> conf_n<3> conf_p<0> conf_p<1> conf_p<2>
+                             + conf_p<3> in_n in_p out_n out_p vdd vss
+    Mm51 conf_n'<3> conf_n<3> vss vss n_mos l=60n w=120.0n m=1
+    Mm50 conf_n'<2> conf_n<2> vss vss n_mos l=60n w=120.0n m=1
+    Mm49 conf_n'<1> conf_n<1> vss vss n_mos l=60n w=120.0n m=1
+    Mm48 conf_n'<0> conf_n<0> vss vss n_mos l=60n w=120.0n m=1
+    Mm43 conf_p'<3> conf_p<3> vss vss n_mos l=60n w=120.0n m=1
+    Mm42 conf_p'<2> conf_p<2> vss vss n_mos l=60n w=120.0n m=1
+    Mm41 conf_p'<1> conf_p<1> vss vss n_mos l=60n w=120.0n m=1
+    Mm40 conf_p'<0> conf_p<0> vss vss n_mos l=60n w=120.0n m=1
+    Mm35 out_p in_n vss vss n_mos l=60n w=120.0n m=1
+    Mm33 out_n in_p vss vss n_mos l=60n w=120.0n m=1
+    Mm15 net49 conf_n<3> vss vss n_mos l=60n w=120.0n m=1
+    Mm14 net52 conf_n<2> vss vss n_mos l=60n w=120.0n m=1
+    Mm13 net53 conf_n<1> vss vss n_mos l=60n w=120.0n m=1
+    Mm12 net56 conf_n<0> vss vss n_mos l=60n w=120.0n m=1
+    Mm11 out_p out_n net49 vss n_mos l=60n w=120.0n m=1
+    Mm10 out_p out_n net52 vss n_mos l=60n w=120.0n m=1
+    Mm9 out_p out_n net53 vss n_mos l=60n w=120.0n m=1
+    Mm8 out_p out_n net56 vss n_mos l=60n w=120.0n m=1
+    Mm7 net57 conf_p<3> vss vss n_mos l=60n w=120.0n m=1
+    Mm6 net60 conf_p<2> vss vss n_mos l=60n w=120.0n m=1
+    Mm5 net61 conf_p<1> vss vss n_mos l=60n w=120.0n m=1
+    Mm4 net64 conf_p<0> vss vss n_mos l=60n w=120.0n m=1
+    Mm3 out_n out_p net57 vss n_mos l=60n w=120.0n m=1
+    Mm2 out_n out_p net60 vss n_mos l=60n w=120.0n m=1
+    Mm1 out_n out_p net61 vss n_mos l=60n w=120.0n m=1
+    Mm0 out_n out_p net64 vss n_mos l=60n w=120.0n m=1
+    Mm47 conf_n'<3> conf_n<3> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm46 conf_n'<2> conf_n<2> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm45 conf_n'<1> conf_n<1> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm44 conf_n'<0> conf_n<0> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm39 conf_p'<3> conf_p<3> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm38 conf_p'<2> conf_p<2> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm37 conf_p'<1> conf_p<1> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm36 conf_p'<0> conf_p<0> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm34 out_p in_n vdd vdd p_mos l=60n w=120.0n m=1
+    Mm32 out_n in_p vdd vdd p_mos l=60n w=120.0n m=1
+    Mm31 out_p out_n net50 vdd p_mos l=60n w=120.0n m=1
+    Mm30 out_p out_n net51 vdd p_mos l=60n w=120.0n m=1
+    Mm29 out_p out_n net54 vdd p_mos l=60n w=120.0n m=1
+    Mm28 out_p out_n net55 vdd p_mos l=60n w=120.0n m=1
+    Mm27 net50 conf_p'<3> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm26 net51 conf_p'<2> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm25 net54 conf_p'<1> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm24 net55 conf_p'<0> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm23 out_n out_p net58 vdd p_mos l=60n w=120.0n m=1
+    Mm22 out_n out_p net59 vdd p_mos l=60n w=120.0n m=1
+    Mm21 out_n out_p net62 vdd p_mos l=60n w=120.0n m=1
+    Mm20 out_n out_p net63 vdd p_mos l=60n w=120.0n m=1
+    Mm19 net58 conf_n'<3> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm18 net59 conf_n'<2> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm17 net62 conf_n'<1> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm16 net63 conf_n'<0> vdd vdd p_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT tdc_inv in out vdd vss
+    Mm0 out in vdd vdd p_mos l=60n w=120.0n m=1
+    Mm1 out in vss vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT tdc_inv_wide in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=480.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT tdc_stage_diff_np_4lin_buf conf_n<0> conf_n<1> conf_n<2> conf_n<3> conf_p<0> conf_p<1>
+                                   + conf_p<2> conf_p<3> in0_n in0_p in1_n in1_p out_buf_n out_buf_p
+                                   + out_n out_p vdd vss
+    Xi0 in0_n in0_p in1_n in1_p int_n int_p vdd vss tdc_and_diff
+    Xi1 conf_n<0> conf_n<1> conf_n<2> conf_n<3> conf_p<0> conf_p<1> conf_p<2> conf_p<3> int_n int_p
+        + out_n_i out_p_i vdd vss tdc_buf_diff_np_4lin
+    Xi3 out_n out_buf_p vdd vss tdc_inv
+    Xi2 out_p out_buf_n vdd vss tdc_inv
+    Xi4 out_n_i out_p vdd vss tdc_inv_wide
+    Xi5 out_p_i out_n vdd vss tdc_inv_wide
+.ENDS
+
+.SUBCKT tdc_2stage_diff_np_4lin_buf buf0_n buf0_p buf1_n buf1_p conf0_n<0> conf0_n<1> conf0_n<2>
+                                    + conf0_n<3> conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3>
+                                    + conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3> conf1_p<0>
+                                    + conf1_p<1> conf1_p<2> conf1_p<3> ff0 ff1 in0_n in0_p in1_n
+                                    + in1_p nand0_in nand0_out nand1_in nand1_out out0_n out0_p
+                                    + out1_n out1_p rst rst' vdd vss
+    Xi19 out_buf1_n buf1_n vdd vss inv_wn
+    Xi16 out_buf0_p buf0_p vdd vss inv_wn
+    Xi17 out_buf0_n buf0_n vdd vss inv_wn
+    Xi18 out_buf1_p buf1_p vdd vss inv_wn
+    Xi13 nor0 nand0 ff0 q0' rst rst' vdd vss dff_st_ar
+    Xi12 nor1 nand1 ff1 q1' rst rst' vdd vss dff_st_ar
+    Xi10 q0' enable0 nand0_out vdd vss nand2
+    Xi11 q1' enable1 nand1_out vdd vss nand2
+    Xi6 q1' out_buf0_n nand1 vdd vss nand2
+    Xi7 q0' out_buf1_p nand0 vdd vss nand2
+    Xi9 out_buf0_p nand0_in nor0 vdd vss nor2
+    Xi8 out_buf1_n nand1_in nor1 vdd vss nor2
+    Xi15 nand0_in enable0 vdd vss inv
+    Xi14 nand1_in enable1 vdd vss inv
+    Xi1 conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3> conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3>
+        + in1_n in1_p nand1_in enable1 out_buf1_n out_buf1_p out1_n out1_p vdd vss
+        + tdc_stage_diff_np_4lin_buf
+    Xi0 conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3> conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3>
+        + in0_n in0_p nand0_in enable0 out_buf0_n out_buf0_p out0_n out0_p vdd vss
+        + tdc_stage_diff_np_4lin_buf
+.ENDS
+
+.SUBCKT tdc_stage_diff_np_4lin_switched_buf conf_n<0> conf_n<1> conf_n<2> conf_n<3> conf_p<0>
+                                            + conf_p<1> conf_p<2> conf_p<3> in0_n in0_p in1_n in1_p
+                                            + out_buf_n out_buf_p out_n out_p vdd vss
+    Xi0 in0_n in0_p in1_n in1_p int_n int_p vdd vss tdc_and_diff
+    Xi1 conf_n<0> conf_n<1> conf_n<2> conf_n<3> conf_p<0> conf_p<1> conf_p<2> conf_p<3> int_p int_n
+        + out_n_i out_p_i vdd vss tdc_buf_diff_np_4lin
+    Xi3 out_n out_buf_p vdd vss tdc_inv
+    Xi2 out_p out_buf_n vdd vss tdc_inv
+    Xi4 out_n_i out_p vdd vss tdc_inv_wide
+    Xi5 out_p_i out_n vdd vss tdc_inv_wide
+.ENDS
+
+.SUBCKT tdc_2stage_diff_np_4lin_switched_buf buf0_n buf0_p buf1_n buf1_p conf0_n<0> conf0_n<1>
+                                             + conf0_n<2> conf0_n<3> conf0_p<0> conf0_p<1>
+                                             + conf0_p<2> conf0_p<3> conf1_n<0> conf1_n<1>
+                                             + conf1_n<2> conf1_n<3> conf1_p<0> conf1_p<1>
+                                             + conf1_p<2> conf1_p<3> edge0_n edge0_p edge1_n edge1_p
+                                             + ff0 ff1 in0_n in0_p in1_n in1_p nand0_in nand0_out
+                                             + nand1_in nand1_out out0_n out0_p out1_n out1_p rst
+                                             + rst' vdd vss
+    Xi15 nand1_in rst' net059 vdd vss nand2
+    Xi14 nand0_in rst' net036 vdd vss nand2
+    Xi11 q1' net059 nand1_out vdd vss nand2
+    Xi10 q0' net036 nand0_out vdd vss nand2
+    Xi4 q0' out_buf1_p nand0 vdd vss nand2
+    Xi5 q1' out_buf0_n nand1 vdd vss nand2
+    Xi6 out_buf0_p nand0_in nor0 vdd vss nor2
+    Xi7 out_buf1_n nand1_in nor1 vdd vss nor2
+    Xi8 nor0 nand0 ff0 q0' rst rst' vdd vss dff_st_ar
+    Xi9 nor1 nand1 ff1 q1' rst rst' vdd vss dff_st_ar
+    Xi19 out_buf1_n buf1_n vdd vss inv_wn
+    Xi18 out_buf1_p buf1_p vdd vss inv_wn
+    Xi17 out_buf0_n buf0_n vdd vss inv_wn
+    Xi16 out_buf0_p buf0_p vdd vss inv_wn
+    Xi1 conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3> conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3>
+        + in1_n in1_p edge1_n edge1_p out_buf1_n out_buf1_p out1_n out1_p vdd vss
+        + tdc_stage_diff_np_4lin_switched_buf
+    Xi0 conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3> conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3>
+        + in0_n in0_p edge0_n edge0_p out_buf0_n out_buf0_p out0_n out0_p vdd vss
+        + tdc_stage_diff_np_4lin_switched_buf
+.ENDS
+
+.SUBCKT tdc_2e_2b_diff_np_4lin_buf buf0_n<0> buf0_n<1> buf0_n<2> buf0_p<0> buf0_p<1> buf0_p<2>
+                                   + buf1_n<0> buf1_n<1> buf1_n<2> buf1_p<0> buf1_p<1> buf1_p<2>
+                                   + conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3> conf0_n<4>
+                                   + conf0_n<5> conf0_n<6> conf0_n<7> conf0_n<8> conf0_n<9>
+                                   + conf0_n<10> conf0_n<11> conf0_p<0> conf0_p<1> conf0_p<2>
+                                   + conf0_p<3> conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7>
+                                   + conf0_p<8> conf0_p<9> conf0_p<10> conf0_p<11> conf1_n<0>
+                                   + conf1_n<1> conf1_n<2> conf1_n<3> conf1_n<4> conf1_n<5>
+                                   + conf1_n<6> conf1_n<7> conf1_n<8> conf1_n<9> conf1_n<10>
+                                   + conf1_n<11> conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3>
+                                   + conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> conf1_p<8>
+                                   + conf1_p<9> conf1_p<10> conf1_p<11> edge0_n edge0_p edge1_n
+                                   + edge1_p ff0<0> ff0<1> ff0<2> ff1<0> ff1<1> ff1<2> rst rst' vdd
+                                   + vss
+    Xi14 buf0_n<2> buf0_p<2> buf1_n<2> buf1_p<2> conf0_n<8> conf0_n<9> conf0_n<10> conf0_n<11>
+         + conf0_p<8> conf0_p<9> conf0_p<10> conf0_p<11> conf1_n<8> conf1_n<9> conf1_n<10>
+         + conf1_n<11> conf1_p<8> conf1_p<9> conf1_p<10> conf1_p<11> ff0<2> ff1<2> int0_n<1>
+         + int0_p<1> int1_n<1> int1_p<1> nand0<1> nand0<2> nand1<1> nand1<2> int0_n<2> int0_p<2>
+         + int1_n<2> int1_p<2> rst rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi13 buf0_n<1> buf0_p<1> buf1_n<1> buf1_p<1> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7>
+         + conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7>
+         + conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> ff0<1> ff1<1> int0_n<0> int0_p<0> int1_n<0>
+         + int1_p<0> nand0<0> nand0<1> nand1<0> nand1<1> int0_n<1> int0_p<1> int1_n<1> int1_p<1> rst
+         + rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi12 buf0_n<0> buf0_p<0> buf1_n<0> buf1_p<0> conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3>
+         + conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3> conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3>
+         + conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3> edge0_n edge0_p edge1_n edge1_p ff0<0> ff1<0>
+         + int1_n<2> int1_p<2> int0_n<2> int0_p<2> nand1<2> nand0<0> nand0<2> nand1<0> int0_n<0>
+         + int0_p<0> int1_n<0> int1_p<0> rst rst' vdd vss tdc_2stage_diff_np_4lin_switched_buf
+.ENDS
+
+.SUBCKT tdc_2b_diff_branch alarm<0> alarm<1> buf1_p<0> clk conf0_n<0> conf0_n<1> conf0_n<2>
+                           + conf0_n<3> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7> conf0_n<8>
+                           + conf0_n<9> conf0_n<10> conf0_n<11> conf0_p<0> conf0_p<1> conf0_p<2>
+                           + conf0_p<3> conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf0_p<8>
+                           + conf0_p<9> conf0_p<10> conf0_p<11> conf1_n<0> conf1_n<1> conf1_n<2>
+                           + conf1_n<3> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7> conf1_n<8>
+                           + conf1_n<9> conf1_n<10> conf1_n<11> conf1_p<0> conf1_p<1> conf1_p<2>
+                           + conf1_p<3> conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> conf1_p<8>
+                           + conf1_p<9> conf1_p<10> conf1_p<11> conf_dec<0> conf_dec<1> conf_dec<2>
+                           + conf_dec<3> conf_dec<4> conf_dec<5> conf_maxcycles<0> conf_maxcycles<1>
+                           + conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5>
+                           + conf_maxcycles<6> conf_maxcycles<7> conf_waitcycles<0>
+                           + conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+                           + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                           + conf_waitcycles<7> edge0_n edge0_p edge1_n edge1_p enable_e2l ff<0>
+                           + ff<1> ff<2> ff<3> ff<4> ff<5> rand_out ready rst rst' vdd vss
+    Xi7 conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> conf_dec<4> conf_dec<5> ff<0> ff<1> ff<2>
+        + ff<3> ff<4> ff<5> rand_out vdd vss dec_6_conf_0
+    Xi2 alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+        + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7>
+        + conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+        + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+        + ff<0> ff<1> ff<2> ff<3> ff<4> ff<5> buf0_p<0> ready rst rst' vdd vss tdc_ready
+    Xi1 net025<0> net025<1> net025<2> buf0_p<0> buf0_p<1> buf0_p<2> net024<0> net024<1> net024<2>
+        + buf1_p<0> buf1_p<1> buf1_p<2> conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3> conf0_n<4>
+        + conf0_n<5> conf0_n<6> conf0_n<7> conf0_n<8> conf0_n<9> conf0_n<10> conf0_n<11> conf0_p<0>
+        + conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf0_p<8>
+        + conf0_p<9> conf0_p<10> conf0_p<11> conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3> conf1_n<4>
+        + conf1_n<5> conf1_n<6> conf1_n<7> conf1_n<8> conf1_n<9> conf1_n<10> conf1_n<11> conf1_p<0>
+        + conf1_p<1> conf1_p<2> conf1_p<3> conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> conf1_p<8>
+        + conf1_p<9> conf1_p<10> conf1_p<11> edge0_n edge0_p edge1_n edge1_p ff<0> ff<1> ff<2> ff<3>
+        + ff<4> ff<5> rst rst' vdd vss tdc_2e_2b_diff_np_4lin_buf
+.ENDS
+
+.SUBCKT tdc_2e_3b_diff_np_4lin_buf buf0_n<0> buf0_n<1> buf0_n<2> buf0_n<3> buf0_p<0> buf0_p<1>
+                                   + buf0_p<2> buf0_p<3> buf1_n<0> buf1_n<1> buf1_n<2> buf1_n<3>
+                                   + buf1_p<0> buf1_p<1> buf1_p<2> buf1_p<3> conf0_n<0> conf0_n<1>
+                                   + conf0_n<2> conf0_n<3> conf0_n<4> conf0_n<5> conf0_n<6>
+                                   + conf0_n<7> conf0_n<8> conf0_n<9> conf0_n<10> conf0_n<11>
+                                   + conf0_n<12> conf0_n<13> conf0_n<14> conf0_n<15> conf0_p<0>
+                                   + conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4> conf0_p<5>
+                                   + conf0_p<6> conf0_p<7> conf0_p<8> conf0_p<9> conf0_p<10>
+                                   + conf0_p<11> conf0_p<12> conf0_p<13> conf0_p<14> conf0_p<15>
+                                   + conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3> conf1_n<4>
+                                   + conf1_n<5> conf1_n<6> conf1_n<7> conf1_n<8> conf1_n<9>
+                                   + conf1_n<10> conf1_n<11> conf1_n<12> conf1_n<13> conf1_n<14>
+                                   + conf1_n<15> conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3>
+                                   + conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> conf1_p<8>
+                                   + conf1_p<9> conf1_p<10> conf1_p<11> conf1_p<12> conf1_p<13>
+                                   + conf1_p<14> conf1_p<15> edge0_n edge0_p edge1_n edge1_p ff0<0>
+                                   + ff0<1> ff0<2> ff0<3> ff1<0> ff1<1> ff1<2> ff1<3> rst rst' vdd
+                                   + vss
+    Xi13 buf0_n<1> buf0_p<1> buf1_n<1> buf1_p<1> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7>
+         + conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7>
+         + conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> ff0<1> ff1<1> int0_n<0> int0_p<0> int1_n<0>
+         + int1_p<0> nand0<0> nand0<1> nand1<0> nand1<1> int0_n<1> int0_p<1> int1_n<1> int1_p<1> rst
+         + rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi14 buf0_n<2> buf0_p<2> buf1_n<2> buf1_p<2> conf0_n<8> conf0_n<9> conf0_n<10> conf0_n<11>
+         + conf0_p<8> conf0_p<9> conf0_p<10> conf0_p<11> conf1_n<8> conf1_n<9> conf1_n<10>
+         + conf1_n<11> conf1_p<8> conf1_p<9> conf1_p<10> conf1_p<11> ff0<2> ff1<2> int0_n<1>
+         + int0_p<1> int1_n<1> int1_p<1> nand0<1> nand0<2> nand1<1> nand1<2> int0_n<2> int0_p<2>
+         + int1_n<2> int1_p<2> rst rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi17 buf0_n<3> buf0_p<3> buf1_n<3> buf1_p<3> conf0_n<12> conf0_n<13> conf0_n<14> conf0_n<15>
+         + conf0_p<12> conf0_p<13> conf0_p<14> conf0_p<15> conf1_n<12> conf1_n<13> conf1_n<14>
+         + conf1_n<15> conf1_p<12> conf1_p<13> conf1_p<14> conf1_p<15> ff0<3> ff1<3> int0_n<2>
+         + int0_p<2> int1_n<2> int1_p<2> nand0<2> nand0<3> nand1<2> nand1<3> int0_n<3> int0_p<3>
+         + int1_n<3> int1_p<3> rst rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi12 buf0_n<0> buf0_p<0> buf1_n<0> buf1_p<0> conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3>
+         + conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3> conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3>
+         + conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3> edge0_n edge0_p edge1_n edge1_p ff0<0> ff1<0>
+         + int1_n<3> int1_p<3> int0_n<3> int0_p<3> nand1<3> nand0<0> nand0<3> nand1<0> int0_n<0>
+         + int0_p<0> int1_n<0> int1_p<0> rst rst' vdd vss tdc_2stage_diff_np_4lin_switched_buf
+.ENDS
+
+.SUBCKT ff_ready_4 ff0<0> ff0<1> ff0<2> ff0<3> ff1<0> ff1<1> ff1<2> ff1<3> ff_ready rst rst' vdd vss
+    Xi2 ff_nor0 ff_nor1 ff_nand vdd vss nand2
+    Xi3 ff_nand ff_ready net18 rst rst' vdd vss dff_st_ar_dh
+    Xi0 ff0<0> ff0<1> ff0<2> ff0<3> ff_nor0 vdd vss nor4
+    Xi1 ff1<0> ff1<1> ff1<2> ff1<3> ff_nor1 vdd vss nor4
+.ENDS
+
+.SUBCKT tdc_ready_4 alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+                    + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6>
+                    + conf_maxcycles<7> conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2>
+                    + conf_waitcycles<3> conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                    + conf_waitcycles<7> enable_e2l ff0<0> ff0<1> ff0<2> ff0<3> ff1<0> ff1<1> ff1<2>
+                    + ff1<3> int ready rst rst' vdd vss
+    Xi20 conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4>
+         + conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7> int net017 rst rst' vdd vss
+         + max_ready
+    Xi32 alarm<0> net19 net027 ready_i vdd vss nand3
+    Xi19 clk conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+         + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+         + int rst rst' vdd vss wait_ready wait_ready
+    Xi28 wait_ready net19 vdd vss inv
+    Xi27 ff_ready alarm<0> vdd vss inv
+    Xi30 ready_i ready ready' rst rst' vdd vss dff_st_ar_dh
+    Xi33 net017 ready' alarm<1> net027 rst rst' vdd vss dff_st_ar
+    Xi18 ff0<0> ff0<1> ff0<2> ff0<3> ff1<0> ff1<1> ff1<2> ff1<3> ff_ready rst rst' vdd vss
+         + ff_ready_4
+.ENDS
+
+.SUBCKT dec_8_conf_0 conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> conf_dec<4> conf_dec<5>
+                     + conf_dec<6> conf_dec<7> ff_in<0> ff_in<1> ff_in<2> ff_in<3> ff_in<4> ff_in<5>
+                     + ff_in<6> ff_in<7> rand_out vdd vss
+    Xi28 conf_dec<7> ff_in<7> ff_in<6> stage<7> vdd vss dec_stage
+    Xi27 conf_dec<6> ff_in<6> ff_in<5> stage<6> vdd vss dec_stage
+    Xi23 conf_dec<5> ff_in<5> ff_in<4> stage<5> vdd vss dec_stage
+    Xi22 conf_dec<4> ff_in<4> ff_in<3> stage<4> vdd vss dec_stage
+    Xi21 conf_dec<3> ff_in<3> ff_in<2> stage<3> vdd vss dec_stage
+    Xi20 conf_dec<2> ff_in<2> ff_in<1> stage<2> vdd vss dec_stage
+    Xi19 conf_dec<1> ff_in<1> ff_in<0> stage<1> vdd vss dec_stage
+    Xi18 conf_dec<0> ff_in<0> ff_in<7> stage<0> vdd vss dec_stage
+    Xi26 net026 net023 rand_out vdd vss nor2
+    Xi25 stage<4> stage<5> stage<6> stage<7> net023 vdd vss nand4
+    Xi24 stage<0> stage<1> stage<2> stage<3> net026 vdd vss nand4
+.ENDS
+
+.SUBCKT tdc_3b_diff_branch alarm<0> alarm<1> buf1_p<0> clk conf0_n<0> conf0_n<1> conf0_n<2>
+                           + conf0_n<3> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7> conf0_n<8>
+                           + conf0_n<9> conf0_n<10> conf0_n<11> conf0_n<12> conf0_n<13> conf0_n<14>
+                           + conf0_n<15> conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4>
+                           + conf0_p<5> conf0_p<6> conf0_p<7> conf0_p<8> conf0_p<9> conf0_p<10>
+                           + conf0_p<11> conf0_p<12> conf0_p<13> conf0_p<14> conf0_p<15> conf1_n<0>
+                           + conf1_n<1> conf1_n<2> conf1_n<3> conf1_n<4> conf1_n<5> conf1_n<6>
+                           + conf1_n<7> conf1_n<8> conf1_n<9> conf1_n<10> conf1_n<11> conf1_n<12>
+                           + conf1_n<13> conf1_n<14> conf1_n<15> conf1_p<0> conf1_p<1> conf1_p<2>
+                           + conf1_p<3> conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> conf1_p<8>
+                           + conf1_p<9> conf1_p<10> conf1_p<11> conf1_p<12> conf1_p<13> conf1_p<14>
+                           + conf1_p<15> conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> conf_dec<4>
+                           + conf_dec<5> conf_dec<6> conf_dec<7> conf_maxcycles<0> conf_maxcycles<1>
+                           + conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5>
+                           + conf_maxcycles<6> conf_maxcycles<7> conf_waitcycles<0>
+                           + conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+                           + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                           + conf_waitcycles<7> edge0_n edge0_p edge1_n edge1_p enable_e2l ff<0>
+                           + ff<1> ff<2> ff<3> ff<4> ff<5> ff<6> ff<7> rand_out ready rst rst' vdd
+                           + vss
+    Xi1 net31<0> net31<1> net31<2> net31<3> buf0_p<0> buf0_p<1> buf0_p<2> buf0_p<3> net30<0>
+        + net30<1> net30<2> net30<3> buf1_p<0> buf1_p<1> buf1_p<2> buf1_p<3> conf0_n<0> conf0_n<1>
+        + conf0_n<2> conf0_n<3> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7> conf0_n<8> conf0_n<9>
+        + conf0_n<10> conf0_n<11> conf0_n<12> conf0_n<13> conf0_n<14> conf0_n<15> conf0_p<0>
+        + conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf0_p<8>
+        + conf0_p<9> conf0_p<10> conf0_p<11> conf0_p<12> conf0_p<13> conf0_p<14> conf0_p<15>
+        + conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7>
+        + conf1_n<8> conf1_n<9> conf1_n<10> conf1_n<11> conf1_n<12> conf1_n<13> conf1_n<14>
+        + conf1_n<15> conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3> conf1_p<4> conf1_p<5> conf1_p<6>
+        + conf1_p<7> conf1_p<8> conf1_p<9> conf1_p<10> conf1_p<11> conf1_p<12> conf1_p<13>
+        + conf1_p<14> conf1_p<15> edge0_n edge0_p edge1_n edge1_p ff<0> ff<1> ff<2> ff<3> ff<4>
+        + ff<5> ff<6> ff<7> rst rst' vdd vss tdc_2e_3b_diff_np_4lin_buf
+    Xi2 alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+        + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7>
+        + conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+        + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+        + ff<0> ff<1> ff<2> ff<3> ff<4> ff<5> ff<6> ff<7> buf0_p<0> ready rst rst' vdd vss
+        + tdc_ready_4
+    Xi7 conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> conf_dec<4> conf_dec<5> conf_dec<6>
+        + conf_dec<7> ff<0> ff<1> ff<2> ff<3> ff<4> ff<5> ff<6> ff<7> rand_out vdd vss dec_8_conf_0
+.ENDS
+
+.SUBCKT dff_st_ar_buf clk d q q' rst rst' vdd vss
+    Xi0 clk d net17 net18 rst rst' vdd vss dff_st_ar
+    Xi2 net17 q' vdd vss inv
+    Xi1 net18 q vdd vss inv
+.ENDS
+
+.SUBCKT edge_to_level_3e edge enable out0 out1 out2 rst rst' vdd vss
+    Xi5 edge out1 out2 net17 rst rst' vdd vss dff_st_ar_buf
+    Xi4 edge out0 out1 net18 rst rst' vdd vss dff_st_ar_buf
+    Xi3 edge enable out0 net19 rst rst' vdd vss dff_st_ar_buf
+.ENDS
+
+.SUBCKT mero_nand2 in0 in1 out vdd vss
+    Mm1 out in1 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm2 out in0 net7 vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT mero_buf in out vdd vss
+    Mm1 out net1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 net1 in vss vss n_mos l=60n w=120.0n m=1
+    Mm3 out net1 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm2 net1 in vdd vdd p_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT mero_3e_1b enable out0 out1 out2 vdd vss
+    Xi2 out1 enable net5 vdd vss mero_nand2
+    Xi1 out0 enable net6 vdd vss mero_nand2
+    Xi0 out2 enable net7 vdd vss mero_nand2
+    Xi5 net5 out2 vdd vss mero_buf
+    Xi4 net6 out1 vdd vss mero_buf
+    Xi3 net7 out0 vdd vss mero_buf
+.ENDS
+
+.SUBCKT dc_3e_1b_no_config enable_e2l enable_mero int0 int1 int2 out0 out1 out2 rst rst' vdd vss
+    Xi11 mero_out2 int2 vdd vss buffer
+    Xi9 mero_out0 int0 vdd vss buffer
+    Xi10 mero_out1 int1 vdd vss buffer
+    Xi1 int1 enable_e2l out0 out1 out2 rst rst' vdd vss edge_to_level_3e
+    Xi5 enable_int mero_out0 mero_out1 mero_out2 vdd vss mero_3e_1b
+    Xi12 out2 net10 enable_int vdd vss nor2
+    Xi13 enable_mero net10 vdd vss inv
+.ENDS
+
+.SUBCKT mero_3e_4b enable out0 out1 out2 vdd vss
+    Xi2 out1 enable int2<0> vdd vss mero_nand2
+    Xi1 out0 enable int1<0> vdd vss mero_nand2
+    Xi0 out2 enable int0<0> vdd vss mero_nand2
+    Xi14 int2<3> out2 vdd vss mero_buf
+    Xi13 int1<3> out1 vdd vss mero_buf
+    Xi12 int0<3> out0 vdd vss mero_buf
+    Xi11 int2<2> int2<3> vdd vss mero_buf
+    Xi10 int1<2> int1<3> vdd vss mero_buf
+    Xi9 int0<2> int0<3> vdd vss mero_buf
+    Xi8 int2<1> int2<2> vdd vss mero_buf
+    Xi7 int2<0> int2<1> vdd vss mero_buf
+    Xi6 int1<1> int1<2> vdd vss mero_buf
+    Xi5 int1<0> int1<1> vdd vss mero_buf
+    Xi4 int0<1> int0<2> vdd vss mero_buf
+    Xi3 int0<0> int0<1> vdd vss mero_buf
+.ENDS
+
+.SUBCKT dc_3e_4b_no_config enable_e2l enable_mero int0 int1 int2 out0 out1 out2 rst rst' vdd vss
+    Xi11 mero_out2 int2 vdd vss buffer
+    Xi9 mero_out0 int0 vdd vss buffer
+    Xi10 mero_out1 int1 vdd vss buffer
+    Xi1 int1 enable_e2l out0 out1 out2 rst rst' vdd vss edge_to_level_3e
+    Xi5 enable_int mero_out0 mero_out1 mero_out2 vdd vss mero_3e_4b
+    Xi12 out2 net013 enable_int vdd vss nor2
+    Xi13 enable_mero net013 vdd vss inv
+.ENDS
+
+.SUBCKT mero_3e_3b enable out0 out1 out2 vdd vss
+    Xi2 out1 enable int2<0> vdd vss mero_nand2
+    Xi1 out0 enable int1<0> vdd vss mero_nand2
+    Xi0 out2 enable int0<0> vdd vss mero_nand2
+    Xi14 int2<2> out2 vdd vss mero_buf
+    Xi13 int1<2> out1 vdd vss mero_buf
+    Xi12 int0<2> out0 vdd vss mero_buf
+    Xi8 int2<1> int2<2> vdd vss mero_buf
+    Xi7 int2<0> int2<1> vdd vss mero_buf
+    Xi6 int1<1> int1<2> vdd vss mero_buf
+    Xi5 int1<0> int1<1> vdd vss mero_buf
+    Xi4 int0<1> int0<2> vdd vss mero_buf
+    Xi3 int0<0> int0<1> vdd vss mero_buf
+.ENDS
+
+.SUBCKT dc_3e_3b_no_config enable_e2l enable_mero int0 int1 int2 out0 out1 out2 rst rst' vdd vss
+    Xi11 mero_out2 int2 vdd vss buffer
+    Xi9 mero_out0 int0 vdd vss buffer
+    Xi10 mero_out1 int1 vdd vss buffer
+    Xi1 int1 enable_e2l out0 out1 out2 rst rst' vdd vss edge_to_level_3e
+    Xi12 out2 net014 enable_int vdd vss nor2
+    Xi5 enable_int mero_out0 mero_out1 mero_out2 vdd vss mero_3e_3b
+    Xi13 enable_mero net014 vdd vss inv
+.ENDS
+
+.SUBCKT single_ended_to_diff in out_n out_p vdd vss
+    Mm2 out_n in vdd vdd p_mos l=60n w=480.0n m=4
+    Mm3 out_p out_n vdd vdd p_mos l=60n w=480.0n m=4
+    Mm1 out_p out_n vss vss n_mos l=60n w=480.0n m=4
+    Mm0 out_n in vss vss n_mos l=60n w=480.0n m=4
+.ENDS
+
+.SUBCKT mux4 in<0> in<1> in<2> in<3> out sel<0> sel<1> vdd vss
+    Xi2 net8 net7 out sel<1> vdd vss mux2
+    Xi1 in<2> in<3> net7 sel<0> vdd vss mux2
+    Xi0 in<0> in<1> net8 sel<0> vdd vss mux2
+.ENDS
+
+.SUBCKT dec4_inverted out<0> out<1> out<2> out<3> sel<0> sel<1> vdd vss
+    Xi1 sel<1> sel'<1> vdd vss inv
+    Xi0 sel<0> sel'<0> vdd vss inv
+    Xi6 sel<0> sel<1> out<3> vdd vss nand2
+    Xi5 sel'<0> sel<1> out<2> vdd vss nand2
+    Xi4 sel<0> sel'<1> out<1> vdd vss nand2
+    Xi3 sel'<0> sel'<1> out<0> vdd vss nand2
+.ENDS
+
+.SUBCKT mero_3e_2b enable out0 out1 out2 vdd vss
+    Xi2 out1 enable int2<0> vdd vss mero_nand2
+    Xi1 out0 enable int1<0> vdd vss mero_nand2
+    Xi0 out2 enable int0<0> vdd vss mero_nand2
+    Xi8 int2<1> out2 vdd vss mero_buf
+    Xi7 int2<0> int2<1> vdd vss mero_buf
+    Xi6 int1<1> out1 vdd vss mero_buf
+    Xi5 int1<0> int1<1> vdd vss mero_buf
+    Xi4 int0<1> out0 vdd vss mero_buf
+    Xi3 int0<0> int0<1> vdd vss mero_buf
+.ENDS
+
+.SUBCKT dc_3e_2b_no_config enable_e2l enable_mero int0 int1 int2 out0 out1 out2 rst rst' vdd vss
+    Xi5 enable_int mero_out0 mero_out1 mero_out2 vdd vss mero_3e_2b
+    Xi1 int1 enable_e2l out0 out1 out2 rst rst' vdd vss edge_to_level_3e
+    Xi12 out2 net014 enable_int vdd vss nor2
+    Xi9 mero_out0 int0 vdd vss buffer
+    Xi11 mero_out2 int2 vdd vss buffer
+    Xi10 mero_out1 int1 vdd vss buffer
+    Xi13 enable_mero net014 vdd vss inv
+.ENDS
+
+.SUBCKT xor2 in0 in1 out vdd vss
+    Mm3 out in0' net20 vdd p_mos l=60n w=240.0n m=1
+    Mm2 net20 in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in0 net21 vdd p_mos l=60n w=240.0n m=1
+    Mm0 net21 in1' vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net19 in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm6 net18 in1' vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out in0' net18 vss n_mos l=60n w=120.0n m=1
+    Mm4 out in0 net19 vss n_mos l=60n w=120.0n m=1
+    Xi1 in1 in1' vdd vss inv
+    Xi0 in0 in0' vdd vss inv
+.ENDS
+
+.SUBCKT mero_collapse_3e alarm enable_e2l int0 int1 int2 rst rst' vdd vss
+    Xi2 int2 int1 xor2 vdd vss xor2
+    Xi1 int0 int2 xor1 vdd vss xor2
+    Xi0 int1 int0 xor0 vdd vss xor2
+    Xi7 nor or vdd vss inv
+    Xi4 xor0 xor1 xor2 nor vdd vss nor3
+    Xi6 enable_e2l or alarm net016 rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT vdd_gate_1ma enable' vdd_in vdd_out vss
+    Mm0 vdd_out enable' vdd_in vdd_in p_mos_lvt l=60n w=4u m=40
+    Mm1 vdd_out enable' vss vss n_mos_lvt l=60n w=4u m=40
+.ENDS
+
+.SUBCKT dc_collection alarm_dc conf_seldc<0> conf_seldc<1> dcedge0<1> dcedge0<2> dcedge0<3>
+                      + dcedge1<1> dcedge1<2> dcedge1<3> dcedge2<1> dcedge2<2> dcedge2<3> edge0_n
+                      + edge0_p edge1_n edge1_p edge2_n edge2_p enable_e2l enable_mero mero_int<0>
+                      + mero_int<1> mero_int<2> rst rst' sel_dcedge<0> sel_dcedge<1> vdd_core vdd_dc
+                      + vss
+    Xi29 enable_e2l enable_mero mero_int0<0> mero_int1<0> mero_int2<0> mero_edge0<0> mero_edge1<0>
+         + mero_edge2<0> rst rst' vdd_dc_int<0> vss dc_3e_1b_no_config
+    Xi27 enable_e2l enable_mero mero_int0<3> mero_int1<3> mero_int2<3> mero_edge0<3> mero_edge1<3>
+         + mero_edge2<3> rst rst' vdd_dc_int<3> vss dc_3e_4b_no_config
+    Xi0 enable_e2l enable_mero mero_int0<2> mero_int1<2> mero_int2<2> mero_edge0<2> mero_edge1<2>
+        + mero_edge2<2> rst rst' vdd_dc_int<2> vss dc_3e_3b_no_config
+    Xi9 sedge0 edge0_n edge0_p vdd_dc vss single_ended_to_diff
+    Xi11 sedge1 edge1_n edge1_p vdd_dc vss single_ended_to_diff
+    Xi10 sedge2 edge2_n edge2_p vdd_dc vss single_ended_to_diff
+    Xi21 mero_edge0<0> mero_edge0<1> mero_edge0<2> mero_edge0<3> dcedge0<0> conf_seldc<0>
+         + conf_seldc<1> vdd_core vss mux4
+    Xi19 mero_int0<0> mero_int0<1> mero_int0<2> mero_int0<3> mero_int<0> conf_seldc<0> conf_seldc<1>
+         + vdd_core vss mux4
+    Xi14 dcedge0<0> dcedge0<1> dcedge0<2> dcedge0<3> sedge0 sel_dcedge<0> sel_dcedge<1> vdd_core vss
+         + mux4
+    Xi22 mero_edge1<0> mero_edge1<1> mero_edge1<2> mero_edge1<3> dcedge1<0> conf_seldc<0>
+         + conf_seldc<1> vdd_core vss mux4
+    Xi18 mero_int1<0> mero_int1<1> mero_int1<2> mero_int1<3> mero_int<1> conf_seldc<0> conf_seldc<1>
+         + vdd_core vss mux4
+    Xi15 dcedge1<0> dcedge1<1> dcedge1<2> dcedge1<3> sedge1 sel_dcedge<0> sel_dcedge<1> vdd_core vss
+         + mux4
+    Xi20 mero_edge2<0> mero_edge2<1> mero_edge2<2> mero_edge2<3> dcedge2<0> conf_seldc<0>
+         + conf_seldc<1> vdd_core vss mux4
+    Xi17 mero_int2<0> mero_int2<1> mero_int2<2> mero_int2<3> mero_int<2> conf_seldc<0> conf_seldc<1>
+         + vdd_core vss mux4
+    Xi16 dcedge2<0> dcedge2<1> dcedge2<2> dcedge2<3> sedge2 sel_dcedge<0> sel_dcedge<1> vdd_core vss
+         + mux4
+    Xi30 seldc_dec<0> seldc_dec<1> seldc_dec<2> seldc_dec<3> conf_seldc<0> conf_seldc<1> vdd_core
+         + vss dec4_inverted
+    Xi24 enable_e2l enable_mero mero_int0<1> mero_int1<1> mero_int2<1> mero_edge0<1> mero_edge1<1>
+         + mero_edge2<1> rst rst' vdd_dc_int<1> vss dc_3e_2b_no_config
+    Xi3 alarm_dc enable_e2l mero_int<0> mero_int<1> mero_int<2> rst rst' vdd_dc vss mero_collapse_3e
+    Xi28 seldc_dec<0> vdd_dc vdd_dc_int<0> vss vdd_gate_1ma
+    Xi26 seldc_dec<3> vdd_dc vdd_dc_int<3> vss vdd_gate_1ma
+    Xi25 seldc_dec<1> vdd_dc vdd_dc_int<1> vss vdd_gate_1ma
+    Xi23 seldc_dec<2> vdd_dc vdd_dc_int<2> vss vdd_gate_1ma
+.ENDS
+
+.SUBCKT dec_10_conf_0 conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> conf_dec<4> conf_dec<5>
+                      + conf_dec<6> conf_dec<7> conf_dec<8> conf_dec<9> ff_in<0> ff_in<1> ff_in<2>
+                      + ff_in<3> ff_in<4> ff_in<5> ff_in<6> ff_in<7> ff_in<8> ff_in<9> rand_out vdd
+                      + vss
+    Xi30 conf_dec<9> ff_in<9> ff_in<8> stage<9> vdd vss dec_stage
+    Xi28 conf_dec<7> ff_in<7> ff_in<6> stage<7> vdd vss dec_stage
+    Xi27 conf_dec<6> ff_in<6> ff_in<5> stage<6> vdd vss dec_stage
+    Xi23 conf_dec<5> ff_in<5> ff_in<4> stage<5> vdd vss dec_stage
+    Xi22 conf_dec<4> ff_in<4> ff_in<3> stage<4> vdd vss dec_stage
+    Xi21 conf_dec<3> ff_in<3> ff_in<2> stage<3> vdd vss dec_stage
+    Xi20 conf_dec<2> ff_in<2> ff_in<1> stage<2> vdd vss dec_stage
+    Xi19 conf_dec<1> ff_in<1> ff_in<0> stage<1> vdd vss dec_stage
+    Xi18 conf_dec<0> ff_in<0> ff_in<9> stage<0> vdd vss dec_stage
+    Xi29 conf_dec<8> ff_in<8> ff_in<7> stage<8> vdd vss dec_stage
+    Xi31 stage<8> stage<9> net038 vdd vss nand2
+    Xi25 stage<4> stage<5> stage<6> stage<7> net023 vdd vss nand4
+    Xi24 stage<0> stage<1> stage<2> stage<3> net026 vdd vss nand4
+    Xi26 net026 net023 net038 rand_out vdd vss nor3
+.ENDS
+
+.SUBCKT tdc_2e_4b_diff_np_4lin_buf buf0_n<0> buf0_n<1> buf0_n<2> buf0_n<3> buf0_n<4> buf0_p<0>
+                                   + buf0_p<1> buf0_p<2> buf0_p<3> buf0_p<4> buf1_n<0> buf1_n<1>
+                                   + buf1_n<2> buf1_n<3> buf1_n<4> buf1_p<0> buf1_p<1> buf1_p<2>
+                                   + buf1_p<3> buf1_p<4> conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3>
+                                   + conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7> conf0_n<8>
+                                   + conf0_n<9> conf0_n<10> conf0_n<11> conf0_n<12> conf0_n<13>
+                                   + conf0_n<14> conf0_n<15> conf0_n<16> conf0_n<17> conf0_n<18>
+                                   + conf0_n<19> conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3>
+                                   + conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf0_p<8>
+                                   + conf0_p<9> conf0_p<10> conf0_p<11> conf0_p<12> conf0_p<13>
+                                   + conf0_p<14> conf0_p<15> conf0_p<16> conf0_p<17> conf0_p<18>
+                                   + conf0_p<19> conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3>
+                                   + conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7> conf1_n<8>
+                                   + conf1_n<9> conf1_n<10> conf1_n<11> conf1_n<12> conf1_n<13>
+                                   + conf1_n<14> conf1_n<15> conf1_n<16> conf1_n<17> conf1_n<18>
+                                   + conf1_n<19> conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3>
+                                   + conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> conf1_p<8>
+                                   + conf1_p<9> conf1_p<10> conf1_p<11> conf1_p<12> conf1_p<13>
+                                   + conf1_p<14> conf1_p<15> conf1_p<16> conf1_p<17> conf1_p<18>
+                                   + conf1_p<19> edge0_n edge0_p edge1_n edge1_p ff0<0> ff0<1>
+                                   + ff0<2> ff0<3> ff0<4> ff1<0> ff1<1> ff1<2> ff1<3> ff1<4> rst
+                                   + rst' vdd vss
+    Xi21 buf0_n<2> buf0_p<2> buf1_n<2> buf1_p<2> conf0_n<8> conf0_n<9> conf0_n<10> conf0_n<11>
+         + conf0_p<8> conf0_p<9> conf0_p<10> conf0_p<11> conf1_n<8> conf1_n<9> conf1_n<10>
+         + conf1_n<11> conf1_p<8> conf1_p<9> conf1_p<10> conf1_p<11> ff0<2> ff1<2> int0_n<1>
+         + int0_p<1> int1_n<1> int1_p<1> nand0<1> nand0<2> nand1<1> nand1<2> int0_n<2> int0_p<2>
+         + int1_n<2> int1_p<2> rst rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi20 buf0_n<1> buf0_p<1> buf1_n<1> buf1_p<1> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7>
+         + conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7>
+         + conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> ff0<1> ff1<1> int0_n<0> int0_p<0> int1_n<0>
+         + int1_p<0> nand0<0> nand0<1> nand1<0> nand1<1> int0_n<1> int0_p<1> int1_n<1> int1_p<1> rst
+         + rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi19 buf0_n<4> buf0_p<4> buf1_n<4> buf1_p<4> conf0_n<16> conf0_n<17> conf0_n<18> conf0_n<19>
+         + conf0_p<16> conf0_p<17> conf0_p<18> conf0_p<19> conf1_n<16> conf1_n<17> conf1_n<18>
+         + conf1_n<19> conf1_p<16> conf1_p<17> conf1_p<18> conf1_p<19> ff0<4> ff1<4> int0_n<3>
+         + int0_p<3> int1_n<3> int1_p<3> nand0<3> nand0<4> nand1<3> nand1<4> int0_n<4> int0_p<4>
+         + int1_n<4> int1_p<4> rst rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi18 buf0_n<3> buf0_p<3> buf1_n<3> buf1_p<3> conf0_n<12> conf0_n<13> conf0_n<14> conf0_n<15>
+         + conf0_p<12> conf0_p<13> conf0_p<14> conf0_p<15> conf1_n<12> conf1_n<13> conf1_n<14>
+         + conf1_n<15> conf1_p<12> conf1_p<13> conf1_p<14> conf1_p<15> ff0<3> ff1<3> int0_n<2>
+         + int0_p<2> int1_n<2> int1_p<2> nand0<2> nand0<3> nand1<2> nand1<3> int0_n<3> int0_p<3>
+         + int1_n<3> int1_p<3> rst rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi22 buf0_n<0> buf0_p<0> buf1_n<0> buf1_p<0> conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3>
+         + conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3> conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3>
+         + conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3> edge0_n edge0_p edge1_n edge1_p ff0<0> ff1<0>
+         + int1_n<4> int1_p<4> int0_n<4> int0_p<4> nand1<4> nand0<0> nand0<4> nand1<0> int0_n<0>
+         + int0_p<0> int1_n<0> int1_p<0> rst rst' vdd vss tdc_2stage_diff_np_4lin_switched_buf
+.ENDS
+
+.SUBCKT nor5 in0 in1 in2 in3 in4 out vdd vss
+    Mm8 out in0 net011 vdd p_mos l=60n w=480.0n m=1
+    Mm3 net011 in1 net7 vdd p_mos l=60n w=480.0n m=1
+    Mm2 net7 in2 net6 vdd p_mos l=60n w=480.0n m=1
+    Mm1 net6 in3 net5 vdd p_mos l=60n w=480.0n m=1
+    Mm0 net5 in4 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm9 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm7 out in4 vss vss n_mos l=60n w=120.0n m=1
+    Mm6 out in3 vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm4 out in2 vss vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT ff_ready_6 ff0<0> ff0<1> ff0<2> ff0<3> ff0<4> ff1<0> ff1<1> ff1<2> ff1<3> ff1<4> ff_ready
+                   + rst rst' vdd vss
+    Xi0 ff0<0> ff0<1> ff0<2> ff0<3> ff0<4> ff_nor0 vdd vss nor5
+    Xi1 ff1<0> ff1<1> ff1<2> ff1<3> ff1<4> ff_nor1 vdd vss nor5
+    Xi2 ff_nor0 ff_nor1 ff_nand vdd vss nand2
+    Xi3 ff_nand ff_ready net18 rst rst' vdd vss dff_st_ar_dh
+.ENDS
+
+.SUBCKT tdc_ready_6 alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+                    + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6>
+                    + conf_maxcycles<7> conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2>
+                    + conf_waitcycles<3> conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                    + conf_waitcycles<7> enable_e2l ff0<0> ff0<1> ff0<2> ff0<3> ff0<4> ff1<0> ff1<1>
+                    + ff1<2> ff1<3> ff1<4> int ready rst rst' vdd vss
+    Xi18 ff0<0> ff0<1> ff0<2> ff0<3> ff0<4> ff1<0> ff1<1> ff1<2> ff1<3> ff1<4> ff_ready rst rst' vdd
+         + vss ff_ready_6
+    Xi20 conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4>
+         + conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7> int net017 rst rst' vdd vss
+         + max_ready
+    Xi32 alarm<0> net19 net027 ready_i vdd vss nand3
+    Xi19 clk conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+         + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+         + int rst rst' vdd vss wait_ready wait_ready
+    Xi28 wait_ready net19 vdd vss inv
+    Xi27 ff_ready alarm<0> vdd vss inv
+    Xi30 ready_i ready ready' rst rst' vdd vss dff_st_ar_dh
+    Xi33 net017 ready' alarm<1> net027 rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT tdc_4b_diff_branch alarm<0> alarm<1> buf1_p<0> clk conf0_n<0> conf0_n<1> conf0_n<2>
+                           + conf0_n<3> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7> conf0_n<8>
+                           + conf0_n<9> conf0_n<10> conf0_n<11> conf0_n<12> conf0_n<13> conf0_n<14>
+                           + conf0_n<15> conf0_n<16> conf0_n<17> conf0_n<18> conf0_n<19> conf0_p<0>
+                           + conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4> conf0_p<5> conf0_p<6>
+                           + conf0_p<7> conf0_p<8> conf0_p<9> conf0_p<10> conf0_p<11> conf0_p<12>
+                           + conf0_p<13> conf0_p<14> conf0_p<15> conf0_p<16> conf0_p<17> conf0_p<18>
+                           + conf0_p<19> conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3> conf1_n<4>
+                           + conf1_n<5> conf1_n<6> conf1_n<7> conf1_n<8> conf1_n<9> conf1_n<10>
+                           + conf1_n<11> conf1_n<12> conf1_n<13> conf1_n<14> conf1_n<15> conf1_n<16>
+                           + conf1_n<17> conf1_n<18> conf1_n<19> conf1_p<0> conf1_p<1> conf1_p<2>
+                           + conf1_p<3> conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> conf1_p<8>
+                           + conf1_p<9> conf1_p<10> conf1_p<11> conf1_p<12> conf1_p<13> conf1_p<14>
+                           + conf1_p<15> conf1_p<16> conf1_p<17> conf1_p<18> conf1_p<19> conf_dec<0>
+                           + conf_dec<1> conf_dec<2> conf_dec<3> conf_dec<4> conf_dec<5> conf_dec<6>
+                           + conf_dec<7> conf_dec<8> conf_dec<9> conf_maxcycles<0> conf_maxcycles<1>
+                           + conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5>
+                           + conf_maxcycles<6> conf_maxcycles<7> conf_waitcycles<0>
+                           + conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+                           + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                           + conf_waitcycles<7> edge0_n edge0_p edge1_n edge1_p enable_e2l ff<0>
+                           + ff<1> ff<2> ff<3> ff<4> ff<5> ff<6> ff<7> ff<8> ff<9> rand_out ready
+                           + rst rst' vdd vss
+    Xi7 conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> conf_dec<4> conf_dec<5> conf_dec<6>
+        + conf_dec<7> conf_dec<8> conf_dec<9> ff<0> ff<1> ff<2> ff<3> ff<4> ff<5> ff<6> ff<7> ff<8>
+        + ff<9> rand_out vdd vss dec_10_conf_0
+    Xi1 net35<0> net35<1> net35<2> net35<3> net35<4> buf0_p<0> buf0_p<1> buf0_p<2> buf0_p<3>
+        + buf0_p<4> net34<0> net34<1> net34<2> net34<3> net34<4> buf1_p<0> buf1_p<1> buf1_p<2>
+        + buf1_p<3> buf1_p<4> conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3> conf0_n<4> conf0_n<5>
+        + conf0_n<6> conf0_n<7> conf0_n<8> conf0_n<9> conf0_n<10> conf0_n<11> conf0_n<12>
+        + conf0_n<13> conf0_n<14> conf0_n<15> conf0_n<16> conf0_n<17> conf0_n<18> conf0_n<19>
+        + conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7>
+        + conf0_p<8> conf0_p<9> conf0_p<10> conf0_p<11> conf0_p<12> conf0_p<13> conf0_p<14>
+        + conf0_p<15> conf0_p<16> conf0_p<17> conf0_p<18> conf0_p<19> conf1_n<0> conf1_n<1>
+        + conf1_n<2> conf1_n<3> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7> conf1_n<8> conf1_n<9>
+        + conf1_n<10> conf1_n<11> conf1_n<12> conf1_n<13> conf1_n<14> conf1_n<15> conf1_n<16>
+        + conf1_n<17> conf1_n<18> conf1_n<19> conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3> conf1_p<4>
+        + conf1_p<5> conf1_p<6> conf1_p<7> conf1_p<8> conf1_p<9> conf1_p<10> conf1_p<11> conf1_p<12>
+        + conf1_p<13> conf1_p<14> conf1_p<15> conf1_p<16> conf1_p<17> conf1_p<18> conf1_p<19>
+        + edge0_n edge0_p edge1_n edge1_p ff<0> ff<1> ff<2> ff<3> ff<4> ff<5> ff<6> ff<7> ff<8>
+        + ff<9> rst rst' vdd vss tdc_2e_4b_diff_np_4lin_buf
+    Xi2 alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+        + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7>
+        + conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+        + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+        + ff<0> ff<1> ff<2> ff<3> ff<4> ff<5> ff<6> ff<7> ff<8> ff<9> buf0_p<0> ready rst rst' vdd
+        + vss tdc_ready_6
+.ENDS
+
+.SUBCKT tdc_2e_1b_diff_np_4lin_buf buf0_n<0> buf0_n<1> buf0_p<0> buf0_p<1> buf1_n<0> buf1_n<1>
+                                   + buf1_p<0> buf1_p<1> conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3>
+                                   + conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7> conf0_p<0>
+                                   + conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4> conf0_p<5>
+                                   + conf0_p<6> conf0_p<7> conf1_n<0> conf1_n<1> conf1_n<2>
+                                   + conf1_n<3> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7>
+                                   + conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3> conf1_p<4>
+                                   + conf1_p<5> conf1_p<6> conf1_p<7> edge0_n edge0_p edge1_n
+                                   + edge1_p ff0<0> ff0<1> ff1<0> ff1<1> rst rst' vdd vss
+    Xi13 buf0_n<1> buf0_p<1> buf1_n<1> buf1_p<1> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7>
+         + conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7>
+         + conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> ff0<1> ff1<1> int0_n<0> int0_p<0> int1_n<0>
+         + int1_p<0> nand0<0> nand0<1> nand1<0> nand1<1> int0_n<1> int0_p<1> int1_n<1> int1_p<1> rst
+         + rst' vdd vss tdc_2stage_diff_np_4lin_buf
+    Xi12 buf0_n<0> buf0_p<0> buf1_n<0> buf1_p<0> conf0_n<0> conf0_n<1> conf0_n<2> conf0_n<3>
+         + conf0_p<0> conf0_p<1> conf0_p<2> conf0_p<3> conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3>
+         + conf1_p<0> conf1_p<1> conf1_p<2> conf1_p<3> edge0_n edge0_p edge1_n edge1_p ff0<0> ff1<0>
+         + int1_n<1> int1_p<1> int0_n<1> int0_p<1> nand1<1> nand0<0> nand0<1> nand1<0> int0_n<0>
+         + int0_p<0> int1_n<0> int1_p<0> rst rst' vdd vss tdc_2stage_diff_np_4lin_switched_buf
+.ENDS
+
+.SUBCKT dec_4_conf_0 conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> ff_in<0> ff_in<1> ff_in<2>
+                     + ff_in<3> rand_out vdd vss
+    Xi27 conf_dec<3> ff_in<3> ff_in<2> stage<3> vdd vss dec_stage
+    Xi21 conf_dec<2> ff_in<2> ff_in<1> stage<2> vdd vss dec_stage
+    Xi19 conf_dec<1> ff_in<1> ff_in<0> stage<1> vdd vss dec_stage
+    Xi18 conf_dec<0> ff_in<0> ff_in<3> stage<0> vdd vss dec_stage
+    Xi26 net026 net023 rand_out vdd vss nor2
+    Xi25 stage<2> stage<3> net023 vdd vss nand2
+    Xi24 stage<0> stage<1> net026 vdd vss nand2
+.ENDS
+
+.SUBCKT ff_ready_2 ff0<0> ff0<1> ff1<0> ff1<1> ff_ready rst rst' vdd vss
+    Xi2 ff_nor0 ff_nor1 ff_nand vdd vss nand2
+    Xi3 ff_nand ff_ready net18 rst rst' vdd vss dff_st_ar_dh
+    Xi0 ff0<0> ff0<1> ff_nor0 vdd vss nor2
+    Xi1 ff1<0> ff1<1> ff_nor1 vdd vss nor2
+.ENDS
+
+.SUBCKT tdc_ready_2 alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+                    + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6>
+                    + conf_maxcycles<7> conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2>
+                    + conf_waitcycles<3> conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                    + conf_waitcycles<7> enable_e2l ff0<0> ff0<1> ff1<0> ff1<1> int ready rst rst'
+                    + vdd vss
+    Xi20 conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4>
+         + conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7> int net017 rst rst' vdd vss
+         + max_ready
+    Xi32 alarm<0> net19 net027 ready_i vdd vss nand3
+    Xi19 clk conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+         + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+         + int rst rst' vdd vss wait_ready wait_ready
+    Xi28 wait_ready net19 vdd vss inv
+    Xi27 ff_ready alarm<0> vdd vss inv
+    Xi30 ready_i ready ready' rst rst' vdd vss dff_st_ar_dh
+    Xi33 net017 ready' alarm<1> net027 rst rst' vdd vss dff_st_ar
+    Xi18 ff0<0> ff0<1> ff1<0> ff1<1> ff_ready rst rst' vdd vss ff_ready_2
+.ENDS
+
+.SUBCKT tdc_1b_diff_branch alarm<0> alarm<1> buf1_p<0> clk conf0_n<0> conf0_n<1> conf0_n<2>
+                           + conf0_n<3> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7> conf0_p<0>
+                           + conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4> conf0_p<5> conf0_p<6>
+                           + conf0_p<7> conf1_n<0> conf1_n<1> conf1_n<2> conf1_n<3> conf1_n<4>
+                           + conf1_n<5> conf1_n<6> conf1_n<7> conf1_p<0> conf1_p<1> conf1_p<2>
+                           + conf1_p<3> conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> conf_dec<0>
+                           + conf_dec<1> conf_dec<2> conf_dec<3> conf_maxcycles<0> conf_maxcycles<1>
+                           + conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5>
+                           + conf_maxcycles<6> conf_maxcycles<7> conf_waitcycles<0>
+                           + conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+                           + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                           + conf_waitcycles<7> edge0_n edge0_p edge1_n edge1_p enable_e2l ff<0>
+                           + ff<1> ff<2> ff<3> rand_out ready rst rst' vdd vss
+    Xi1 net31<0> net31<1> buf0_p<0> buf0_p<1> net30<0> net30<1> buf1_p<0> buf1_p<1> conf0_n<0>
+        + conf0_n<1> conf0_n<2> conf0_n<3> conf0_n<4> conf0_n<5> conf0_n<6> conf0_n<7> conf0_p<0>
+        + conf0_p<1> conf0_p<2> conf0_p<3> conf0_p<4> conf0_p<5> conf0_p<6> conf0_p<7> conf1_n<0>
+        + conf1_n<1> conf1_n<2> conf1_n<3> conf1_n<4> conf1_n<5> conf1_n<6> conf1_n<7> conf1_p<0>
+        + conf1_p<1> conf1_p<2> conf1_p<3> conf1_p<4> conf1_p<5> conf1_p<6> conf1_p<7> edge0_n
+        + edge0_p edge1_n edge1_p ff<0> ff<1> ff<2> ff<3> rst rst' vdd vss
+        + tdc_2e_1b_diff_np_4lin_buf
+    Xi7 conf_dec<0> conf_dec<1> conf_dec<2> conf_dec<3> ff<0> ff<1> ff<2> ff<3> rand_out vdd vss
+        + dec_4_conf_0
+    Xi2 alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+        + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7>
+        + conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+        + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+        + ff<0> ff<1> ff<2> ff<3> buf0_p<0> ready rst rst' vdd vss tdc_ready_2
+.ENDS
+
+.SUBCKT trng_top_level alarm0<0> alarm0<1> alarm1<0> alarm1<1> alarm_dc clk conf_dec0<0>
+                       + conf_dec0<1> conf_dec0<2> conf_dec0<3> conf_dec0<4> conf_dec0<5>
+                       + conf_dec0<6> conf_dec0<7> conf_dec0<8> conf_dec0<9> conf_dec1<0>
+                       + conf_dec1<1> conf_dec1<2> conf_dec1<3> conf_dec1<4> conf_dec1<5>
+                       + conf_dec1<6> conf_dec1<7> conf_dec1<8> conf_dec1<9> conf_seldc<0>
+                       + conf_seldc<1> conf_seltdc<0> conf_seltdc<1> conf_tdc00n<0> conf_tdc00n<1>
+                       + conf_tdc00n<2> conf_tdc00n<3> conf_tdc00n<4> conf_tdc00n<5> conf_tdc00n<6>
+                       + conf_tdc00n<7> conf_tdc00n<8> conf_tdc00n<9> conf_tdc00n<10>
+                       + conf_tdc00n<11> conf_tdc00n<12> conf_tdc00n<13> conf_tdc00n<14>
+                       + conf_tdc00n<15> conf_tdc00n<16> conf_tdc00n<17> conf_tdc00n<18>
+                       + conf_tdc00n<19> conf_tdc00p<0> conf_tdc00p<1> conf_tdc00p<2> conf_tdc00p<3>
+                       + conf_tdc00p<4> conf_tdc00p<5> conf_tdc00p<6> conf_tdc00p<7> conf_tdc00p<8>
+                       + conf_tdc00p<9> conf_tdc00p<10> conf_tdc00p<11> conf_tdc00p<12>
+                       + conf_tdc00p<13> conf_tdc00p<14> conf_tdc00p<15> conf_tdc00p<16>
+                       + conf_tdc00p<17> conf_tdc00p<18> conf_tdc00p<19> conf_tdc01n<0>
+                       + conf_tdc01n<1> conf_tdc01n<2> conf_tdc01n<3> conf_tdc01n<4> conf_tdc01n<5>
+                       + conf_tdc01n<6> conf_tdc01n<7> conf_tdc01n<8> conf_tdc01n<9> conf_tdc01n<10>
+                       + conf_tdc01n<11> conf_tdc01n<12> conf_tdc01n<13> conf_tdc01n<14>
+                       + conf_tdc01n<15> conf_tdc01n<16> conf_tdc01n<17> conf_tdc01n<18>
+                       + conf_tdc01n<19> conf_tdc01p<0> conf_tdc01p<1> conf_tdc01p<2> conf_tdc01p<3>
+                       + conf_tdc01p<4> conf_tdc01p<5> conf_tdc01p<6> conf_tdc01p<7> conf_tdc01p<8>
+                       + conf_tdc01p<9> conf_tdc01p<10> conf_tdc01p<11> conf_tdc01p<12>
+                       + conf_tdc01p<13> conf_tdc01p<14> conf_tdc01p<15> conf_tdc01p<16>
+                       + conf_tdc01p<17> conf_tdc01p<18> conf_tdc01p<19> conf_tdc4b conf_tdc10n<0>
+                       + conf_tdc10n<1> conf_tdc10n<2> conf_tdc10n<3> conf_tdc10n<4> conf_tdc10n<5>
+                       + conf_tdc10n<6> conf_tdc10n<7> conf_tdc10n<8> conf_tdc10n<9> conf_tdc10n<10>
+                       + conf_tdc10n<11> conf_tdc10n<12> conf_tdc10n<13> conf_tdc10n<14>
+                       + conf_tdc10n<15> conf_tdc10n<16> conf_tdc10n<17> conf_tdc10n<18>
+                       + conf_tdc10n<19> conf_tdc10p<0> conf_tdc10p<1> conf_tdc10p<2> conf_tdc10p<3>
+                       + conf_tdc10p<4> conf_tdc10p<5> conf_tdc10p<6> conf_tdc10p<7> conf_tdc10p<8>
+                       + conf_tdc10p<9> conf_tdc10p<10> conf_tdc10p<11> conf_tdc10p<12>
+                       + conf_tdc10p<13> conf_tdc10p<14> conf_tdc10p<15> conf_tdc10p<16>
+                       + conf_tdc10p<17> conf_tdc10p<18> conf_tdc10p<19> conf_tdc11n<0>
+                       + conf_tdc11n<1> conf_tdc11n<2> conf_tdc11n<3> conf_tdc11n<4> conf_tdc11n<5>
+                       + conf_tdc11n<6> conf_tdc11n<7> conf_tdc11n<8> conf_tdc11n<9> conf_tdc11n<10>
+                       + conf_tdc11n<11> conf_tdc11n<12> conf_tdc11n<13> conf_tdc11n<14>
+                       + conf_tdc11n<15> conf_tdc11n<16> conf_tdc11n<17> conf_tdc11n<18>
+                       + conf_tdc11n<19> conf_tdc11p<0> conf_tdc11p<1> conf_tdc11p<2> conf_tdc11p<3>
+                       + conf_tdc11p<4> conf_tdc11p<5> conf_tdc11p<6> conf_tdc11p<7> conf_tdc11p<8>
+                       + conf_tdc11p<9> conf_tdc11p<10> conf_tdc11p<11> conf_tdc11p<12>
+                       + conf_tdc11p<13> conf_tdc11p<14> conf_tdc11p<15> conf_tdc11p<16>
+                       + conf_tdc11p<17> conf_tdc11p<18> conf_tdc11p<19> conf_tdcmax<0>
+                       + conf_tdcmax<1> conf_tdcmax<2> conf_tdcmax<3> conf_tdcmax<4> conf_tdcmax<5>
+                       + conf_tdcmax<6> conf_tdcmax<7> conf_tdcwait<0> conf_tdcwait<1>
+                       + conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4> conf_tdcwait<5>
+                       + conf_tdcwait<6> conf_tdcwait<7> dcedge0<1> dcedge0<2> dcedge0<3> dcedge1<1>
+                       + dcedge1<2> dcedge1<3> dcedge2<1> dcedge2<2> dcedge2<3> enable_e2l
+                       + enable_mero ff0<0> ff0<1> ff0<2> ff0<3> ff0<4> ff0<5> ff0<6> ff0<7> ff1<0>
+                       + ff1<1> ff1<2> ff1<3> ff1<4> ff1<5> ff1<6> ff1<7> int0 int1 mero_int<0>
+                       + mero_int<1> mero_int<2> rand_out0 rand_out1 ready0 ready1 rst rst'
+                       + sel_dcedge<0> sel_dcedge<1> tdc0_ff4<0> tdc0_ff5<0> tdc0_ff5<3> tdc0_ff6<0>
+                       + tdc0_ff6<1> tdc0_ff6<3> tdc0_ff7<0> tdc0_ff7<1> tdc0_ff7<3> tdc1_ff4<0>
+                       + tdc1_ff5<0> tdc1_ff5<3> tdc1_ff6<0> tdc1_ff6<1> tdc1_ff6<3> tdc1_ff7<0>
+                       + tdc1_ff7<1> tdc1_ff7<3> vdd_core vdd_dc vdd_tdc vss
+    Xi81 tdc03_ff<0> tdc03_ff<1> tdc03_ff<2> tdc03_ff<3> tdc03_ff<4> tdc03_ff<5> tdc03_ff<6>
+         + tdc03_ff<7> tdc03_ff<8> tdc03_ff<9> tdc13_ff<0> tdc13_ff<1> tdc13_ff<2> tdc13_ff<3>
+         + tdc13_ff<4> tdc13_ff<5> tdc13_ff<6> tdc13_ff<7> tdc13_ff<8> tdc13_ff<9> tdc0_ff0<3>
+         + tdc0_ff1<3> tdc0_ff2<3> tdc0_ff3<3> tdc0_ff4<3> tdc1_ff0<3> tdc1_ff1<3> tdc1_ff2<3>
+         + tdc1_ff3<3> tdc1_ff4<3> conf_tdc4b vdd_core vss mux2_10x
+    Xi77 tdc1_alarm0<1> tdc1_alarm1<1> tdc1_int<1> clk conf_tdc10n<0> conf_tdc10n<1> conf_tdc10n<2>
+         + conf_tdc10n<3> conf_tdc10n<4> conf_tdc10n<5> conf_tdc10n<6> conf_tdc10n<7> conf_tdc10n<8>
+         + conf_tdc10n<9> conf_tdc10n<10> conf_tdc10n<11> conf_tdc10p<0> conf_tdc10p<1>
+         + conf_tdc10p<2> conf_tdc10p<3> conf_tdc10p<4> conf_tdc10p<5> conf_tdc10p<6> conf_tdc10p<7>
+         + conf_tdc10p<8> conf_tdc10p<9> conf_tdc10p<10> conf_tdc10p<11> conf_tdc11n<0>
+         + conf_tdc11n<1> conf_tdc11n<2> conf_tdc11n<3> conf_tdc11n<4> conf_tdc11n<5> conf_tdc11n<6>
+         + conf_tdc11n<7> conf_tdc11n<8> conf_tdc11n<9> conf_tdc11n<10> conf_tdc11n<11>
+         + conf_tdc11p<0> conf_tdc11p<1> conf_tdc11p<2> conf_tdc11p<3> conf_tdc11p<4> conf_tdc11p<5>
+         + conf_tdc11p<6> conf_tdc11p<7> conf_tdc11p<8> conf_tdc11p<9> conf_tdc11p<10>
+         + conf_tdc11p<11> conf_dec1<0> conf_dec1<1> conf_dec1<2> conf_dec1<3> conf_dec1<4>
+         + conf_dec1<5> conf_tdcmax<0> conf_tdcmax<1> conf_tdcmax<2> conf_tdcmax<3> conf_tdcmax<4>
+         + conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7> conf_tdcwait<0> conf_tdcwait<1>
+         + conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4> conf_tdcwait<5> conf_tdcwait<6>
+         + conf_tdcwait<7> edge1_n edge1_p edge2_n edge2_p enable_e2l tdc1_ff0<1> tdc1_ff1<1>
+         + tdc1_ff2<1> tdc1_ff3<1> tdc1_ff4<1> tdc1_ff5<1> tdc1_randout<1> tdc1_ready<1> rst rst'
+         + vdd_tdc_int1<1> vss tdc_2b_diff_branch
+    Xi73 tdc0_alarm0<1> tdc0_alarm1<1> tdc0_int<1> clk conf_tdc00n<0> conf_tdc00n<1> conf_tdc00n<2>
+         + conf_tdc00n<3> conf_tdc00n<4> conf_tdc00n<5> conf_tdc00n<6> conf_tdc00n<7> conf_tdc00n<8>
+         + conf_tdc00n<9> conf_tdc00n<10> conf_tdc00n<11> conf_tdc00p<0> conf_tdc00p<1>
+         + conf_tdc00p<2> conf_tdc00p<3> conf_tdc00p<4> conf_tdc00p<5> conf_tdc00p<6> conf_tdc00p<7>
+         + conf_tdc00p<8> conf_tdc00p<9> conf_tdc00p<10> conf_tdc00p<11> conf_tdc01n<0>
+         + conf_tdc01n<1> conf_tdc01n<2> conf_tdc01n<3> conf_tdc01n<4> conf_tdc01n<5> conf_tdc01n<6>
+         + conf_tdc01n<7> conf_tdc01n<8> conf_tdc01n<9> conf_tdc01n<10> conf_tdc01n<11>
+         + conf_tdc01p<0> conf_tdc01p<1> conf_tdc01p<2> conf_tdc01p<3> conf_tdc01p<4> conf_tdc01p<5>
+         + conf_tdc01p<6> conf_tdc01p<7> conf_tdc01p<8> conf_tdc01p<9> conf_tdc01p<10>
+         + conf_tdc01p<11> conf_dec0<0> conf_dec0<1> conf_dec0<2> conf_dec0<3> conf_dec0<4>
+         + conf_dec0<5> conf_tdcmax<0> conf_tdcmax<1> conf_tdcmax<2> conf_tdcmax<3> conf_tdcmax<4>
+         + conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7> conf_tdcwait<0> conf_tdcwait<1>
+         + conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4> conf_tdcwait<5> conf_tdcwait<6>
+         + conf_tdcwait<7> edge0_n edge0_p edge1_n edge1_p enable_e2l tdc0_ff0<1> tdc0_ff1<1>
+         + tdc0_ff2<1> tdc0_ff3<1> tdc0_ff4<1> tdc0_ff5<1> tdc0_randout<1> tdc0_ready<1> rst rst'
+         + vdd_tdc_int0<1> vss tdc_2b_diff_branch
+    Xi78 tdc1_alarm0<2> tdc1_alarm1<2> tdc1_int<2> clk conf_tdc10n<0> conf_tdc10n<1> conf_tdc10n<2>
+         + conf_tdc10n<3> conf_tdc10n<4> conf_tdc10n<5> conf_tdc10n<6> conf_tdc10n<7> conf_tdc10n<8>
+         + conf_tdc10n<9> conf_tdc10n<10> conf_tdc10n<11> conf_tdc10n<12> conf_tdc10n<13>
+         + conf_tdc10n<14> conf_tdc10n<15> conf_tdc10p<0> conf_tdc10p<1> conf_tdc10p<2>
+         + conf_tdc10p<3> conf_tdc10p<4> conf_tdc10p<5> conf_tdc10p<6> conf_tdc10p<7> conf_tdc10p<8>
+         + conf_tdc10p<9> conf_tdc10p<10> conf_tdc10p<11> conf_tdc10p<12> conf_tdc10p<13>
+         + conf_tdc10p<14> conf_tdc10p<15> conf_tdc11n<0> conf_tdc11n<1> conf_tdc11n<2>
+         + conf_tdc11n<3> conf_tdc11n<4> conf_tdc11n<5> conf_tdc11n<6> conf_tdc11n<7> conf_tdc11n<8>
+         + conf_tdc11n<9> conf_tdc11n<10> conf_tdc11n<11> conf_tdc11n<12> conf_tdc11n<13>
+         + conf_tdc11n<14> conf_tdc11n<15> conf_tdc11p<0> conf_tdc11p<1> conf_tdc11p<2>
+         + conf_tdc11p<3> conf_tdc11p<4> conf_tdc11p<5> conf_tdc11p<6> conf_tdc11p<7> conf_tdc11p<8>
+         + conf_tdc11p<9> conf_tdc11p<10> conf_tdc11p<11> conf_tdc11p<12> conf_tdc11p<13>
+         + conf_tdc11p<14> conf_tdc11p<15> conf_dec1<0> conf_dec1<1> conf_dec1<2> conf_dec1<3>
+         + conf_dec1<4> conf_dec1<5> conf_dec1<6> conf_dec1<7> conf_tdcmax<0> conf_tdcmax<1>
+         + conf_tdcmax<2> conf_tdcmax<3> conf_tdcmax<4> conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7>
+         + conf_tdcwait<0> conf_tdcwait<1> conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4>
+         + conf_tdcwait<5> conf_tdcwait<6> conf_tdcwait<7> edge1_n edge1_p edge2_n edge2_p
+         + enable_e2l tdc1_ff0<2> tdc1_ff1<2> tdc1_ff2<2> tdc1_ff3<2> tdc1_ff4<2> tdc1_ff5<2>
+         + tdc1_ff6<2> tdc1_ff7<2> tdc1_randout<2> tdc1_ready<2> rst rst' vdd_tdc_int1<2> vss
+         + tdc_3b_diff_branch
+    Xi74 tdc0_alarm0<2> tdc0_alarm1<2> tdc0_int<2> clk conf_tdc00n<0> conf_tdc00n<1> conf_tdc00n<2>
+         + conf_tdc00n<3> conf_tdc00n<4> conf_tdc00n<5> conf_tdc00n<6> conf_tdc00n<7> conf_tdc00n<8>
+         + conf_tdc00n<9> conf_tdc00n<10> conf_tdc00n<11> conf_tdc00n<12> conf_tdc00n<13>
+         + conf_tdc00n<14> conf_tdc00n<15> conf_tdc00p<0> conf_tdc00p<1> conf_tdc00p<2>
+         + conf_tdc00p<3> conf_tdc00p<4> conf_tdc00p<5> conf_tdc00p<6> conf_tdc00p<7> conf_tdc00p<8>
+         + conf_tdc00p<9> conf_tdc00p<10> conf_tdc00p<11> conf_tdc00p<12> conf_tdc00p<13>
+         + conf_tdc00p<14> conf_tdc00p<15> conf_tdc01n<0> conf_tdc01n<1> conf_tdc01n<2>
+         + conf_tdc01n<3> conf_tdc01n<4> conf_tdc01n<5> conf_tdc01n<6> conf_tdc01n<7> conf_tdc01n<8>
+         + conf_tdc01n<9> conf_tdc01n<10> conf_tdc01n<11> conf_tdc01n<12> conf_tdc01n<13>
+         + conf_tdc01n<14> conf_tdc01n<15> conf_tdc01p<0> conf_tdc01p<1> conf_tdc01p<2>
+         + conf_tdc01p<3> conf_tdc01p<4> conf_tdc01p<5> conf_tdc01p<6> conf_tdc01p<7> conf_tdc01p<8>
+         + conf_tdc01p<9> conf_tdc01p<10> conf_tdc01p<11> conf_tdc01p<12> conf_tdc01p<13>
+         + conf_tdc01p<14> conf_tdc01p<15> conf_dec0<0> conf_dec0<1> conf_dec0<2> conf_dec0<3>
+         + conf_dec0<4> conf_dec0<5> conf_dec0<6> conf_dec0<7> conf_tdcmax<0> conf_tdcmax<1>
+         + conf_tdcmax<2> conf_tdcmax<3> conf_tdcmax<4> conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7>
+         + conf_tdcwait<0> conf_tdcwait<1> conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4>
+         + conf_tdcwait<5> conf_tdcwait<6> conf_tdcwait<7> edge0_n edge0_p edge1_n edge1_p
+         + enable_e2l tdc0_ff0<2> tdc0_ff1<2> tdc0_ff2<2> tdc0_ff3<2> tdc0_ff4<2> tdc0_ff5<2>
+         + tdc0_ff6<2> tdc0_ff7<2> tdc0_randout<2> tdc0_ready<2> rst rst' vdd_tdc_int0<2> vss
+         + tdc_3b_diff_branch
+    Xi80 alarm_dc conf_seldc<0> conf_seldc<1> dcedge0<1> dcedge0<2> dcedge0<3> dcedge1<1> dcedge1<2>
+         + dcedge1<3> dcedge2<1> dcedge2<2> dcedge2<3> edge0_n edge0_p edge1_n edge1_p edge2_n
+         + edge2_p enable_e2l enable_mero mero_int<0> mero_int<1> mero_int<2> rst rst' sel_dcedge<0>
+         + sel_dcedge<1> vdd_core vdd_dc vss dc_collection
+    Xi56 tdc1_ff7<0> tdc1_ff7<1> tdc1_ff7<2> tdc1_ff7<3> ff1<7> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi55 tdc1_ff6<0> tdc1_ff6<1> tdc1_ff6<2> tdc1_ff6<3> ff1<6> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi54 tdc1_ff5<0> tdc1_ff5<1> tdc1_ff5<2> tdc1_ff5<3> ff1<5> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi53 tdc1_ff4<0> tdc1_ff4<1> tdc1_ff4<2> tdc1_ff4<3> ff1<4> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi52 tdc1_ff3<0> tdc1_ff3<1> tdc1_ff3<2> tdc1_ff3<3> ff1<3> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi51 tdc1_ff2<0> tdc1_ff2<1> tdc1_ff2<2> tdc1_ff2<3> ff1<2> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi50 tdc1_ff1<0> tdc1_ff1<1> tdc1_ff1<2> tdc1_ff1<3> ff1<1> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi49 tdc0_ff7<0> tdc0_ff7<1> tdc0_ff7<2> tdc0_ff7<3> ff0<7> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi48 tdc0_ff6<0> tdc0_ff6<1> tdc0_ff6<2> tdc0_ff6<3> ff0<6> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi47 tdc0_ff5<0> tdc0_ff5<1> tdc0_ff5<2> tdc0_ff5<3> ff0<5> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi46 tdc0_ff4<0> tdc0_ff4<1> tdc0_ff4<2> tdc0_ff4<3> ff0<4> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi45 tdc0_ff3<0> tdc0_ff3<1> tdc0_ff3<2> tdc0_ff3<3> ff0<3> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi44 tdc0_ff2<0> tdc0_ff2<1> tdc0_ff2<2> tdc0_ff2<3> ff0<2> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi43 tdc0_ff1<0> tdc0_ff1<1> tdc0_ff1<2> tdc0_ff1<3> ff0<1> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi42 tdc1_randout<0> tdc1_randout<1> tdc1_randout<2> tdc1_randout<3> rand_out1 conf_seltdc<0>
+         + conf_seltdc<1> vdd_core vss mux4
+    Xi41 tdc1_ff0<0> tdc1_ff0<1> tdc1_ff0<2> tdc1_ff0<3> ff1<0> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi40 tdc1_alarm1<0> tdc1_alarm1<1> tdc1_alarm1<2> tdc1_alarm1<3> alarm1<1> conf_seltdc<0>
+         + conf_seltdc<1> vdd_core vss mux4
+    Xi39 tdc1_alarm0<0> tdc1_alarm0<1> tdc1_alarm0<2> tdc1_alarm0<3> alarm1<0> conf_seltdc<0>
+         + conf_seltdc<1> vdd_core vss mux4
+    Xi38 tdc1_int<0> tdc1_int<1> tdc1_int<2> tdc1_int<3> int1 conf_seltdc<0> conf_seltdc<1> vdd_core
+         + vss mux4
+    Xi37 tdc1_ready<0> tdc1_ready<1> tdc1_ready<2> tdc1_ready<3> ready1 conf_seltdc<0>
+         + conf_seltdc<1> vdd_core vss mux4
+    Xi36 tdc0_ff0<0> tdc0_ff0<1> tdc0_ff0<2> tdc0_ff0<3> ff0<0> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss mux4
+    Xi35 tdc0_alarm1<0> tdc0_alarm1<1> tdc0_alarm1<2> tdc0_alarm1<3> alarm0<1> conf_seltdc<0>
+         + conf_seltdc<1> vdd_core vss mux4
+    Xi34 tdc0_alarm0<0> tdc0_alarm0<1> tdc0_alarm0<2> tdc0_alarm0<3> alarm0<0> conf_seltdc<0>
+         + conf_seltdc<1> vdd_core vss mux4
+    Xi33 tdc0_int<0> tdc0_int<1> tdc0_int<2> tdc0_int<3> int0 conf_seltdc<0> conf_seltdc<1> vdd_core
+         + vss mux4
+    Xi32 tdc0_ready<0> tdc0_ready<1> tdc0_ready<2> tdc0_ready<3> ready0 conf_seltdc<0>
+         + conf_seltdc<1> vdd_core vss mux4
+    Xi31 tdc0_randout<0> tdc0_randout<1> tdc0_randout<2> tdc0_randout<3> rand_out0 conf_seltdc<0>
+         + conf_seltdc<1> vdd_core vss mux4
+    Xi69 seltdc_dec<3> vdd_tdc vdd_tdc_int1<3> vss vdd_gate_1ma
+    Xi68 seltdc_dec<3> vdd_tdc vdd_tdc_int0<3> vss vdd_gate_1ma
+    Xi67 seltdc_dec<2> vdd_tdc vdd_tdc_int0<2> vss vdd_gate_1ma
+    Xi66 seltdc_dec<2> vdd_tdc vdd_tdc_int1<2> vss vdd_gate_1ma
+    Xi63 seltdc_dec<1> vdd_tdc vdd_tdc_int0<1> vss vdd_gate_1ma
+    Xi62 seltdc_dec<1> vdd_tdc vdd_tdc_int1<1> vss vdd_gate_1ma
+    Xi58 seltdc_dec<0> vdd_tdc vdd_tdc_int1<0> vss vdd_gate_1ma
+    Xi57 seltdc_dec<0> vdd_tdc vdd_tdc_int0<0> vss vdd_gate_1ma
+    Xi59 seltdc_dec<0> seltdc_dec<1> seltdc_dec<2> seltdc_dec<3> conf_seltdc<0> conf_seltdc<1>
+         + vdd_core vss dec4_inverted
+    Xi75 tdc0_alarm0<3> tdc0_alarm1<3> tdc0_int<3> clk conf_tdc00n<0> conf_tdc00n<1> conf_tdc00n<2>
+         + conf_tdc00n<3> conf_tdc00n<4> conf_tdc00n<5> conf_tdc00n<6> conf_tdc00n<7> conf_tdc00n<8>
+         + conf_tdc00n<9> conf_tdc00n<10> conf_tdc00n<11> conf_tdc00n<12> conf_tdc00n<13>
+         + conf_tdc00n<14> conf_tdc00n<15> conf_tdc00n<16> conf_tdc00n<17> conf_tdc00n<18>
+         + conf_tdc00n<19> conf_tdc00p<0> conf_tdc00p<1> conf_tdc00p<2> conf_tdc00p<3>
+         + conf_tdc00p<4> conf_tdc00p<5> conf_tdc00p<6> conf_tdc00p<7> conf_tdc00p<8> conf_tdc00p<9>
+         + conf_tdc00p<10> conf_tdc00p<11> conf_tdc00p<12> conf_tdc00p<13> conf_tdc00p<14>
+         + conf_tdc00p<15> conf_tdc00p<16> conf_tdc00p<17> conf_tdc00p<18> conf_tdc00p<19>
+         + conf_tdc01n<0> conf_tdc01n<1> conf_tdc01n<2> conf_tdc01n<3> conf_tdc01n<4> conf_tdc01n<5>
+         + conf_tdc01n<6> conf_tdc01n<7> conf_tdc01n<8> conf_tdc01n<9> conf_tdc01n<10>
+         + conf_tdc01n<11> conf_tdc01n<12> conf_tdc01n<13> conf_tdc01n<14> conf_tdc01n<15>
+         + conf_tdc01n<16> conf_tdc01n<17> conf_tdc01n<18> conf_tdc01n<19> conf_tdc01p<0>
+         + conf_tdc01p<1> conf_tdc01p<2> conf_tdc01p<3> conf_tdc01p<4> conf_tdc01p<5> conf_tdc01p<6>
+         + conf_tdc01p<7> conf_tdc01p<8> conf_tdc01p<9> conf_tdc01p<10> conf_tdc01p<11>
+         + conf_tdc01p<12> conf_tdc01p<13> conf_tdc01p<14> conf_tdc01p<15> conf_tdc01p<16>
+         + conf_tdc01p<17> conf_tdc01p<18> conf_tdc01p<19> conf_dec0<0> conf_dec0<1> conf_dec0<2>
+         + conf_dec0<3> conf_dec0<4> conf_dec0<5> conf_dec0<6> conf_dec0<7> conf_dec0<8>
+         + conf_dec0<9> conf_tdcmax<0> conf_tdcmax<1> conf_tdcmax<2> conf_tdcmax<3> conf_tdcmax<4>
+         + conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7> conf_tdcwait<0> conf_tdcwait<1>
+         + conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4> conf_tdcwait<5> conf_tdcwait<6>
+         + conf_tdcwait<7> edge0_n edge0_p edge1_n edge1_p enable_e2l tdc03_ff<0> tdc03_ff<1>
+         + tdc03_ff<2> tdc03_ff<3> tdc03_ff<4> tdc03_ff<5> tdc03_ff<6> tdc03_ff<7> tdc03_ff<8>
+         + tdc03_ff<9> tdc0_randout<3> tdc0_ready<3> rst rst' vdd_tdc_int0<3> vss tdc_4b_diff_branch
+    Xi79 tdc1_alarm0<3> tdc1_alarm1<3> tdc1_int<3> clk conf_tdc10n<0> conf_tdc10n<1> conf_tdc10n<2>
+         + conf_tdc10n<3> conf_tdc10n<4> conf_tdc10n<5> conf_tdc10n<6> conf_tdc10n<7> conf_tdc10n<8>
+         + conf_tdc10n<9> conf_tdc10n<10> conf_tdc10n<11> conf_tdc10n<12> conf_tdc10n<13>
+         + conf_tdc10n<14> conf_tdc10n<15> conf_tdc10n<16> conf_tdc10n<17> conf_tdc10n<18>
+         + conf_tdc10n<19> conf_tdc10p<0> conf_tdc10p<1> conf_tdc10p<2> conf_tdc10p<3>
+         + conf_tdc10p<4> conf_tdc10p<5> conf_tdc10p<6> conf_tdc10p<7> conf_tdc10p<8> conf_tdc10p<9>
+         + conf_tdc10p<10> conf_tdc10p<11> conf_tdc10p<12> conf_tdc10p<13> conf_tdc10p<14>
+         + conf_tdc10p<15> conf_tdc10p<16> conf_tdc10p<17> conf_tdc10p<18> conf_tdc10p<19>
+         + conf_tdc11n<0> conf_tdc11n<1> conf_tdc11n<2> conf_tdc11n<3> conf_tdc11n<4> conf_tdc11n<5>
+         + conf_tdc11n<6> conf_tdc11n<7> conf_tdc11n<8> conf_tdc11n<9> conf_tdc11n<10>
+         + conf_tdc11n<11> conf_tdc11n<12> conf_tdc11n<13> conf_tdc11n<14> conf_tdc11n<15>
+         + conf_tdc11n<16> conf_tdc11n<17> conf_tdc11n<18> conf_tdc11n<19> conf_tdc11p<0>
+         + conf_tdc11p<1> conf_tdc11p<2> conf_tdc11p<3> conf_tdc11p<4> conf_tdc11p<5> conf_tdc11p<6>
+         + conf_tdc11p<7> conf_tdc11p<8> conf_tdc11p<9> conf_tdc11p<10> conf_tdc11p<11>
+         + conf_tdc11p<12> conf_tdc11p<13> conf_tdc11p<14> conf_tdc11p<15> conf_tdc11p<16>
+         + conf_tdc11p<17> conf_tdc11p<18> conf_tdc11p<19> conf_dec1<0> conf_dec1<1> conf_dec1<2>
+         + conf_dec1<3> conf_dec1<4> conf_dec1<5> conf_dec1<6> conf_dec1<7> conf_dec1<8>
+         + conf_dec1<9> conf_tdcmax<0> conf_tdcmax<1> conf_tdcmax<2> conf_tdcmax<3> conf_tdcmax<4>
+         + conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7> conf_tdcwait<0> conf_tdcwait<1>
+         + conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4> conf_tdcwait<5> conf_tdcwait<6>
+         + conf_tdcwait<7> edge1_n edge1_p edge2_n edge2_p enable_e2l tdc13_ff<0> tdc13_ff<1>
+         + tdc13_ff<2> tdc13_ff<3> tdc13_ff<4> tdc13_ff<5> tdc13_ff<6> tdc13_ff<7> tdc13_ff<8>
+         + tdc13_ff<9> tdc1_randout<3> tdc1_ready<3> rst rst' vdd_tdc_int1<3> vss tdc_4b_diff_branch
+    Xi72 tdc0_alarm0<0> tdc0_alarm1<0> tdc0_int<0> clk conf_tdc00n<0> conf_tdc00n<1> conf_tdc00n<2>
+         + conf_tdc00n<3> conf_tdc00n<4> conf_tdc00n<5> conf_tdc00n<6> conf_tdc00n<7> conf_tdc00p<0>
+         + conf_tdc00p<1> conf_tdc00p<2> conf_tdc00p<3> conf_tdc00p<4> conf_tdc00p<5> conf_tdc00p<6>
+         + conf_tdc00p<7> conf_tdc01n<0> conf_tdc01n<1> conf_tdc01n<2> conf_tdc01n<3> conf_tdc01n<4>
+         + conf_tdc01n<5> conf_tdc01n<6> conf_tdc01n<7> conf_tdc01p<0> conf_tdc01p<1> conf_tdc01p<2>
+         + conf_tdc01p<3> conf_tdc01p<4> conf_tdc01p<5> conf_tdc01p<6> conf_tdc01p<7> conf_dec0<0>
+         + conf_dec0<1> conf_dec0<2> conf_dec0<3> conf_tdcmax<0> conf_tdcmax<1> conf_tdcmax<2>
+         + conf_tdcmax<3> conf_tdcmax<4> conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7>
+         + conf_tdcwait<0> conf_tdcwait<1> conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4>
+         + conf_tdcwait<5> conf_tdcwait<6> conf_tdcwait<7> edge0_n edge0_p edge1_n edge1_p
+         + enable_e2l tdc0_ff0<0> tdc0_ff1<0> tdc0_ff2<0> tdc0_ff3<0> tdc0_randout<0> tdc0_ready<0>
+         + rst rst' vdd_tdc_int0<0> vss tdc_1b_diff_branch
+    Xi76 tdc1_alarm0<0> tdc1_alarm1<0> tdc1_int<0> clk conf_tdc10n<0> conf_tdc10n<1> conf_tdc10n<2>
+         + conf_tdc10n<3> conf_tdc10n<4> conf_tdc10n<5> conf_tdc10n<6> conf_tdc10n<7> conf_tdc10p<0>
+         + conf_tdc10p<1> conf_tdc10p<2> conf_tdc10p<3> conf_tdc10p<4> conf_tdc10p<5> conf_tdc10p<6>
+         + conf_tdc10p<7> conf_tdc11n<0> conf_tdc11n<1> conf_tdc11n<2> conf_tdc11n<3> conf_tdc11n<4>
+         + conf_tdc11n<5> conf_tdc11n<6> conf_tdc11n<7> conf_tdc11p<0> conf_tdc11p<1> conf_tdc11p<2>
+         + conf_tdc11p<3> conf_tdc11p<4> conf_tdc11p<5> conf_tdc11p<6> conf_tdc11p<7> conf_dec1<0>
+         + conf_dec1<1> conf_dec1<2> conf_dec1<3> conf_tdcmax<0> conf_tdcmax<1> conf_tdcmax<2>
+         + conf_tdcmax<3> conf_tdcmax<4> conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7>
+         + conf_tdcwait<0> conf_tdcwait<1> conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4>
+         + conf_tdcwait<5> conf_tdcwait<6> conf_tdcwait<7> edge1_n edge1_p edge2_n edge2_p
+         + enable_e2l tdc1_ff0<0> tdc1_ff1<0> tdc1_ff2<0> tdc1_ff3<0> tdc1_randout<0> tdc1_ready<0>
+         + rst rst' vdd_tdc_int1<0> vss tdc_1b_diff_branch
+.ENDS
+
+.SUBCKT conf_control cal_en cal_ro_en clk ctrl_rst data_ready rst rst' ser_ready state<0> state<1>
+                     + state<2> sta_ready tdc_ready vdd vss
+    Xi2 clk nextstate<2> state<2> state'<2> rst rst' vdd vss dff_st_ar
+    Xi1 clk nextstate<1> state<1> state'<1> rst rst' vdd vss dff_st_ar
+    Xi0 clk nextstate<0> state<0> state'<0> rst rst' vdd vss dff_st_ar
+    Xi14 state0_int<0> state0_int<1> state0_int<2> state0_int<3> nextstate<0> vdd vss nand4
+    Xi30 state'<0> state<1> state<2> net037 vdd vss nand3
+    Xi28 state<0> state'<1> state<2> net038 vdd vss nand3
+    Xi42 state'<0> state<1> state<2> state2_int<2> vdd vss nand3
+    Xi23 state'<0> state<1> sta_ready state2_int<1> vdd vss nand3
+    Xi43 state2_int<0> state2_int<1> state2_int<2> nextstate<2> vdd vss nand3
+    Xi11 state<0> state<2> ser_ready' state0_int<1> vdd vss nand3
+    Xi12 state<0> state<1> state<2> state0_int<2> vdd vss nand3
+    Xi38 state<1> state<2> tdc_ready state0_int<3> vdd vss nand3
+    Xi33 net044 cal_ro_en_i vdd vss inv
+    Xi31 net037 cal_en_i vdd vss inv
+    Xi29 net038 data_ready_i vdd vss inv
+    Xi45 ser_ready ser_ready' vdd vss inv
+    Xi32 state'<0> state<1> net044 vdd vss nand2
+    Xi34 ctrl_rst_int<0> ctrl_rst_int<1> ctrl_rst vdd vss nand2
+    Xi36 state'<1> state'<2> ctrl_rst_int<0> vdd vss nand2
+    Xi22 state<0> state<2> state2_int<0> vdd vss nand2
+    Xi41 state1_int<0> state1_int<1> nextstate<1> vdd vss nand2
+    Xi40 state<0> state'<2> state1_int<1> vdd vss nand2
+    Xi39 state'<0> state<1> state1_int<0> vdd vss nand2
+    Xi10 state'<1> state'<2> state0_int<0> vdd vss nand2
+    Xi44 state<0> state'<2> ctrl_rst_int<1> vdd vss nand2
+    Xi48 data_ready_i data_ready vdd vss buffer
+    Xi49 cal_en_i cal_en vdd vss buffer
+    Xi46 cal_ro_en_i cal_ro_en vdd vss buffer
+.ENDS
+
+.SUBCKT async_counter_16 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                         + out<10> out<11> out<12> out<13> out<14> out<15> q' rst rst' vdd vss
+    Xi1 net12 out<8> out<9> out<10> out<11> out<12> out<13> out<14> out<15> q' rst rst' vdd vss
+        + async_counter_8
+    Xi0 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> net12 rst rst' vdd vss
+        + async_counter_8
+.ENDS
+
+.SUBCKT inv_conf conf'<0> conf'<1> conf'<2> conf'<3> conf<0> conf<1> conf<2> conf<3> in out vdd vss
+    Mm16 out in vdd vdd p_mos l=60n w=120.0n m=1
+    Mm7 out in net16 vdd p_mos l=60n w=120.0n m=1
+    Mm6 out in net17 vdd p_mos l=60n w=120.0n m=1
+    Mm5 out in net18 vdd p_mos l=60n w=120.0n m=1
+    Mm4 out in net19 vdd p_mos l=60n w=120.0n m=1
+    Mm3 net16 conf'<3> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm2 net17 conf'<2> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm1 net18 conf'<1> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm0 net19 conf'<0> vdd vdd p_mos l=60n w=120.0n m=1
+    Mm17 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm15 net20 conf<3> vss vss n_mos l=60n w=120.0n m=1
+    Mm14 out in net20 vss n_mos l=60n w=120.0n m=1
+    Mm13 net21 conf<2> vss vss n_mos l=60n w=120.0n m=1
+    Mm12 out in net21 vss n_mos l=60n w=120.0n m=1
+    Mm11 net22 conf<1> vss vss n_mos l=60n w=120.0n m=1
+    Mm10 out in net22 vss n_mos l=60n w=120.0n m=1
+    Mm9 net23 conf<0> vss vss n_mos l=60n w=120.0n m=1
+    Mm8 out in net23 vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT ro_2i conf'<0> conf'<1> conf'<2> conf'<3> conf'<4> conf'<5> conf'<6> conf'<7> conf<0>
+              + conf<1> conf<2> conf<3> conf<4> conf<5> conf<6> conf<7> enable out vdd vss
+    Xi1 conf'<4> conf'<5> conf'<6> conf'<7> conf<4> conf<5> conf<6> conf<7> int out vdd vss inv_conf
+    Xi0 conf'<0> conf'<1> conf'<2> conf'<3> conf<0> conf<1> conf<2> conf<3> nand_out int vdd vss
+        + inv_conf
+    Xi2 out enable nand_out vdd vss nand2
+.ENDS
+
+.SUBCKT freqscaler3 clk out<0> out<1> out<2> rst rst' vdd vss
+    Xi2 int<1> out<2> net16 rst rst' vdd vss tff_st_ar
+    Xi1 int<0> out<1> int<1> rst rst' vdd vss tff_st_ar
+    Xi0 clk out<0> int<0> rst rst' vdd vss tff_st_ar
+.ENDS
+
+.SUBCKT inv_sd in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=480.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT inv_bank_8 in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> out<0> out<1> out<2> out<3>
+                   + out<4> out<5> out<6> out<7> vdd vss
+    Xi7 in<7> out<7> vdd vss inv
+    Xi6 in<6> out<6> vdd vss inv
+    Xi5 in<5> out<5> vdd vss inv
+    Xi4 in<4> out<4> vdd vss inv
+    Xi3 in<3> out<3> vdd vss inv
+    Xi2 in<2> out<2> vdd vss inv
+    Xi1 in<1> out<1> vdd vss inv
+    Xi0 in<0> out<0> vdd vss inv
+.ENDS
+
+.SUBCKT cal_tdc cal_enable conf<0> conf<1> conf<2> conf<3> conf<4> conf<5> conf<6> conf<7> out0 out1
+                + out2 ro_enable ro_out rst rst' sel<0> sel<1> vdd vss
+    Xi0 net6<0> net6<1> net6<2> net6<3> net6<4> net6<5> net6<6> net6<7> conf<0> conf<1> conf<2>
+        + conf<3> conf<4> conf<5> conf<6> conf<7> ro_enable ro<0> vdd vss ro_2i
+    Xi1 ro<0> ro<1> ro<2> ro<3> rst rst' vdd vss freqscaler3
+    Xi8 net023 out0_i vdd vss inv_sd
+    Xi4 ro<0> ro<1> ro<2> ro<3> mux_out sel<0> sel<1> vdd vss mux4
+    Xi5 conf<0> conf<1> conf<2> conf<3> conf<4> conf<5> conf<6> conf<7> net6<0> net6<1> net6<2>
+        + net6<3> net6<4> net6<5> net6<6> net6<7> vdd vss inv_bank_8
+    Xi7 cal_enable net027 net023 rst rst' vdd vss dff_st_ar_dh
+    Xi3 ro_out out1_i out2_i net11 rst rst' vdd vss dff_st_ar_buf
+    Xi2 ro_out cal_enable out1_i net17 rst rst' vdd vss dff_st_ar_buf
+    Xi12 out2_i out2 vdd vss buffer
+    Xi11 out1_i out1 vdd vss buffer
+    Xi10 out0_i out0 vdd vss buffer
+    Xi9 mux_out ro_out vdd vss buffer
+.ENDS
+
+.SUBCKT synchronizer clk in out rst rst' vdd vss
+    Xi1 clk net18 out net16 rst rst' vdd vss dff_st_ar_buf
+    Xi0 clk in net18 net19 rst rst' vdd vss dff_st_ar_buf
+.ENDS
+
+.SUBCKT equal_to_52 equal in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> vdd vss
+    Xi4 in<0> in'<0> vdd vss inv
+    Xi3 in<1> in'<1> vdd vss inv
+    Xi2 in<3> in'<3> vdd vss inv
+    Xi1 in<6> in'<6> vdd vss inv
+    Xi0 in<7> in'<7> vdd vss inv
+    Xi6 in'<3> in<2> in'<1> in'<0> net7 vdd vss nand4
+    Xi5 in'<7> in'<6> in<5> in<4> net8 vdd vss nand4
+    Xi7 net8 net7 equal vdd vss nor2
+.ENDS
+
+.SUBCKT xnor2 in0 in1 out vdd vss
+    Mm3 out in0' net20 vdd p_mos l=60n w=240.0n m=1
+    Mm2 net20 in1' vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in0 net21 vdd p_mos l=60n w=240.0n m=1
+    Mm0 net21 in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net19 in1' vss vss n_mos l=60n w=120.0n m=1
+    Mm6 net18 in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out in0' net18 vss n_mos l=60n w=120.0n m=1
+    Mm4 out in0 net19 vss n_mos l=60n w=120.0n m=1
+    Xi1 in1 in1' vdd vss inv
+    Xi0 in0 in0' vdd vss inv
+.ENDS
+
+.SUBCKT check_equal_8 equal in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in1<0> in1<1>
+                      + in1<2> in1<3> in1<4> in1<5> in1<6> in1<7> vdd vss
+    Xi9 in0<4> in1<4> xnor<4> vdd vss xnor2
+    Xi7 in0<7> in1<7> xnor<7> vdd vss xnor2
+    Xi6 in0<6> in1<6> xnor<6> vdd vss xnor2
+    Xi5 in0<5> in1<5> xnor<5> vdd vss xnor2
+    Xi3 in0<3> in1<3> xnor<3> vdd vss xnor2
+    Xi2 in0<2> in1<2> xnor<2> vdd vss xnor2
+    Xi1 in0<1> in1<1> xnor<1> vdd vss xnor2
+    Xi0 in0<0> in1<0> xnor<0> vdd vss xnor2
+    Xi8 xnor<4> xnor<5> xnor<6> xnor<7> nand1 vdd vss nand4
+    Xi4 xnor<0> xnor<1> xnor<2> xnor<3> nand0 vdd vss nand4
+    Xi10 nand0 nand1 equal vdd vss nor2
+.ENDS
+
+.SUBCKT check_equal_16 equal in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in0<8> in0<9>
+                       + in0<10> in0<11> in0<12> in0<13> in0<14> in0<15> in1<0> in1<1> in1<2> in1<3>
+                       + in1<4> in1<5> in1<6> in1<7> in1<8> in1<9> in1<10> in1<11> in1<12> in1<13>
+                       + in1<14> in1<15> vdd vss
+    Xi1 eq1 in0<8> in0<9> in0<10> in0<11> in0<12> in0<13> in0<14> in0<15> in1<8> in1<9> in1<10>
+        + in1<11> in1<12> in1<13> in1<14> in1<15> vdd vss check_equal_8
+    Xi0 eq0 in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in1<0> in1<1> in1<2> in1<3>
+        + in1<4> in1<5> in1<6> in1<7> vdd vss check_equal_8
+    Xi2 eq0 eq1 net3 vdd vss nand2
+    Xi3 net3 equal vdd vss inv
+.ENDS
+
+.SUBCKT shift_reg_4 clk in<0> in<1> in<2> in<3> in_ser out rst rst' sel_ser vdd vss
+    Xi7 in<0> in_ser net3 sel_ser vdd vss mux2
+    Xi6 in<1> int<0> net42 sel_ser vdd vss mux2
+    Xi5 in<2> int<1> net35 sel_ser vdd vss mux2
+    Xi4 in<3> int<2> net17 sel_ser vdd vss mux2
+    Xi9 clk net42 int<1> net40 rst rst' vdd vss dff_st_ar
+    Xi10 clk net35 int<2> net32 rst rst' vdd vss dff_st_ar
+    Xi11 clk net17 out net24 rst rst' vdd vss dff_st_ar
+    Xi8 clk net3 int<0> net45 rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT shift_reg_8 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in_ser out rst rst' sel_ser
+                    + vdd vss
+    Xi1 clk in<4> in<5> in<6> in<7> net3 out rst rst' sel_ser vdd vss shift_reg_4
+    Xi0 clk in<0> in<1> in<2> in<3> in_ser net3 rst rst' sel_ser vdd vss shift_reg_4
+.ENDS
+
+.SUBCKT shift_reg_16 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11>
+                     + in<12> in<13> in<14> in<15> in_ser out rst rst' sel_ser vdd vss
+    Xi1 clk in<8> in<9> in<10> in<11> in<12> in<13> in<14> in<15> net016 out rst rst' sel_ser vdd
+        + vss shift_reg_8
+    Xi0 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in_ser net016 rst rst' sel_ser vdd vss
+        + shift_reg_8
+.ENDS
+
+.SUBCKT shift_reg_52 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11>
+                     + in<12> in<13> in<14> in<15> in<16> in<17> in<18> in<19> in<20> in<21> in<22>
+                     + in<23> in<24> in<25> in<26> in<27> in<28> in<29> in<30> in<31> in<32> in<33>
+                     + in<34> in<35> in<36> in<37> in<38> in<39> in<40> in<41> in<42> in<43> in<44>
+                     + in<45> in<46> in<47> in<48> in<49> in<50> in<51> in_ser out rst rst' sel_ser
+                     + vdd vss
+    Xi2 clk in<32> in<33> in<34> in<35> in<36> in<37> in<38> in<39> in<40> in<41> in<42> in<43>
+        + in<44> in<45> in<46> in<47> net6 net7 rst rst' sel_ser vdd vss shift_reg_16
+    Xi1 clk in<16> in<17> in<18> in<19> in<20> in<21> in<22> in<23> in<24> in<25> in<26> in<27>
+        + in<28> in<29> in<30> in<31> net5 net6 rst rst' sel_ser vdd vss shift_reg_16
+    Xi0 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11> in<12> in<13>
+        + in<14> in<15> in_ser net5 rst rst' sel_ser vdd vss shift_reg_16
+    Xi3 clk in<48> in<49> in<50> in<51> net7 out rst rst' sel_ser vdd vss shift_reg_4
+.ENDS
+
+.SUBCKT conf_datapath cal_en cal_out0 cal_out1 cal_out2 cal_roout cal_ro_en clk conf_statecnt<0>
+                      + conf_statecnt<1> conf_statecnt<2> conf_statecnt<3> conf_statecnt<4>
+                      + conf_statecnt<5> conf_statecnt<6> conf_statecnt<7> conf_statecnt<8>
+                      + conf_statecnt<9> conf_statecnt<10> conf_statecnt<11> conf_statecnt<12>
+                      + conf_statecnt<13> conf_statecnt<14> conf_statecnt<15> conf_tdccal<0>
+                      + conf_tdccal<1> conf_tdccal<2> conf_tdccal<3> conf_tdccal<4> conf_tdccal<5>
+                      + conf_tdccal<6> conf_tdccal<7> conf_tdccal<8> conf_tdccal<9> data_out
+                      + data_ready rst rst' send_data<32> send_data<33> send_data<34> send_data<35>
+                      + send_data<36> send_data<37> send_data<38> send_data<39> send_data<40>
+                      + send_data<41> send_data<42> send_data<43> send_data<44> send_data<45>
+                      + send_data<46> send_data<47> send_data<48> send_data<49> send_data<50>
+                      + send_data<51> ser_clk ser_ready sta_ready tdc0_int tdc0_ready tdc1_int
+                      + tdc1_ready tdc_ready vdd vss
+    Xi3 clk state_cnt<0> state_cnt<1> state_cnt<2> state_cnt<3> state_cnt<4> state_cnt<5>
+        + state_cnt<6> state_cnt<7> state_cnt<8> state_cnt<9> state_cnt<10> state_cnt<11>
+        + state_cnt<12> state_cnt<13> state_cnt<14> state_cnt<15> net010 rst rst' vdd vss
+        + async_counter_16
+    Xi1 tdc0_int send_data<0> send_data<1> send_data<2> send_data<3> send_data<4> send_data<5>
+        + send_data<6> send_data<7> send_data<8> send_data<9> send_data<10> send_data<11>
+        + send_data<12> send_data<13> send_data<14> send_data<15> net7 rst rst' vdd vss
+        + async_counter_16
+    Xi0 tdc1_int send_data<16> send_data<17> send_data<18> send_data<19> send_data<20> send_data<21>
+        + send_data<22> send_data<23> send_data<24> send_data<25> send_data<26> send_data<27>
+        + send_data<28> send_data<29> send_data<30> send_data<31> net10 rst rst' vdd vss
+        + async_counter_16
+    Xi2 cal_en conf_tdccal<0> conf_tdccal<1> conf_tdccal<2> conf_tdccal<3> conf_tdccal<4>
+        + conf_tdccal<5> conf_tdccal<6> conf_tdccal<7> cal_out0 cal_out1 cal_out2 cal_ro_en
+        + cal_roout rst rst' conf_tdccal<8> conf_tdccal<9> vdd vss cal_tdc
+    Xi4 net03 ser_cnt<0> ser_cnt<1> ser_cnt<2> ser_cnt<3> ser_cnt<4> ser_cnt<5> ser_cnt<6>
+        + ser_cnt<7> net028 rst rst' vdd vss async_counter_8
+    Xi10 clk tdc0_ready tdc0_readysync rst rst' vdd vss synchronizer
+    Xi9 clk tdc1_ready tdc1_readysync rst rst' vdd vss synchronizer
+    Xi5 clk ser_clk net03 rst rst' vdd vss synchronizer
+    Xi7 ser_ready ser_cnt<0> ser_cnt<1> ser_cnt<2> ser_cnt<3> ser_cnt<4> ser_cnt<5> ser_cnt<6>
+        + ser_cnt<7> vdd vss equal_to_52
+    Xi8 sta_ready state_cnt<0> state_cnt<1> state_cnt<2> state_cnt<3> state_cnt<4> state_cnt<5>
+        + state_cnt<6> state_cnt<7> state_cnt<8> state_cnt<9> state_cnt<10> state_cnt<11>
+        + state_cnt<12> state_cnt<13> state_cnt<14> state_cnt<15> conf_statecnt<0> conf_statecnt<1>
+        + conf_statecnt<2> conf_statecnt<3> conf_statecnt<4> conf_statecnt<5> conf_statecnt<6>
+        + conf_statecnt<7> conf_statecnt<8> conf_statecnt<9> conf_statecnt<10> conf_statecnt<11>
+        + conf_statecnt<12> conf_statecnt<13> conf_statecnt<14> conf_statecnt<15> vdd vss
+        + check_equal_16
+    Xi11 tdc0_readysync tdc1_readysync net09 vdd vss nand2
+    Xi12 net09 tdc_ready vdd vss inv
+    Xi13 shift_clk send_data<0> send_data<1> send_data<2> send_data<3> send_data<4> send_data<5>
+         + send_data<6> send_data<7> send_data<8> send_data<9> send_data<10> send_data<11>
+         + send_data<12> send_data<13> send_data<14> send_data<15> send_data<16> send_data<17>
+         + send_data<18> send_data<19> send_data<20> send_data<21> send_data<22> send_data<23>
+         + send_data<24> send_data<25> send_data<26> send_data<27> send_data<28> send_data<29>
+         + send_data<30> send_data<31> send_data<32> send_data<33> send_data<34> send_data<35>
+         + send_data<36> send_data<37> send_data<38> send_data<39> send_data<40> send_data<41>
+         + send_data<42> send_data<43> send_data<44> send_data<45> send_data<46> send_data<47>
+         + send_data<48> send_data<49> send_data<50> send_data<51> send_data<0> data_out rst rst'
+         + data_ready vdd vss shift_reg_52
+    Xi14 clk ser_clk shift_clk data_ready vdd vss mux2
+.ENDS
+
+.SUBCKT conf_top_level cal_en cal_out0 cal_out1 cal_out2 cal_roout cal_ro_en clk conf_statecnt<0>
+                       + conf_statecnt<1> conf_statecnt<2> conf_statecnt<3> conf_statecnt<4>
+                       + conf_statecnt<5> conf_statecnt<6> conf_statecnt<7> conf_statecnt<8>
+                       + conf_statecnt<9> conf_statecnt<10> conf_statecnt<11> conf_statecnt<12>
+                       + conf_statecnt<13> conf_statecnt<14> conf_statecnt<15> conf_tdccal<0>
+                       + conf_tdccal<1> conf_tdccal<2> conf_tdccal<3> conf_tdccal<4> conf_tdccal<5>
+                       + conf_tdccal<6> conf_tdccal<7> conf_tdccal<8> conf_tdccal<9> data_out
+                       + data_ready dat_rst dat_rst' rst rst' ser_clk ser_ready state<0> state<1>
+                       + state<2> sta_ready tdc0_alarm<0> tdc0_alarm<1> tdc0_ff<0> tdc0_ff<1>
+                       + tdc0_ff<2> tdc0_ff<3> tdc0_ff<4> tdc0_ff<5> tdc0_ff<6> tdc0_ff<7> tdc0_int
+                       + tdc0_ready tdc1_alarm<0> tdc1_alarm<1> tdc1_ff<0> tdc1_ff<1> tdc1_ff<2>
+                       + tdc1_ff<3> tdc1_ff<4> tdc1_ff<5> tdc1_ff<6> tdc1_ff<7> tdc1_int tdc1_ready
+                       + tdc_ready vdd vss
+    Xi0 cal_en cal_ro_en clk ctrl_rst data_ready rst rst' ser_ready state<0> state<1> state<2>
+        + sta_ready tdc_ready vdd vss conf_control
+    Xi1 cal_en cal_out0 cal_out1 cal_out2 cal_roout cal_ro_en clk conf_statecnt<0> conf_statecnt<1>
+        + conf_statecnt<2> conf_statecnt<3> conf_statecnt<4> conf_statecnt<5> conf_statecnt<6>
+        + conf_statecnt<7> conf_statecnt<8> conf_statecnt<9> conf_statecnt<10> conf_statecnt<11>
+        + conf_statecnt<12> conf_statecnt<13> conf_statecnt<14> conf_statecnt<15> conf_tdccal<0>
+        + conf_tdccal<1> conf_tdccal<2> conf_tdccal<3> conf_tdccal<4> conf_tdccal<5> conf_tdccal<6>
+        + conf_tdccal<7> conf_tdccal<8> conf_tdccal<9> data_out data_ready dat_rst dat_rst'
+        + tdc0_ff<0> tdc0_ff<1> tdc0_ff<2> tdc0_ff<3> tdc0_ff<4> tdc0_ff<5> tdc0_ff<6> tdc0_ff<7>
+        + tdc1_ff<0> tdc1_ff<1> tdc1_ff<2> tdc1_ff<3> tdc1_ff<4> tdc1_ff<5> tdc1_ff<6> tdc1_ff<7>
+        + tdc0_alarm<0> tdc0_alarm<1> tdc1_alarm<0> tdc1_alarm<1> ser_clk ser_ready sta_ready
+        + tdc0_int tdc0_ready tdc1_int tdc1_ready tdc_ready vdd vss conf_datapath
+    Xi2 ctrl_rst ctrl_rst' vdd vss inv
+    Xi3 ctrl_rst rst dat_rst_int' vdd vss nor2
+    Xi4 ctrl_rst' rst' dat_rst_int vdd vss nand2
+    Xi6 dat_rst_int dat_rst vdd vss buffer
+    Xi5 dat_rst_int' dat_rst' vdd vss buffer
+.ENDS
+
+.SUBCKT equal_to_24 equal in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> vdd vss
+    Xi5 in<7> in'<7> vdd vss inv
+    Xi4 in<6> in'<6> vdd vss inv
+    Xi3 in<5> in'<5> vdd vss inv
+    Xi2 in<2> in'<2> vdd vss inv
+    Xi1 in<1> in'<1> vdd vss inv
+    Xi0 in<0> in'<0> vdd vss inv
+    Xi7 in<4> in'<5> in'<6> in'<7> net11 vdd vss nand4
+    Xi6 in'<0> in'<1> in'<2> in<3> net12 vdd vss nand4
+    Xi8 net12 net11 equal vdd vss nor2
+.ENDS
+
+.SUBCKT shift_reg_24 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11>
+                     + in<12> in<13> in<14> in<15> in<16> in<17> in<18> in<19> in<20> in<21> in<22>
+                     + in<23> in_ser out rst rst' sel_ser vdd vss
+    Xi0 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in_ser net17 rst rst' sel_ser vdd vss
+        + shift_reg_8
+    Xi1 clk in<8> in<9> in<10> in<11> in<12> in<13> in<14> in<15> in<16> in<17> in<18> in<19> in<20>
+        + in<21> in<22> in<23> net17 out rst rst' sel_ser vdd vss shift_reg_16
+.ENDS
+
+.SUBCKT bit_datapath clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3>
+                     + conf_statecnt<4> conf_statecnt<5> conf_statecnt<6> conf_statecnt<7>
+                     + conf_statecnt<8> conf_statecnt<9> conf_statecnt<10> conf_statecnt<11>
+                     + conf_statecnt<12> conf_statecnt<13> conf_statecnt<14> conf_statecnt<15>
+                     + data_out data_ready dc_int rst rst' send_data<0> send_data<1> send_data<2>
+                     + send_data<3> send_data<4> send_data<5> send_data<6> send_data<7> ser_clk
+                     + ser_ready sta_ready tdc0_ready tdc1_ready tdc_ready vdd vss
+    Xi10 clk sta_cnt<0> sta_cnt<1> sta_cnt<2> sta_cnt<3> sta_cnt<4> sta_cnt<5> sta_cnt<6> sta_cnt<7>
+         + sta_cnt<8> sta_cnt<9> sta_cnt<10> sta_cnt<11> sta_cnt<12> sta_cnt<13> sta_cnt<14>
+         + sta_cnt<15> net030 rst rst' vdd vss async_counter_16
+    Xi0 dc_int send_data<8> send_data<9> send_data<10> send_data<11> send_data<12> send_data<13>
+        + send_data<14> send_data<15> send_data<16> send_data<17> send_data<18> send_data<19>
+        + send_data<20> send_data<21> send_data<22> send_data<23> net7 rst rst' vdd vss
+        + async_counter_16
+    Xi6 clk tdc1_ready tdc1_ready_s rst rst' vdd vss synchronizer
+    Xi5 clk tdc0_ready tdc0_ready_s rst rst' vdd vss synchronizer
+    Xi1 clk ser_clk net10 rst rst' vdd vss synchronizer
+    Xi2 net10 ser_cnt<0> ser_cnt<1> ser_cnt<2> ser_cnt<3> ser_cnt<4> ser_cnt<5> ser_cnt<6>
+        + ser_cnt<7> net15 rst rst' vdd vss async_counter_8
+    Xi3 ser_ready ser_cnt<0> ser_cnt<1> ser_cnt<2> ser_cnt<3> ser_cnt<4> ser_cnt<5> ser_cnt<6>
+        + ser_cnt<7> vdd vss equal_to_24
+    Xi4 shift_clk send_data<0> send_data<1> send_data<2> send_data<3> send_data<4> send_data<5>
+        + send_data<6> send_data<7> send_data<8> send_data<9> send_data<10> send_data<11>
+        + send_data<12> send_data<13> send_data<14> send_data<15> send_data<16> send_data<17>
+        + send_data<18> send_data<19> send_data<20> send_data<21> send_data<22> send_data<23>
+        + send_data<0> data_out rst rst' data_ready vdd vss shift_reg_24
+    Xi7 tdc0_ready_s tdc1_ready_s net038 vdd vss nand2
+    Xi8 net038 tdc_ready vdd vss inv
+    Xi9 clk ser_clk shift_clk data_ready vdd vss mux2
+    Xi11 sta_ready sta_cnt<0> sta_cnt<1> sta_cnt<2> sta_cnt<3> sta_cnt<4> sta_cnt<5> sta_cnt<6>
+         + sta_cnt<7> sta_cnt<8> sta_cnt<9> sta_cnt<10> sta_cnt<11> sta_cnt<12> sta_cnt<13>
+         + sta_cnt<14> sta_cnt<15> conf_statecnt<0> conf_statecnt<1> conf_statecnt<2>
+         + conf_statecnt<3> conf_statecnt<4> conf_statecnt<5> conf_statecnt<6> conf_statecnt<7>
+         + conf_statecnt<8> conf_statecnt<9> conf_statecnt<10> conf_statecnt<11> conf_statecnt<12>
+         + conf_statecnt<13> conf_statecnt<14> conf_statecnt<15> vdd vss check_equal_16
+.ENDS
+
+.SUBCKT bit_top_level alarm_dc clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2>
+                      + conf_statecnt<3> conf_statecnt<4> conf_statecnt<5> conf_statecnt<6>
+                      + conf_statecnt<7> conf_statecnt<8> conf_statecnt<9> conf_statecnt<10>
+                      + conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+                      + conf_statecnt<15> data_out data_ready dat_rst dat_rst' dc_int e2l_en mero_en
+                      + rand0 rand1 rst rst' send_free ser_clk ser_ready state<0> state<1> state<2>
+                      + sta_ready tdc0_alarm<0> tdc0_alarm<1> tdc0_ready tdc1_alarm<0> tdc1_alarm<1>
+                      + tdc1_ready tdc_ready vdd vss
+    Xi0 clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3> conf_statecnt<4>
+        + conf_statecnt<5> conf_statecnt<6> conf_statecnt<7> conf_statecnt<8> conf_statecnt<9>
+        + conf_statecnt<10> conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+        + conf_statecnt<15> data_out data_ready dc_int dat_rst dat_rst' tdc0_alarm<0> tdc0_alarm<1>
+        + tdc1_alarm<0> tdc1_alarm<1> alarm_dc rand0 rand1 send_free ser_clk ser_ready sta_ready
+        + tdc0_ready tdc1_ready tdc_ready vdd vss bit_datapath
+    Xi1 e2l_en mero_en clk ctrl_rst data_ready rst rst' ser_ready state<0> state<1> state<2>
+        + sta_ready tdc_ready vdd vss conf_control
+    Xi2 ctrl_rst ctrl_rst' vdd vss inv
+    Xi3 ctrl_rst' rst' dat_rst_i vdd vss nand2
+    Xi4 ctrl_rst rst dat_rst_i' vdd vss nor2
+    Xi6 dat_rst_i' dat_rst' vdd vss buffer
+    Xi5 dat_rst_i dat_rst vdd vss buffer
+.ENDS
+
+.SUBCKT async_control_0 clk mero_e2l mero_en rst rst' state<0> state<1> sta_ready tdc_ready trng_rst
+                        + vdd vss
+    Xi1 clk nextstate<1> state<1> trng_rst rst rst' vdd vss dff_st_ar
+    Xi0 clk nextstate<0> state<0> state'<0> rst rst' vdd vss dff_st_ar
+    Xi8 state'<0> state<1> net08 vdd vss nand2
+    Xi7 state1_int state'<0> nextstate<1> vdd vss nand2
+    Xi6 state<1> tdc_ready' state1_int vdd vss nand2
+    Xi3 state0_int state<1> nextstate<0> vdd vss nand2
+    Xi2 state<0> sta_ready' state0_int vdd vss nand2
+    Xi9 net08 mero_e2l_i vdd vss inv
+    Xi5 tdc_ready tdc_ready' vdd vss inv
+    Xi4 sta_ready sta_ready' vdd vss inv
+    Xi11 state<1> mero_en vdd vss buffer
+    Xi10 mero_e2l_i mero_e2l vdd vss buffer
+.ENDS
+
+.SUBCKT async_control_1 clk clk_en clk_ready ctrl_rst data_ready rst rst' ser_ready state<0>
+                        + state<1> state<2> vdd vss
+    Xi2 clk nextstate<2> state<2> state'<2> rst rst' vdd vss dff_st_ar
+    Xi1 clk nextstate<1> state<1> state'<1> rst rst' vdd vss dff_st_ar
+    Xi0 clk nextstate<0> state<0> state'<0> rst rst' vdd vss dff_st_ar
+    Xi15 state'<1> state'<2> data_ready_i vdd vss nor2
+    Xi13 state<1> state<2> clk_en_i vdd vss nor2
+    Xi3 state<1> state<2> nextstate<0> vdd vss nor2
+    Xi9 state'<0> state<1> net05 vdd vss nand2
+    Xi7 state<0> clk_ready state1_int<3> vdd vss nand2
+    Xi6 state<1> state'<2> state1_int<2> vdd vss nand2
+    Xi5 state<0> state<1> state1_int<1> vdd vss nand2
+    Xi4 state<1> ser_ready' state1_int<0> vdd vss nand2
+    Xi8 state1_int<0> state1_int<1> state1_int<2> state1_int<3> nextstate<1> vdd vss nand4
+    Xi11 ser_ready ser_ready' vdd vss inv
+    Xi10 net05 nextstate<2> vdd vss inv
+    Xi14 state<0> state<1> state<2> ctrl_rst vdd vss nor3
+    Xi17 data_ready_i data_ready vdd vss buffer
+    Xi16 clk_en_i clk_en vdd vss buffer
+.ENDS
+
+.SUBCKT async_counter_equal_16 clk conf_equal<0> conf_equal<1> conf_equal<2> conf_equal<3>
+                               + conf_equal<4> conf_equal<5> conf_equal<6> conf_equal<7>
+                               + conf_equal<8> conf_equal<9> conf_equal<10> conf_equal<11>
+                               + conf_equal<12> conf_equal<13> conf_equal<14> conf_equal<15> equal
+                               + rst rst' vdd vss
+    Xi0 clk cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> cnt<8> cnt<9> cnt<10> cnt<11>
+        + cnt<12> cnt<13> cnt<14> cnt<15> net13 rst rst' vdd vss async_counter_16
+    Xi1 equal cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> cnt<8> cnt<9> cnt<10> cnt<11>
+        + cnt<12> cnt<13> cnt<14> cnt<15> conf_equal<0> conf_equal<1> conf_equal<2> conf_equal<3>
+        + conf_equal<4> conf_equal<5> conf_equal<6> conf_equal<7> conf_equal<8> conf_equal<9>
+        + conf_equal<10> conf_equal<11> conf_equal<12> conf_equal<13> conf_equal<14> conf_equal<15>
+        + vdd vss check_equal_16
+.ENDS
+
+.SUBCKT async_datapath_0 clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3>
+                         + conf_statecnt<4> conf_statecnt<5> conf_statecnt<6> conf_statecnt<7>
+                         + conf_statecnt<8> conf_statecnt<9> conf_statecnt<10> conf_statecnt<11>
+                         + conf_statecnt<12> conf_statecnt<13> conf_statecnt<14> conf_statecnt<15>
+                         + rst rst' sta_ready tdc0_ready tdc1_ready tdc_ready vdd vss
+    Xi1 clk tdc1_ready tdc1_sync rst rst' vdd vss synchronizer
+    Xi0 clk tdc0_ready tdc0_sync rst rst' vdd vss synchronizer
+    Xi2 tdc0_sync tdc1_sync net7 vdd vss nand2
+    Xi3 net7 tdc_ready vdd vss inv
+    Xi5 clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3> conf_statecnt<4>
+        + conf_statecnt<5> conf_statecnt<6> conf_statecnt<7> conf_statecnt<8> conf_statecnt<9>
+        + conf_statecnt<10> conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+        + conf_statecnt<15> sta_ready rst rst' vdd vss async_counter_equal_16
+.ENDS
+
+.SUBCKT async_counter_32 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                         + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18>
+                         + out<19> out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27>
+                         + out<28> out<29> out<30> out<31> q' rst rst' vdd vss
+    Xi1 net7 out<16> out<17> out<18> out<19> out<20> out<21> out<22> out<23> out<24> out<25> out<26>
+        + out<27> out<28> out<29> out<30> out<31> q' rst rst' vdd vss async_counter_16
+    Xi0 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10> out<11>
+        + out<12> out<13> out<14> out<15> net7 rst rst' vdd vss async_counter_16
+.ENDS
+
+.SUBCKT shift_reg_32 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11>
+                     + in<12> in<13> in<14> in<15> in<16> in<17> in<18> in<19> in<20> in<21> in<22>
+                     + in<23> in<24> in<25> in<26> in<27> in<28> in<29> in<30> in<31> in_ser out rst
+                     + rst' sel_ser vdd vss
+    Xi1 clk in<16> in<17> in<18> in<19> in<20> in<21> in<22> in<23> in<24> in<25> in<26> in<27>
+        + in<28> in<29> in<30> in<31> net7 out rst rst' sel_ser vdd vss shift_reg_16
+    Xi0 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11> in<12> in<13>
+        + in<14> in<15> in_ser net7 rst rst' sel_ser vdd vss shift_reg_16
+.ENDS
+
+.SUBCKT equal_to_32 equal in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> vdd vss
+    Xi8 in<4> in'<4> vdd vss inv
+    Xi7 in<6> in'<6> vdd vss inv
+    Xi6 in<7> in'<7> vdd vss inv
+    Xi5 in<3> in'<3> vdd vss inv
+    Xi3 in<1> in'<1> vdd vss inv
+    Xi4 in<2> in'<2> vdd vss inv
+    Xi0 in<0> in'<0> vdd vss inv
+    Xi10 in'<4> in<5> in'<6> in'<7> net013 vdd vss nand4
+    Xi9 in'<0> in'<1> in'<2> in'<3> net014 vdd vss nand4
+    Xi11 net014 net013 equal vdd vss nor2
+.ENDS
+
+.SUBCKT async_datapath_1 clk clk_en clk_ready conf_tdccnt<0> conf_tdccnt<1> conf_tdccnt<2>
+                         + conf_tdccnt<3> conf_tdccnt<4> conf_tdccnt<5> conf_tdccnt<6>
+                         + conf_tdccnt<7> conf_tdccnt<8> conf_tdccnt<9> conf_tdccnt<10>
+                         + conf_tdccnt<11> conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14>
+                         + conf_tdccnt<15> data_out data_ready rst rst' ser_clk ser_ready tdc_ready
+                         + vdd vss
+    Xi0 tdc_ready conf_tdccnt<0> conf_tdccnt<1> conf_tdccnt<2> conf_tdccnt<3> conf_tdccnt<4>
+        + conf_tdccnt<5> conf_tdccnt<6> conf_tdccnt<7> conf_tdccnt<8> conf_tdccnt<9> conf_tdccnt<10>
+        + conf_tdccnt<11> conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14> conf_tdccnt<15> clk_ready
+        + rst rst' vdd vss async_counter_equal_16
+    Xi1 net04 clk_cnt<0> clk_cnt<1> clk_cnt<2> clk_cnt<3> clk_cnt<4> clk_cnt<5> clk_cnt<6>
+        + clk_cnt<7> clk_cnt<8> clk_cnt<9> clk_cnt<10> clk_cnt<11> clk_cnt<12> clk_cnt<13>
+        + clk_cnt<14> clk_cnt<15> clk_cnt<16> clk_cnt<17> clk_cnt<18> clk_cnt<19> clk_cnt<20>
+        + clk_cnt<21> clk_cnt<22> clk_cnt<23> clk_cnt<24> clk_cnt<25> clk_cnt<26> clk_cnt<27>
+        + clk_cnt<28> clk_cnt<29> clk_cnt<30> clk_cnt<31> net09 rst rst' vdd vss async_counter_32
+    Xi2 clk clk_en net05 vdd vss nand2
+    Xi3 net05 net04 vdd vss inv
+    Xi4 shift_clk clk_cnt<0> clk_cnt<1> clk_cnt<2> clk_cnt<3> clk_cnt<4> clk_cnt<5> clk_cnt<6>
+        + clk_cnt<7> clk_cnt<8> clk_cnt<9> clk_cnt<10> clk_cnt<11> clk_cnt<12> clk_cnt<13>
+        + clk_cnt<14> clk_cnt<15> clk_cnt<16> clk_cnt<17> clk_cnt<18> clk_cnt<19> clk_cnt<20>
+        + clk_cnt<21> clk_cnt<22> clk_cnt<23> clk_cnt<24> clk_cnt<25> clk_cnt<26> clk_cnt<27>
+        + clk_cnt<28> clk_cnt<29> clk_cnt<30> clk_cnt<31> clk_cnt<0> data_out rst rst' data_ready
+        + vdd vss shift_reg_32
+    Xi5 clk ser_clk net021 data_ready vdd vss mux2
+    Xi6 clk ser_clk net027 rst rst' vdd vss synchronizer
+    Xi7 net027 ser_cnt<0> ser_cnt<1> ser_cnt<2> ser_cnt<3> ser_cnt<4> ser_cnt<5> ser_cnt<6>
+        + ser_cnt<7> net025 rst rst' vdd vss async_counter_8
+    Xi8 ser_ready ser_cnt<0> ser_cnt<1> ser_cnt<2> ser_cnt<3> ser_cnt<4> ser_cnt<5> ser_cnt<6>
+        + ser_cnt<7> vdd vss equal_to_32
+    Xi9 net021 shift_clk vdd vss buffer
+.ENDS
+
+.SUBCKT async_top_level clk clk_en clk_ready conf_statecnt<0> conf_statecnt<1> conf_statecnt<2>
+                        + conf_statecnt<3> conf_statecnt<4> conf_statecnt<5> conf_statecnt<6>
+                        + conf_statecnt<7> conf_statecnt<8> conf_statecnt<9> conf_statecnt<10>
+                        + conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+                        + conf_statecnt<15> conf_tdccnt<0> conf_tdccnt<1> conf_tdccnt<2>
+                        + conf_tdccnt<3> conf_tdccnt<4> conf_tdccnt<5> conf_tdccnt<6> conf_tdccnt<7>
+                        + conf_tdccnt<8> conf_tdccnt<9> conf_tdccnt<10> conf_tdccnt<11>
+                        + conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14> conf_tdccnt<15> data_out
+                        + data_ready dp0_rst dp0_rst' dp1_rst mero_e2l mero_en rst rst' ser_clk
+                        + ser_ready state0<0> state0<1> state1<0> state1<1> state1<2> sta_ready
+                        + tdc0_ready tdc1_ready tdc_ready vdd vss
+    Xi0 clk mero_e2l mero_en rst rst' state0<0> state0<1> sta_ready tdc_ready ctrl0_rst vdd vss
+        + async_control_0
+    Xi1 clk clk_en clk_ready ctrl1_rst data_ready rst rst' ser_ready state1<0> state1<1> state1<2>
+        + vdd vss async_control_1
+    Xi2 clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3> conf_statecnt<4>
+        + conf_statecnt<5> conf_statecnt<6> conf_statecnt<7> conf_statecnt<8> conf_statecnt<9>
+        + conf_statecnt<10> conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+        + conf_statecnt<15> dp0_rst dp0_rst' sta_ready tdc0_ready tdc1_ready tdc_ready vdd vss
+        + async_datapath_0
+    Xi3 clk clk_en clk_ready conf_tdccnt<0> conf_tdccnt<1> conf_tdccnt<2> conf_tdccnt<3>
+        + conf_tdccnt<4> conf_tdccnt<5> conf_tdccnt<6> conf_tdccnt<7> conf_tdccnt<8> conf_tdccnt<9>
+        + conf_tdccnt<10> conf_tdccnt<11> conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14>
+        + conf_tdccnt<15> data_out data_ready dp1_rst dp1_rst' ser_clk ser_ready tdc_ready vdd vss
+        + async_datapath_1
+    Xi5 ctrl1_rst' rst' dp1_rst_i vdd vss nand2
+    Xi4 ctrl0_rst' rst' dp0_rst_i vdd vss nand2
+    Xi7 ctrl1_rst rst dp1_rst'_i vdd vss nor2
+    Xi6 ctrl0_rst rst dp0_rst'_i vdd vss nor2
+    Xi11 dp1_rst'_i dp1_rst' vdd vss buffer
+    Xi10 dp1_rst_i dp1_rst vdd vss buffer
+    Xi9 dp0_rst'_i dp0_rst' vdd vss buffer
+    Xi8 dp0_rst_i dp0_rst vdd vss buffer
+    Xi13 ctrl1_rst ctrl1_rst' vdd vss inv
+    Xi12 ctrl0_rst ctrl0_rst' vdd vss inv
+.ENDS
+
+.SUBCKT buffer_large in out vdd vss
+    Mm7 out int<2> vss vss n_mos l=60n w=480.0n m=16
+    Mm5 int<2> int<1> vss vss n_mos l=60n w=480.0n m=4
+    Mm2 int<1> int<0> vss vss n_mos l=60n w=480.0n m=1
+    Mm0 int<0> in vss vss n_mos l=60n w=120.0n m=1
+    Mm6 out int<2> vdd vdd p_mos l=60n w=480.0n m=16
+    Mm4 int<2> int<1> vdd vdd p_mos l=60n w=480.0n m=4
+    Mm3 int<1> int<0> vdd vdd p_mos l=60n w=480.0n m=1
+    Mm1 int<0> in vdd vdd p_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT freq_scaler2 clk out<0> out<1> q' rst rst' vdd vss
+    Xi1 int out<1> q' rst rst' vdd vss tff_st_ar
+    Xi0 clk out<0> int rst rst' vdd vss tff_st_ar
+.ENDS
+
+.SUBCKT freq_scaler4 clk out<0> out<1> out<2> out<3> q' rst rst' vdd vss
+    Xi1 net17 out<2> out<3> q' rst rst' vdd vss freq_scaler2
+    Xi0 clk out<0> out<1> net17 rst rst' vdd vss freq_scaler2
+.ENDS
+
+.SUBCKT freq_scaler8 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> q' rst rst' vdd vss
+    Xi1 net17 out<4> out<5> out<6> out<7> q' rst rst' vdd vss freq_scaler4
+    Xi0 clk out<0> out<1> out<2> out<3> net17 rst rst' vdd vss freq_scaler4
+.ENDS
+
+.SUBCKT freq_scaler16 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                      + out<10> out<11> out<12> out<13> out<14> out<15> q' rst rst' vdd vss
+    Xi1 net17 out<8> out<9> out<10> out<11> out<12> out<13> out<14> out<15> q' rst rst' vdd vss
+        + freq_scaler8
+    Xi0 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> net17 rst rst' vdd vss
+        + freq_scaler8
+.ENDS
+
+.SUBCKT mux16 in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11> in<12>
+              + in<13> in<14> in<15> out sel<0> sel<1> sel<2> sel<3> vdd vss
+    Xi4 in<12> in<13> in<14> in<15> int<3> sel<0> sel<1> vdd vss mux4
+    Xi3 in<8> in<9> in<10> in<11> int<2> sel<0> sel<1> vdd vss mux4
+    Xi5 int<0> int<1> int<2> int<3> out sel<2> sel<3> vdd vss mux4
+    Xi1 in<4> in<5> in<6> in<7> int<1> sel<0> sel<1> vdd vss mux4
+    Xi0 in<0> in<1> in<2> in<3> int<0> sel<0> sel<1> vdd vss mux4
+.ENDS
+
+.SUBCKT clk_manager clk conf_clk<0> conf_clk<1> conf_clk<2> conf_clk<3> conf_clk<4> conf_clk<5>
+                    + conf_clk<6> conf_clk<7> conf_clk<8> conf_clk<9> conf_clk<10> conf_clk<11>
+                    + enable rst rst' vdd vss
+    Xi0 conf_clk'<0> conf_clk'<1> conf_clk'<2> conf_clk'<3> conf_clk'<4> conf_clk'<5> conf_clk'<6>
+        + conf_clk'<7> conf_clk<0> conf_clk<1> conf_clk<2> conf_clk<3> conf_clk<4> conf_clk<5>
+        + conf_clk<6> conf_clk<7> enable mux_in<15> vdd vss ro_2i
+    Xi1 mux_in<15> mux_in<0> mux_in<1> mux_in<2> mux_in<3> mux_in<4> mux_in<5> mux_in<6> mux_in<7>
+        + mux_in<8> mux_in<9> mux_in<10> mux_in<11> mux_in<12> mux_in<13> mux_in<14> net010 net11
+        + rst rst' vdd vss freq_scaler16
+    Xi3 mux_in<0> mux_in<1> mux_in<2> mux_in<3> mux_in<4> mux_in<5> mux_in<6> mux_in<7> mux_in<8>
+        + mux_in<9> mux_in<10> mux_in<11> mux_in<12> mux_in<13> mux_in<14> mux_in<15> net17
+        + conf_clk<8> conf_clk<9> conf_clk<10> conf_clk<11> vdd vss mux16
+    Xi2 net17 clk vdd vss buffer_large
+    Xi4 conf_clk<0> conf_clk<1> conf_clk<2> conf_clk<3> conf_clk<4> conf_clk<5> conf_clk<6>
+        + conf_clk<7> conf_clk'<0> conf_clk'<1> conf_clk'<2> conf_clk'<3> conf_clk'<4> conf_clk'<5>
+        + conf_clk'<6> conf_clk'<7> vdd vss inv_bank_8
+.ENDS
+
+.SUBCKT one_to_18 in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+                  + out<11> out<12> out<13> out<14> out<15> out<16> out<17> vdd vss
+    Xi17 in out<9> vdd vss inv
+    Xi16 in out<16> vdd vss inv
+    Xi15 in out<17> vdd vss inv
+    Xi14 in out<15> vdd vss inv
+    Xi13 in out<12> vdd vss inv
+    Xi12 in out<14> vdd vss inv
+    Xi11 in out<13> vdd vss inv
+    Xi10 in out<11> vdd vss inv
+    Xi9 in out<10> vdd vss inv
+    Xi8 in out<7> vdd vss inv
+    Xi7 in out<8> vdd vss inv
+    Xi6 in out<6> vdd vss inv
+    Xi5 in out<3> vdd vss inv
+    Xi4 in out<5> vdd vss inv
+    Xi3 in out<4> vdd vss inv
+    Xi2 in out<2> vdd vss inv
+    Xi1 in out<1> vdd vss inv
+    Xi0 in out<0> vdd vss inv
+.ENDS
+
+.SUBCKT ctrl_trng_combo conf_clk<0> conf_clk<1> conf_clk<2> conf_clk<3> conf_clk<4> conf_clk<5>
+                        + conf_clk<6> conf_clk<7> conf_clk<8> conf_clk<9> conf_clk<10> conf_clk<11>
+                        + conf_clkenable conf_clksel conf_ctrlsel<0> conf_ctrlsel<1>
+                        + conf_dcedgesel<0> conf_dcedgesel<1> conf_dec0<0> conf_dec0<1> conf_dec0<2>
+                        + conf_dec0<3> conf_dec0<4> conf_dec0<5> conf_dec0<6> conf_dec0<7>
+                        + conf_dec0<8> conf_dec0<9> conf_dec1<0> conf_dec1<1> conf_dec1<2>
+                        + conf_dec1<3> conf_dec1<4> conf_dec1<5> conf_dec1<6> conf_dec1<7>
+                        + conf_dec1<8> conf_dec1<9> conf_rooutfreqsel<0> conf_rooutfreqsel<1>
+                        + conf_rooutfreqsel<2> conf_rooutfreqsel<3> conf_rooutsel<0>
+                        + conf_rooutsel<1> conf_seldc<0> conf_seldc<1> conf_seltdc<0> conf_seltdc<1>
+                        + conf_sendfree conf_statecnt<0> conf_statecnt<1> conf_statecnt<2>
+                        + conf_statecnt<3> conf_statecnt<4> conf_statecnt<5> conf_statecnt<6>
+                        + conf_statecnt<7> conf_statecnt<8> conf_statecnt<9> conf_statecnt<10>
+                        + conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+                        + conf_statecnt<15> conf_tdc00n<0> conf_tdc00n<1> conf_tdc00n<2>
+                        + conf_tdc00n<3> conf_tdc00n<4> conf_tdc00n<5> conf_tdc00n<6> conf_tdc00n<7>
+                        + conf_tdc00n<8> conf_tdc00n<9> conf_tdc00n<10> conf_tdc00n<11>
+                        + conf_tdc00n<12> conf_tdc00n<13> conf_tdc00n<14> conf_tdc00n<15>
+                        + conf_tdc00n<16> conf_tdc00n<17> conf_tdc00n<18> conf_tdc00n<19>
+                        + conf_tdc00p<0> conf_tdc00p<1> conf_tdc00p<2> conf_tdc00p<3> conf_tdc00p<4>
+                        + conf_tdc00p<5> conf_tdc00p<6> conf_tdc00p<7> conf_tdc00p<8> conf_tdc00p<9>
+                        + conf_tdc00p<10> conf_tdc00p<11> conf_tdc00p<12> conf_tdc00p<13>
+                        + conf_tdc00p<14> conf_tdc00p<15> conf_tdc00p<16> conf_tdc00p<17>
+                        + conf_tdc00p<18> conf_tdc00p<19> conf_tdc01n<0> conf_tdc01n<1>
+                        + conf_tdc01n<2> conf_tdc01n<3> conf_tdc01n<4> conf_tdc01n<5> conf_tdc01n<6>
+                        + conf_tdc01n<7> conf_tdc01n<8> conf_tdc01n<9> conf_tdc01n<10>
+                        + conf_tdc01n<11> conf_tdc01n<12> conf_tdc01n<13> conf_tdc01n<14>
+                        + conf_tdc01n<15> conf_tdc01n<16> conf_tdc01n<17> conf_tdc01n<18>
+                        + conf_tdc01n<19> conf_tdc01p<0> conf_tdc01p<1> conf_tdc01p<2>
+                        + conf_tdc01p<3> conf_tdc01p<4> conf_tdc01p<5> conf_tdc01p<6> conf_tdc01p<7>
+                        + conf_tdc01p<8> conf_tdc01p<9> conf_tdc01p<10> conf_tdc01p<11>
+                        + conf_tdc01p<12> conf_tdc01p<13> conf_tdc01p<14> conf_tdc01p<15>
+                        + conf_tdc01p<16> conf_tdc01p<17> conf_tdc01p<18> conf_tdc01p<19> conf_tdc4b
+                        + conf_tdc10n<0> conf_tdc10n<1> conf_tdc10n<2> conf_tdc10n<3> conf_tdc10n<4>
+                        + conf_tdc10n<5> conf_tdc10n<6> conf_tdc10n<7> conf_tdc10n<8> conf_tdc10n<9>
+                        + conf_tdc10n<10> conf_tdc10n<11> conf_tdc10n<12> conf_tdc10n<13>
+                        + conf_tdc10n<14> conf_tdc10n<15> conf_tdc10n<16> conf_tdc10n<17>
+                        + conf_tdc10n<18> conf_tdc10n<19> conf_tdc10p<0> conf_tdc10p<1>
+                        + conf_tdc10p<2> conf_tdc10p<3> conf_tdc10p<4> conf_tdc10p<5> conf_tdc10p<6>
+                        + conf_tdc10p<7> conf_tdc10p<8> conf_tdc10p<9> conf_tdc10p<10>
+                        + conf_tdc10p<11> conf_tdc10p<12> conf_tdc10p<13> conf_tdc10p<14>
+                        + conf_tdc10p<15> conf_tdc10p<16> conf_tdc10p<17> conf_tdc10p<18>
+                        + conf_tdc10p<19> conf_tdc11n<0> conf_tdc11n<1> conf_tdc11n<2>
+                        + conf_tdc11n<3> conf_tdc11n<4> conf_tdc11n<5> conf_tdc11n<6> conf_tdc11n<7>
+                        + conf_tdc11n<8> conf_tdc11n<9> conf_tdc11n<10> conf_tdc11n<11>
+                        + conf_tdc11n<12> conf_tdc11n<13> conf_tdc11n<14> conf_tdc11n<15>
+                        + conf_tdc11n<16> conf_tdc11n<17> conf_tdc11n<18> conf_tdc11n<19>
+                        + conf_tdc11p<0> conf_tdc11p<1> conf_tdc11p<2> conf_tdc11p<3> conf_tdc11p<4>
+                        + conf_tdc11p<5> conf_tdc11p<6> conf_tdc11p<7> conf_tdc11p<8> conf_tdc11p<9>
+                        + conf_tdc11p<10> conf_tdc11p<11> conf_tdc11p<12> conf_tdc11p<13>
+                        + conf_tdc11p<14> conf_tdc11p<15> conf_tdc11p<16> conf_tdc11p<17>
+                        + conf_tdc11p<18> conf_tdc11p<19> conf_tdccal<0> conf_tdccal<1>
+                        + conf_tdccal<2> conf_tdccal<3> conf_tdccal<4> conf_tdccal<5> conf_tdccal<6>
+                        + conf_tdccal<7> conf_tdccal<8> conf_tdccal<9> conf_tdccnt<0> conf_tdccnt<1>
+                        + conf_tdccnt<2> conf_tdccnt<3> conf_tdccnt<4> conf_tdccnt<5> conf_tdccnt<6>
+                        + conf_tdccnt<7> conf_tdccnt<8> conf_tdccnt<9> conf_tdccnt<10>
+                        + conf_tdccnt<11> conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14>
+                        + conf_tdccnt<15> conf_tdcmax<0> conf_tdcmax<1> conf_tdcmax<2>
+                        + conf_tdcmax<3> conf_tdcmax<4> conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7>
+                        + conf_tdcwait<0> conf_tdcwait<1> conf_tdcwait<2> conf_tdcwait<3>
+                        + conf_tdcwait<4> conf_tdcwait<5> conf_tdcwait<6> conf_tdcwait<7> data_out
+                        + data_out_i<3> data_ready data_ready_i<3> enable_e2l enable_e2l_i<3>
+                        + ext_clk ro_enable ro_enable_i<3> ro_out rst scan_out<0> scan_out<1>
+                        + scan_out<2> scan_out<3> scan_out<4> scan_out<5> scan_out<6> scan_out<7>
+                        + scan_out<8> scan_out<9> scan_out<10> scan_out<11> scan_out<12>
+                        + scan_out<13> scan_out<14> scan_out<15> scan_out<16> scan_out<17>
+                        + scan_out<18> scan_out<19> scan_out<20> scan_out<21> scan_out<22> ser_clk
+                        + trng_rst trng_rst'_i<3> trng_rst_i<3> vdd_core vdd_dc vdd_tdc vss
+    Xi0 alarm0<0> alarm0<1> alarm1<0> alarm1<1> alarm_dc clk conf_dec0<0> conf_dec0<1> conf_dec0<2>
+        + conf_dec0<3> conf_dec0<4> conf_dec0<5> conf_dec0<6> conf_dec0<7> conf_dec0<8> conf_dec0<9>
+        + conf_dec1<0> conf_dec1<1> conf_dec1<2> conf_dec1<3> conf_dec1<4> conf_dec1<5> conf_dec1<6>
+        + conf_dec1<7> conf_dec1<8> conf_dec1<9> conf_seldc<0> conf_seldc<1> conf_seltdc<0>
+        + conf_seltdc<1> conf_tdc00n<0> conf_tdc00n<1> conf_tdc00n<2> conf_tdc00n<3> conf_tdc00n<4>
+        + conf_tdc00n<5> conf_tdc00n<6> conf_tdc00n<7> conf_tdc00n<8> conf_tdc00n<9> conf_tdc00n<10>
+        + conf_tdc00n<11> conf_tdc00n<12> conf_tdc00n<13> conf_tdc00n<14> conf_tdc00n<15>
+        + conf_tdc00n<16> conf_tdc00n<17> conf_tdc00n<18> conf_tdc00n<19> conf_tdc00p<0>
+        + conf_tdc00p<1> conf_tdc00p<2> conf_tdc00p<3> conf_tdc00p<4> conf_tdc00p<5> conf_tdc00p<6>
+        + conf_tdc00p<7> conf_tdc00p<8> conf_tdc00p<9> conf_tdc00p<10> conf_tdc00p<11>
+        + conf_tdc00p<12> conf_tdc00p<13> conf_tdc00p<14> conf_tdc00p<15> conf_tdc00p<16>
+        + conf_tdc00p<17> conf_tdc00p<18> conf_tdc00p<19> conf_tdc01n<0> conf_tdc01n<1>
+        + conf_tdc01n<2> conf_tdc01n<3> conf_tdc01n<4> conf_tdc01n<5> conf_tdc01n<6> conf_tdc01n<7>
+        + conf_tdc01n<8> conf_tdc01n<9> conf_tdc01n<10> conf_tdc01n<11> conf_tdc01n<12>
+        + conf_tdc01n<13> conf_tdc01n<14> conf_tdc01n<15> conf_tdc01n<16> conf_tdc01n<17>
+        + conf_tdc01n<18> conf_tdc01n<19> conf_tdc01p<0> conf_tdc01p<1> conf_tdc01p<2>
+        + conf_tdc01p<3> conf_tdc01p<4> conf_tdc01p<5> conf_tdc01p<6> conf_tdc01p<7> conf_tdc01p<8>
+        + conf_tdc01p<9> conf_tdc01p<10> conf_tdc01p<11> conf_tdc01p<12> conf_tdc01p<13>
+        + conf_tdc01p<14> conf_tdc01p<15> conf_tdc01p<16> conf_tdc01p<17> conf_tdc01p<18>
+        + conf_tdc01p<19> conf_tdc4b conf_tdc10n<0> conf_tdc10n<1> conf_tdc10n<2> conf_tdc10n<3>
+        + conf_tdc10n<4> conf_tdc10n<5> conf_tdc10n<6> conf_tdc10n<7> conf_tdc10n<8> conf_tdc10n<9>
+        + conf_tdc10n<10> conf_tdc10n<11> conf_tdc10n<12> conf_tdc10n<13> conf_tdc10n<14>
+        + conf_tdc10n<15> conf_tdc10n<16> conf_tdc10n<17> conf_tdc10n<18> conf_tdc10n<19>
+        + conf_tdc10p<0> conf_tdc10p<1> conf_tdc10p<2> conf_tdc10p<3> conf_tdc10p<4> conf_tdc10p<5>
+        + conf_tdc10p<6> conf_tdc10p<7> conf_tdc10p<8> conf_tdc10p<9> conf_tdc10p<10>
+        + conf_tdc10p<11> conf_tdc10p<12> conf_tdc10p<13> conf_tdc10p<14> conf_tdc10p<15>
+        + conf_tdc10p<16> conf_tdc10p<17> conf_tdc10p<18> conf_tdc10p<19> conf_tdc11n<0>
+        + conf_tdc11n<1> conf_tdc11n<2> conf_tdc11n<3> conf_tdc11n<4> conf_tdc11n<5> conf_tdc11n<6>
+        + conf_tdc11n<7> conf_tdc11n<8> conf_tdc11n<9> conf_tdc11n<10> conf_tdc11n<11>
+        + conf_tdc11n<12> conf_tdc11n<13> conf_tdc11n<14> conf_tdc11n<15> conf_tdc11n<16>
+        + conf_tdc11n<17> conf_tdc11n<18> conf_tdc11n<19> conf_tdc11p<0> conf_tdc11p<1>
+        + conf_tdc11p<2> conf_tdc11p<3> conf_tdc11p<4> conf_tdc11p<5> conf_tdc11p<6> conf_tdc11p<7>
+        + conf_tdc11p<8> conf_tdc11p<9> conf_tdc11p<10> conf_tdc11p<11> conf_tdc11p<12>
+        + conf_tdc11p<13> conf_tdc11p<14> conf_tdc11p<15> conf_tdc11p<16> conf_tdc11p<17>
+        + conf_tdc11p<18> conf_tdc11p<19> conf_tdcmax<0> conf_tdcmax<1> conf_tdcmax<2>
+        + conf_tdcmax<3> conf_tdcmax<4> conf_tdcmax<5> conf_tdcmax<6> conf_tdcmax<7> conf_tdcwait<0>
+        + conf_tdcwait<1> conf_tdcwait<2> conf_tdcwait<3> conf_tdcwait<4> conf_tdcwait<5>
+        + conf_tdcwait<6> conf_tdcwait<7> dcedge0<1> dcedge0<2> dcedge0<3> dcedge1<1> dcedge1<2>
+        + dcedge1<3> dcedge2<1> dcedge2<2> dcedge2<3> enable_e2l ro_enable ff0<0> ff0<1> ff0<2>
+        + ff0<3> ff0<4> ff0<5> ff0<6> ff0<7> ff1<0> ff1<1> ff1<2> ff1<3> ff1<4> ff1<5> ff1<6> ff1<7>
+        + int0 int1 ro_out_i<0> ro_out_i<1> ro_out_i<2> rand0 rand1 ready0 ready1 trng_rst trng_rst'
+        + conf_dcedgesel<0> conf_dcedgesel<1> sendfree'<8> sendfree'<9> sendfree'<16> sendfree'<0>
+        + sendfree'<1> sendfree'<12> sendfree'<2> sendfree'<3> sendfree'<13> sendfree'<10>
+        + sendfree'<11> sendfree'<17> sendfree'<4> sendfree'<5> sendfree'<14> sendfree'<6>
+        + sendfree'<7> sendfree'<15> vdd_core vdd_dc vdd_tdc vss trng_top_level
+    Xi1 enable_e2l_i<0> cal_out0 cal_out1 cal_out2 ro_out_i<3> ro_enable_i<0> clk conf_statecnt<0>
+        + conf_statecnt<1> conf_statecnt<2> conf_statecnt<3> conf_statecnt<4> conf_statecnt<5>
+        + conf_statecnt<6> conf_statecnt<7> conf_statecnt<8> conf_statecnt<9> conf_statecnt<10>
+        + conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14> conf_statecnt<15>
+        + conf_tdccal<0> conf_tdccal<1> conf_tdccal<2> conf_tdccal<3> conf_tdccal<4> conf_tdccal<5>
+        + conf_tdccal<6> conf_tdccal<7> conf_tdccal<8> conf_tdccal<9> data_out_i<0> data_ready_i<0>
+        + trng_rst_i<0> trng_rst'_i<0> rst_i rst'_i ser_clk scan_out<3> scan_out<0> scan_out<1>
+        + scan_out<2> scan_out<5> alarm0<0> alarm0<1> ff0<0> ff0<1> ff0<2> ff0<3> ff0<4> ff0<5>
+        + ff0<6> ff0<7> int0 ready0 alarm1<0> alarm1<1> ff1<0> ff1<1> ff1<2> ff1<3> ff1<4> ff1<5>
+        + ff1<6> ff1<7> int1 ready1 scan_out<4> vdd_core vss conf_top_level
+    Xi2 alarm_dc clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3>
+        + conf_statecnt<4> conf_statecnt<5> conf_statecnt<6> conf_statecnt<7> conf_statecnt<8>
+        + conf_statecnt<9> conf_statecnt<10> conf_statecnt<11> conf_statecnt<12> conf_statecnt<13>
+        + conf_statecnt<14> conf_statecnt<15> data_out_i<1> data_ready_i<1> trng_rst_i<1>
+        + trng_rst'_i<1> ro_out_i<1> enable_e2l_i<1> ro_enable_i<1> rand0 rand1 rst_i rst'_i
+        + conf_sendfree ser_clk scan_out<9> scan_out<6> scan_out<7> scan_out<8> scan_out<11>
+        + alarm0<0> alarm0<1> ready0 alarm1<0> alarm1<1> ready1 scan_out<10> vdd_core vss
+        + bit_top_level
+    Xi3 clk scan_out<17> scan_out<21> conf_statecnt<0> conf_statecnt<1> conf_statecnt<2>
+        + conf_statecnt<3> conf_statecnt<4> conf_statecnt<5> conf_statecnt<6> conf_statecnt<7>
+        + conf_statecnt<8> conf_statecnt<9> conf_statecnt<10> conf_statecnt<11> conf_statecnt<12>
+        + conf_statecnt<13> conf_statecnt<14> conf_statecnt<15> conf_tdccnt<0> conf_tdccnt<1>
+        + conf_tdccnt<2> conf_tdccnt<3> conf_tdccnt<4> conf_tdccnt<5> conf_tdccnt<6> conf_tdccnt<7>
+        + conf_tdccnt<8> conf_tdccnt<9> conf_tdccnt<10> conf_tdccnt<11> conf_tdccnt<12>
+        + conf_tdccnt<13> conf_tdccnt<14> conf_tdccnt<15> data_out_i<2> data_ready_i<2>
+        + trng_rst_i<2> trng_rst'_i<2> scan_out<18> enable_e2l_i<2> ro_enable_i<2> rst_i rst'_i
+        + ser_clk scan_out<22> scan_out<12> scan_out<13> scan_out<14> scan_out<15> scan_out<16>
+        + scan_out<20> ready0 ready1 scan_out<19> vdd_core vss async_top_level
+    Xi26 ro_out_i<0> ro_out_i<1> ro_out_i<2> ro_out_i<3> ro_out_sel conf_rooutsel<0>
+         + conf_rooutsel<1> vdd_core vss mux4
+    Xi15 ro_enable_i<0> ro_enable_i<1> ro_enable_i<2> ro_enable_i<3> net028 conf_ctrlsel<0>
+         + conf_ctrlsel<1> vdd_core vss mux4
+    Xi13 enable_e2l_i<0> enable_e2l_i<1> enable_e2l_i<2> enable_e2l_i<3> net024 conf_ctrlsel<0>
+         + conf_ctrlsel<1> vdd_core vss mux4
+    Xi11 data_ready_i<0> data_ready_i<1> data_ready_i<2> data_ready_i<3> net0162 conf_ctrlsel<0>
+         + conf_ctrlsel<1> vdd_core vss mux4
+    Xi9 data_out_i<0> data_out_i<1> data_out_i<2> data_out_i<3> net012 conf_ctrlsel<0>
+        + conf_ctrlsel<1> vdd_core vss mux4
+    Xi5 trng_rst'_i<0> trng_rst'_i<1> trng_rst'_i<2> trng_rst'_i<3> net0157 conf_ctrlsel<0>
+        + conf_ctrlsel<1> vdd_core vss mux4
+    Xi4 trng_rst_i<0> trng_rst_i<1> trng_rst_i<2> trng_rst_i<3> net0149 conf_ctrlsel<0>
+        + conf_ctrlsel<1> vdd_core vss mux4
+    Xi36 net073 clk vdd_core vss buffer_large
+    Xi33 rst rst_i vdd_core vss buffer_large
+    Xi32 rst' rst'_i vdd_core vss buffer_large
+    Xi30 net0142 ro_out vdd_core vss buffer_large
+    Xi16 net028 ro_enable vdd_core vss buffer_large
+    Xi14 net024 enable_e2l vdd_core vss buffer_large
+    Xi12 net0162 data_ready vdd_core vss buffer_large
+    Xi10 net012 data_out vdd_core vss buffer_large
+    Xi7 net0157 trng_rst' vdd_core vss buffer_large
+    Xi6 net0149 trng_rst vdd_core vss buffer_large
+    Xi25 cal_out2 dcedge2<1> vdd_core vss buffer
+    Xi24 cal_out1 dcedge2<3> vdd_core vss buffer
+    Xi23 cal_out0 dcedge2<2> vdd_core vss buffer
+    Xi22 cal_out2 dcedge1<2> vdd_core vss buffer
+    Xi21 cal_out1 dcedge1<1> vdd_core vss buffer
+    Xi20 cal_out0 dcedge1<3> vdd_core vss buffer
+    Xi19 cal_out2 dcedge0<3> vdd_core vss buffer
+    Xi18 cal_out1 dcedge0<2> vdd_core vss buffer
+    Xi17 cal_out0 dcedge0<1> vdd_core vss buffer
+    Xi28 ro_out_sel rooutfreq<0> rooutfreq<1> rooutfreq<2> rooutfreq<3> rooutfreq<4> rooutfreq<5>
+         + rooutfreq<6> rooutfreq<7> rooutfreq<8> rooutfreq<9> rooutfreq<10> rooutfreq<11>
+         + rooutfreq<12> rooutfreq<13> rooutfreq<14> rooutfreq<15> net0138 rst_i rst'_i vdd_core vss
+         + freq_scaler16
+    Xi29 rooutfreq<0> rooutfreq<1> rooutfreq<2> rooutfreq<3> rooutfreq<4> rooutfreq<5> rooutfreq<6>
+         + rooutfreq<7> rooutfreq<8> rooutfreq<9> rooutfreq<10> rooutfreq<11> rooutfreq<12>
+         + rooutfreq<13> rooutfreq<14> rooutfreq<15> net0142 conf_rooutfreqsel<0>
+         + conf_rooutfreqsel<1> conf_rooutfreqsel<2> conf_rooutfreqsel<3> vdd_core vss mux16
+    Xi31 rst rst' vdd_core vss inv
+    Xi34 gen_clk conf_clk<0> conf_clk<1> conf_clk<2> conf_clk<3> conf_clk<4> conf_clk<5> conf_clk<6>
+         + conf_clk<7> conf_clk<8> conf_clk<9> conf_clk<10> conf_clk<11> conf_clkenable rst_i rst'_i
+         + vdd_core vss clk_manager
+    Xi35 gen_clk ext_clk net073 conf_clksel vdd_core vss mux2
+    Xi37 conf_sendfree sendfree'<0> sendfree'<1> sendfree'<2> sendfree'<3> sendfree'<4> sendfree'<5>
+         + sendfree'<6> sendfree'<7> sendfree'<8> sendfree'<9> sendfree'<10> sendfree'<11>
+         + sendfree'<12> sendfree'<13> sendfree'<14> sendfree'<15> sendfree'<16> sendfree'<17>
+         + vdd_core vss one_to_18
+.ENDS
+
+.SUBCKT one_to_7 in out<0> out<1> out<2> out<3> out<4> out<5> out<6> vdd vss
+    Xi6 in out<6> vdd vss inv
+    Xi5 in out<3> vdd vss inv
+    Xi4 in out<5> vdd vss inv
+    Xi3 in out<4> vdd vss inv
+    Xi2 in out<2> vdd vss inv
+    Xi1 in out<1> vdd vss inv
+    Xi0 in out<0> vdd vss inv
+.ENDS
+
+.SUBCKT conf_2 clk in out<0> out<1> rst rst' vdd vss
+    Xi1 clk out<0> out<1> net14 rst rst' vdd vss dff_st_ar_buf
+    Xi0 clk in out<0> net13 rst rst' vdd vss dff_st_ar_buf
+.ENDS
+
+.SUBCKT conf_4 clk in out<0> out<1> out<2> out<3> rst rst' vdd vss
+    Xi1 clk out<1> out<2> out<3> rst rst' vdd vss conf_2
+    Xi0 clk in out<0> out<1> rst rst' vdd vss conf_2
+.ENDS
+
+.SUBCKT conf_8 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> rst rst' vdd vss
+    Xi1 clk out<3> out<4> out<5> out<6> out<7> rst rst' vdd vss conf_4
+    Xi0 clk in out<0> out<1> out<2> out<3> rst rst' vdd vss conf_4
+.ENDS
+
+.SUBCKT conf_16 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+                + out<11> out<12> out<13> out<14> out<15> rst rst' vdd vss
+    Xi1 clk out<7> out<8> out<9> out<10> out<11> out<12> out<13> out<14> out<15> rst rst' vdd vss
+        + conf_8
+    Xi0 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> rst rst' vdd vss conf_8
+.ENDS
+
+.SUBCKT conf_32 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+                + out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19> out<20>
+                + out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29> out<30>
+                + out<31> rst rst' vdd vss
+    Xi1 clk out<15> out<16> out<17> out<18> out<19> out<20> out<21> out<22> out<23> out<24> out<25>
+        + out<26> out<27> out<28> out<29> out<30> out<31> rst rst' vdd vss conf_16
+    Xi0 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10> out<11>
+        + out<12> out<13> out<14> out<15> rst rst' vdd vss conf_16
+.ENDS
+
+.SUBCKT conf_64 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+                + out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19> out<20>
+                + out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29> out<30>
+                + out<31> out<32> out<33> out<34> out<35> out<36> out<37> out<38> out<39> out<40>
+                + out<41> out<42> out<43> out<44> out<45> out<46> out<47> out<48> out<49> out<50>
+                + out<51> out<52> out<53> out<54> out<55> out<56> out<57> out<58> out<59> out<60>
+                + out<61> out<62> out<63> rst rst' vdd vss
+    Xi1 clk out<31> out<32> out<33> out<34> out<35> out<36> out<37> out<38> out<39> out<40> out<41>
+        + out<42> out<43> out<44> out<45> out<46> out<47> out<48> out<49> out<50> out<51> out<52>
+        + out<53> out<54> out<55> out<56> out<57> out<58> out<59> out<60> out<61> out<62> out<63>
+        + rst rst' vdd vss conf_32
+    Xi0 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10> out<11>
+        + out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19> out<20> out<21> out<22>
+        + out<23> out<24> out<25> out<26> out<27> out<28> out<29> out<30> out<31> rst rst' vdd vss
+        + conf_32
+.ENDS
+
+.SUBCKT conf_128 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                 + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19>
+                 + out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29>
+                 + out<30> out<31> out<32> out<33> out<34> out<35> out<36> out<37> out<38> out<39>
+                 + out<40> out<41> out<42> out<43> out<44> out<45> out<46> out<47> out<48> out<49>
+                 + out<50> out<51> out<52> out<53> out<54> out<55> out<56> out<57> out<58> out<59>
+                 + out<60> out<61> out<62> out<63> out<64> out<65> out<66> out<67> out<68> out<69>
+                 + out<70> out<71> out<72> out<73> out<74> out<75> out<76> out<77> out<78> out<79>
+                 + out<80> out<81> out<82> out<83> out<84> out<85> out<86> out<87> out<88> out<89>
+                 + out<90> out<91> out<92> out<93> out<94> out<95> out<96> out<97> out<98> out<99>
+                 + out<100> out<101> out<102> out<103> out<104> out<105> out<106> out<107> out<108>
+                 + out<109> out<110> out<111> out<112> out<113> out<114> out<115> out<116> out<117>
+                 + out<118> out<119> out<120> out<121> out<122> out<123> out<124> out<125> out<126>
+                 + out<127> rst rst' vdd vss
+    Xi1 clk out<63> out<64> out<65> out<66> out<67> out<68> out<69> out<70> out<71> out<72> out<73>
+        + out<74> out<75> out<76> out<77> out<78> out<79> out<80> out<81> out<82> out<83> out<84>
+        + out<85> out<86> out<87> out<88> out<89> out<90> out<91> out<92> out<93> out<94> out<95>
+        + out<96> out<97> out<98> out<99> out<100> out<101> out<102> out<103> out<104> out<105>
+        + out<106> out<107> out<108> out<109> out<110> out<111> out<112> out<113> out<114> out<115>
+        + out<116> out<117> out<118> out<119> out<120> out<121> out<122> out<123> out<124> out<125>
+        + out<126> out<127> rst rst' vdd vss conf_64
+    Xi0 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10> out<11>
+        + out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19> out<20> out<21> out<22>
+        + out<23> out<24> out<25> out<26> out<27> out<28> out<29> out<30> out<31> out<32> out<33>
+        + out<34> out<35> out<36> out<37> out<38> out<39> out<40> out<41> out<42> out<43> out<44>
+        + out<45> out<46> out<47> out<48> out<49> out<50> out<51> out<52> out<53> out<54> out<55>
+        + out<56> out<57> out<58> out<59> out<60> out<61> out<62> out<63> rst rst' vdd vss conf_64
+.ENDS
+
+.SUBCKT conf_256 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                 + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19>
+                 + out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29>
+                 + out<30> out<31> out<32> out<33> out<34> out<35> out<36> out<37> out<38> out<39>
+                 + out<40> out<41> out<42> out<43> out<44> out<45> out<46> out<47> out<48> out<49>
+                 + out<50> out<51> out<52> out<53> out<54> out<55> out<56> out<57> out<58> out<59>
+                 + out<60> out<61> out<62> out<63> out<64> out<65> out<66> out<67> out<68> out<69>
+                 + out<70> out<71> out<72> out<73> out<74> out<75> out<76> out<77> out<78> out<79>
+                 + out<80> out<81> out<82> out<83> out<84> out<85> out<86> out<87> out<88> out<89>
+                 + out<90> out<91> out<92> out<93> out<94> out<95> out<96> out<97> out<98> out<99>
+                 + out<100> out<101> out<102> out<103> out<104> out<105> out<106> out<107> out<108>
+                 + out<109> out<110> out<111> out<112> out<113> out<114> out<115> out<116> out<117>
+                 + out<118> out<119> out<120> out<121> out<122> out<123> out<124> out<125> out<126>
+                 + out<127> out<128> out<129> out<130> out<131> out<132> out<133> out<134> out<135>
+                 + out<136> out<137> out<138> out<139> out<140> out<141> out<142> out<143> out<144>
+                 + out<145> out<146> out<147> out<148> out<149> out<150> out<151> out<152> out<153>
+                 + out<154> out<155> out<156> out<157> out<158> out<159> out<160> out<161> out<162>
+                 + out<163> out<164> out<165> out<166> out<167> out<168> out<169> out<170> out<171>
+                 + out<172> out<173> out<174> out<175> out<176> out<177> out<178> out<179> out<180>
+                 + out<181> out<182> out<183> out<184> out<185> out<186> out<187> out<188> out<189>
+                 + out<190> out<191> out<192> out<193> out<194> out<195> out<196> out<197> out<198>
+                 + out<199> out<200> out<201> out<202> out<203> out<204> out<205> out<206> out<207>
+                 + out<208> out<209> out<210> out<211> out<212> out<213> out<214> out<215> out<216>
+                 + out<217> out<218> out<219> out<220> out<221> out<222> out<223> out<224> out<225>
+                 + out<226> out<227> out<228> out<229> out<230> out<231> out<232> out<233> out<234>
+                 + out<235> out<236> out<237> out<238> out<239> out<240> out<241> out<242> out<243>
+                 + out<244> out<245> out<246> out<247> out<248> out<249> out<250> out<251> out<252>
+                 + out<253> out<254> out<255> rst rst' vdd vss
+    Xi1 clk out<127> out<128> out<129> out<130> out<131> out<132> out<133> out<134> out<135>
+        + out<136> out<137> out<138> out<139> out<140> out<141> out<142> out<143> out<144> out<145>
+        + out<146> out<147> out<148> out<149> out<150> out<151> out<152> out<153> out<154> out<155>
+        + out<156> out<157> out<158> out<159> out<160> out<161> out<162> out<163> out<164> out<165>
+        + out<166> out<167> out<168> out<169> out<170> out<171> out<172> out<173> out<174> out<175>
+        + out<176> out<177> out<178> out<179> out<180> out<181> out<182> out<183> out<184> out<185>
+        + out<186> out<187> out<188> out<189> out<190> out<191> out<192> out<193> out<194> out<195>
+        + out<196> out<197> out<198> out<199> out<200> out<201> out<202> out<203> out<204> out<205>
+        + out<206> out<207> out<208> out<209> out<210> out<211> out<212> out<213> out<214> out<215>
+        + out<216> out<217> out<218> out<219> out<220> out<221> out<222> out<223> out<224> out<225>
+        + out<226> out<227> out<228> out<229> out<230> out<231> out<232> out<233> out<234> out<235>
+        + out<236> out<237> out<238> out<239> out<240> out<241> out<242> out<243> out<244> out<245>
+        + out<246> out<247> out<248> out<249> out<250> out<251> out<252> out<253> out<254> out<255>
+        + rst rst' vdd vss conf_128
+    Xi0 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10> out<11>
+        + out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19> out<20> out<21> out<22>
+        + out<23> out<24> out<25> out<26> out<27> out<28> out<29> out<30> out<31> out<32> out<33>
+        + out<34> out<35> out<36> out<37> out<38> out<39> out<40> out<41> out<42> out<43> out<44>
+        + out<45> out<46> out<47> out<48> out<49> out<50> out<51> out<52> out<53> out<54> out<55>
+        + out<56> out<57> out<58> out<59> out<60> out<61> out<62> out<63> out<64> out<65> out<66>
+        + out<67> out<68> out<69> out<70> out<71> out<72> out<73> out<74> out<75> out<76> out<77>
+        + out<78> out<79> out<80> out<81> out<82> out<83> out<84> out<85> out<86> out<87> out<88>
+        + out<89> out<90> out<91> out<92> out<93> out<94> out<95> out<96> out<97> out<98> out<99>
+        + out<100> out<101> out<102> out<103> out<104> out<105> out<106> out<107> out<108> out<109>
+        + out<110> out<111> out<112> out<113> out<114> out<115> out<116> out<117> out<118> out<119>
+        + out<120> out<121> out<122> out<123> out<124> out<125> out<126> out<127> rst rst' vdd vss
+        + conf_128
+.ENDS
+
+.SUBCKT conf_268 clk in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                 + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19>
+                 + out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29>
+                 + out<30> out<31> out<32> out<33> out<34> out<35> out<36> out<37> out<38> out<39>
+                 + out<40> out<41> out<42> out<43> out<44> out<45> out<46> out<47> out<48> out<49>
+                 + out<50> out<51> out<52> out<53> out<54> out<55> out<56> out<57> out<58> out<59>
+                 + out<60> out<61> out<62> out<63> out<64> out<65> out<66> out<67> out<68> out<69>
+                 + out<70> out<71> out<72> out<73> out<74> out<75> out<76> out<77> out<78> out<79>
+                 + out<80> out<81> out<82> out<83> out<84> out<85> out<86> out<87> out<88> out<89>
+                 + out<90> out<91> out<92> out<93> out<94> out<95> out<96> out<97> out<98> out<99>
+                 + out<100> out<101> out<102> out<103> out<104> out<105> out<106> out<107> out<108>
+                 + out<109> out<110> out<111> out<112> out<113> out<114> out<115> out<116> out<117>
+                 + out<118> out<119> out<120> out<121> out<122> out<123> out<124> out<125> out<126>
+                 + out<127> out<128> out<129> out<130> out<131> out<132> out<133> out<134> out<135>
+                 + out<136> out<137> out<138> out<139> out<140> out<141> out<142> out<143> out<144>
+                 + out<145> out<146> out<147> out<148> out<149> out<150> out<151> out<152> out<153>
+                 + out<154> out<155> out<156> out<157> out<158> out<159> out<160> out<161> out<162>
+                 + out<163> out<164> out<165> out<166> out<167> out<168> out<169> out<170> out<171>
+                 + out<172> out<173> out<174> out<175> out<176> out<177> out<178> out<179> out<180>
+                 + out<181> out<182> out<183> out<184> out<185> out<186> out<187> out<188> out<189>
+                 + out<190> out<191> out<192> out<193> out<194> out<195> out<196> out<197> out<198>
+                 + out<199> out<200> out<201> out<202> out<203> out<204> out<205> out<206> out<207>
+                 + out<208> out<209> out<210> out<211> out<212> out<213> out<214> out<215> out<216>
+                 + out<217> out<218> out<219> out<220> out<221> out<222> out<223> out<224> out<225>
+                 + out<226> out<227> out<228> out<229> out<230> out<231> out<232> out<233> out<234>
+                 + out<235> out<236> out<237> out<238> out<239> out<240> out<241> out<242> out<243>
+                 + out<244> out<245> out<246> out<247> out<248> out<249> out<250> out<251> out<252>
+                 + out<253> out<254> out<255> out<256> out<257> out<258> out<259> out<260> out<261>
+                 + out<262> out<263> out<264> out<265> out<266> out<267> rst vdd vss
+    Xi0 clk_i in out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+        + out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19> out<20> out<21>
+        + out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29> out<30> out<31> out<32>
+        + out<33> out<34> out<35> out<36> out<37> out<38> out<39> out<40> out<41> out<42> out<43>
+        + out<44> out<45> out<46> out<47> out<48> out<49> out<50> out<51> out<52> out<53> out<54>
+        + out<55> out<56> out<57> out<58> out<59> out<60> out<61> out<62> out<63> out<64> out<65>
+        + out<66> out<67> out<68> out<69> out<70> out<71> out<72> out<73> out<74> out<75> out<76>
+        + out<77> out<78> out<79> out<80> out<81> out<82> out<83> out<84> out<85> out<86> out<87>
+        + out<88> out<89> out<90> out<91> out<92> out<93> out<94> out<95> out<96> out<97> out<98>
+        + out<99> out<100> out<101> out<102> out<103> out<104> out<105> out<106> out<107> out<108>
+        + out<109> out<110> out<111> out<112> out<113> out<114> out<115> out<116> out<117> out<118>
+        + out<119> out<120> out<121> out<122> out<123> out<124> out<125> out<126> out<127> out<128>
+        + out<129> out<130> out<131> out<132> out<133> out<134> out<135> out<136> out<137> out<138>
+        + out<139> out<140> out<141> out<142> out<143> out<144> out<145> out<146> out<147> out<148>
+        + out<149> out<150> out<151> out<152> out<153> out<154> out<155> out<156> out<157> out<158>
+        + out<159> out<160> out<161> out<162> out<163> out<164> out<165> out<166> out<167> out<168>
+        + out<169> out<170> out<171> out<172> out<173> out<174> out<175> out<176> out<177> out<178>
+        + out<179> out<180> out<181> out<182> out<183> out<184> out<185> out<186> out<187> out<188>
+        + out<189> out<190> out<191> out<192> out<193> out<194> out<195> out<196> out<197> out<198>
+        + out<199> out<200> out<201> out<202> out<203> out<204> out<205> out<206> out<207> out<208>
+        + out<209> out<210> out<211> out<212> out<213> out<214> out<215> out<216> out<217> out<218>
+        + out<219> out<220> out<221> out<222> out<223> out<224> out<225> out<226> out<227> out<228>
+        + out<229> out<230> out<231> out<232> out<233> out<234> out<235> out<236> out<237> out<238>
+        + out<239> out<240> out<241> out<242> out<243> out<244> out<245> out<246> out<247> out<248>
+        + out<249> out<250> out<251> out<252> out<253> out<254> out<255> rst_i rst'_i vdd vss
+        + conf_256
+    Xi1 clk_i out<255> out<256> out<257> out<258> out<259> out<260> out<261> out<262> out<263> rst_i
+        + rst'_i vdd vss conf_8
+    Xi3 rst rst' vdd vss inv
+    Xi5 rst rst_i vdd vss buffer_large
+    Xi4 rst' rst'_i vdd vss buffer_large
+    Xi6 clk clk_i vdd vss buffer_large
+    Xi2 clk_i out<263> out<264> out<265> out<266> out<267> rst_i rst'_i vdd vss conf_4
+.ENDS
+
+.SUBCKT ctrl_trng_conf_combo conf<260> conf<261> conf<262> conf<263> conf<264> conf<265> conf<266>
+                             + conf<267> conf_clk conf_in conf_rst core_rst data_out data_ready
+                             + ext_clk ro_out scan<0> scan<1> scan<2> scan<3> scan<4> scan<5>
+                             + scan<6> scan<7> scan<8> scan<9> scan<10> scan<11> scan<12> scan<13>
+                             + scan<14> scan<15> scan<16> scan<17> scan<18> scan<19> scan<20>
+                             + scan<21> scan<22> scan<23> scan<24> scan<25> sendfree'<6> ser_clk
+                             + vdd_core vdd_dc vdd_tdc vss
+    Xi1 conf<253> conf<254> conf<255> conf<256> conf<257> conf<258> conf<259> conf<260> conf<261>
+        + conf<262> conf<263> conf<264> conf<265> conf<252> conf<0> conf<1> conf<49> conf<50>
+        + conf<67> conf<68> conf<69> conf<70> conf<71> conf<72> conf<73> conf<74> conf<75> conf<76>
+        + conf<77> conf<78> conf<79> conf<80> conf<81> conf<82> conf<83> conf<84> conf<85> conf<86>
+        + conf<2> conf<3> conf<4> conf<5> conf<266> conf<267> conf<247> conf<248> conf<249>
+        + conf<250> conf<48> conf<16> conf<17> conf<18> conf<19> conf<20> conf<21> conf<22> conf<23>
+        + conf<24> conf<25> conf<26> conf<27> conf<28> conf<29> conf<30> conf<31> conf<107>
+        + conf<108> conf<109> conf<110> conf<111> conf<112> conf<113> conf<114> conf<115> conf<116>
+        + conf<117> conf<118> conf<119> conf<120> conf<121> conf<122> conf<123> conf<124> conf<125>
+        + conf<126> conf<87> conf<88> conf<89> conf<90> conf<91> conf<92> conf<93> conf<94> conf<95>
+        + conf<96> conf<97> conf<98> conf<99> conf<100> conf<101> conf<102> conf<103> conf<104>
+        + conf<105> conf<106> conf<147> conf<148> conf<149> conf<150> conf<151> conf<152> conf<153>
+        + conf<154> conf<155> conf<156> conf<157> conf<158> conf<159> conf<160> conf<161> conf<162>
+        + conf<163> conf<164> conf<165> conf<166> conf<127> conf<128> conf<129> conf<130> conf<131>
+        + conf<132> conf<133> conf<134> conf<135> conf<136> conf<137> conf<138> conf<139> conf<140>
+        + conf<141> conf<142> conf<143> conf<144> conf<145> conf<146> conf<251> conf<187> conf<188>
+        + conf<189> conf<190> conf<191> conf<192> conf<193> conf<194> conf<195> conf<196> conf<197>
+        + conf<198> conf<199> conf<200> conf<201> conf<202> conf<203> conf<204> conf<205> conf<206>
+        + conf<167> conf<168> conf<169> conf<170> conf<171> conf<172> conf<173> conf<174> conf<175>
+        + conf<176> conf<177> conf<178> conf<179> conf<180> conf<181> conf<182> conf<183> conf<184>
+        + conf<185> conf<186> conf<227> conf<228> conf<229> conf<230> conf<231> conf<232> conf<233>
+        + conf<234> conf<235> conf<236> conf<237> conf<238> conf<239> conf<240> conf<241> conf<242>
+        + conf<243> conf<244> conf<245> conf<246> conf<207> conf<208> conf<209> conf<210> conf<211>
+        + conf<212> conf<213> conf<214> conf<215> conf<216> conf<217> conf<218> conf<219> conf<220>
+        + conf<221> conf<222> conf<223> conf<224> conf<225> conf<226> conf<6> conf<7> conf<8>
+        + conf<9> conf<10> conf<11> conf<12> conf<13> conf<14> conf<15> conf<32> conf<33> conf<34>
+        + conf<35> conf<36> conf<37> conf<38> conf<39> conf<40> conf<41> conf<42> conf<43> conf<44>
+        + conf<45> conf<46> conf<47> conf<59> conf<60> conf<61> conf<62> conf<63> conf<64> conf<65>
+        + conf<66> conf<51> conf<52> conf<53> conf<54> conf<55> conf<56> conf<57> conf<58> data_out
+        + sendfree'<2> data_ready sendfree'<3> scan<25> sendfree'<4> ext_clk scan<24> sendfree'<5>
+        + ro_out core_rst scan<0> scan<1> scan<2> scan<3> scan<4> scan<5> scan<6> scan<7> scan<8>
+        + scan<9> scan<10> scan<11> scan<12> scan<13> scan<14> scan<15> scan<16> scan<17> scan<18>
+        + scan<19> scan<20> scan<21> scan<22> ser_clk scan<23> sendfree'<1> sendfree'<0> vdd_core
+        + vdd_dc vdd_tdc vss ctrl_trng_combo
+    Xi2 conf<48> sendfree'<0> sendfree'<1> sendfree'<2> sendfree'<3> sendfree'<4> sendfree'<5>
+        + sendfree'<6> vdd_core vss one_to_7
+    Xi0 conf_clk conf_in conf<0> conf<1> conf<2> conf<3> conf<4> conf<5> conf<6> conf<7> conf<8>
+        + conf<9> conf<10> conf<11> conf<12> conf<13> conf<14> conf<15> conf<16> conf<17> conf<18>
+        + conf<19> conf<20> conf<21> conf<22> conf<23> conf<24> conf<25> conf<26> conf<27> conf<28>
+        + conf<29> conf<30> conf<31> conf<32> conf<33> conf<34> conf<35> conf<36> conf<37> conf<38>
+        + conf<39> conf<40> conf<41> conf<42> conf<43> conf<44> conf<45> conf<46> conf<47> conf<48>
+        + conf<49> conf<50> conf<51> conf<52> conf<53> conf<54> conf<55> conf<56> conf<57> conf<58>
+        + conf<59> conf<60> conf<61> conf<62> conf<63> conf<64> conf<65> conf<66> conf<67> conf<68>
+        + conf<69> conf<70> conf<71> conf<72> conf<73> conf<74> conf<75> conf<76> conf<77> conf<78>
+        + conf<79> conf<80> conf<81> conf<82> conf<83> conf<84> conf<85> conf<86> conf<87> conf<88>
+        + conf<89> conf<90> conf<91> conf<92> conf<93> conf<94> conf<95> conf<96> conf<97> conf<98>
+        + conf<99> conf<100> conf<101> conf<102> conf<103> conf<104> conf<105> conf<106> conf<107>
+        + conf<108> conf<109> conf<110> conf<111> conf<112> conf<113> conf<114> conf<115> conf<116>
+        + conf<117> conf<118> conf<119> conf<120> conf<121> conf<122> conf<123> conf<124> conf<125>
+        + conf<126> conf<127> conf<128> conf<129> conf<130> conf<131> conf<132> conf<133> conf<134>
+        + conf<135> conf<136> conf<137> conf<138> conf<139> conf<140> conf<141> conf<142> conf<143>
+        + conf<144> conf<145> conf<146> conf<147> conf<148> conf<149> conf<150> conf<151> conf<152>
+        + conf<153> conf<154> conf<155> conf<156> conf<157> conf<158> conf<159> conf<160> conf<161>
+        + conf<162> conf<163> conf<164> conf<165> conf<166> conf<167> conf<168> conf<169> conf<170>
+        + conf<171> conf<172> conf<173> conf<174> conf<175> conf<176> conf<177> conf<178> conf<179>
+        + conf<180> conf<181> conf<182> conf<183> conf<184> conf<185> conf<186> conf<187> conf<188>
+        + conf<189> conf<190> conf<191> conf<192> conf<193> conf<194> conf<195> conf<196> conf<197>
+        + conf<198> conf<199> conf<200> conf<201> conf<202> conf<203> conf<204> conf<205> conf<206>
+        + conf<207> conf<208> conf<209> conf<210> conf<211> conf<212> conf<213> conf<214> conf<215>
+        + conf<216> conf<217> conf<218> conf<219> conf<220> conf<221> conf<222> conf<223> conf<224>
+        + conf<225> conf<226> conf<227> conf<228> conf<229> conf<230> conf<231> conf<232> conf<233>
+        + conf<234> conf<235> conf<236> conf<237> conf<238> conf<239> conf<240> conf<241> conf<242>
+        + conf<243> conf<244> conf<245> conf<246> conf<247> conf<248> conf<249> conf<250> conf<251>
+        + conf<252> conf<253> conf<254> conf<255> conf<256> conf<257> conf<258> conf<259> conf<260>
+        + conf<261> conf<262> conf<263> conf<264> conf<265> conf<266> conf<267> conf_rst vdd_core
+        + vss conf_268
+.ENDS
+
+.SUBCKT scan_1 clk in_par in_ser out rst rst' ser vdd vss
+    Xi0 in_par in_ser net19 ser vdd vss mux2
+    Xi1 clk net19 out net21 rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT scan_2 clk in_par<0> in_par<1> in_ser out rst rst' ser vdd vss
+    Xi1 clk in_par<1> net13 out rst rst' ser vdd vss scan_1
+    Xi0 clk in_par<0> in_ser net13 rst rst' ser vdd vss scan_1
+.ENDS
+
+.SUBCKT scan_4 clk in_par<0> in_par<1> in_par<2> in_par<3> in_ser out rst rst' ser vdd vss
+    Xi1 clk in_par<2> in_par<3> net13 out rst rst' ser vdd vss scan_2
+    Xi0 clk in_par<0> in_par<1> in_ser net13 rst rst' ser vdd vss scan_2
+.ENDS
+
+.SUBCKT scan_8 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+               + in_ser out rst rst' ser vdd vss
+    Xi1 clk in_par<4> in_par<5> in_par<6> in_par<7> net13 out rst rst' ser vdd vss scan_4
+    Xi0 clk in_par<0> in_par<1> in_par<2> in_par<3> in_ser net13 rst rst' ser vdd vss scan_4
+.ENDS
+
+.SUBCKT scan_16 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+                + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14>
+                + in_par<15> in_ser out rst rst' ser vdd vss
+    Xi1 clk in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + net13 out rst rst' ser vdd vss scan_8
+    Xi0 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7> in_ser
+        + net13 rst rst' ser vdd vss scan_8
+.ENDS
+
+.SUBCKT scan_32 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+                + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14>
+                + in_par<15> in_par<16> in_par<17> in_par<18> in_par<19> in_par<20> in_par<21>
+                + in_par<22> in_par<23> in_par<24> in_par<25> in_par<26> in_par<27> in_par<28>
+                + in_par<29> in_par<30> in_par<31> in_ser out rst rst' ser vdd vss
+    Xi1 clk in_par<16> in_par<17> in_par<18> in_par<19> in_par<20> in_par<21> in_par<22> in_par<23>
+        + in_par<24> in_par<25> in_par<26> in_par<27> in_par<28> in_par<29> in_par<30> in_par<31>
+        + net13 out rst rst' ser vdd vss scan_16
+    Xi0 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+        + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + in_ser net13 rst rst' ser vdd vss scan_16
+.ENDS
+
+.SUBCKT scan_34 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+                + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14>
+                + in_par<15> in_par<16> in_par<17> in_par<18> in_par<19> in_par<20> in_par<21>
+                + in_par<22> in_par<23> in_par<24> in_par<25> in_par<26> in_par<27> in_par<28>
+                + in_par<29> in_par<30> in_par<31> in_par<32> in_par<33> in_ser out rst ser vdd vss
+    Xi2 rst rst' vdd vss inv
+    Xi0 clk_i in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+        + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + in_par<16> in_par<17> in_par<18> in_par<19> in_par<20> in_par<21> in_par<22> in_par<23>
+        + in_par<24> in_par<25> in_par<26> in_par<27> in_par<28> in_par<29> in_par<30> in_par<31>
+        + in_ser net13 rst_i rst'_i ser_i vdd vss scan_32
+    Xi1 clk_i in_par<32> in_par<33> net13 out_i rst_i rst'_i ser_i vdd vss scan_2
+    Xi7 out_i out vdd vss buffer_large
+    Xi6 ser ser_i vdd vss buffer_large
+    Xi5 clk clk_i vdd vss buffer_large
+    Xi4 rst rst_i vdd vss buffer_large
+    Xi3 rst' rst'_i vdd vss buffer_large
+.ENDS
+
+.SUBCKT ctrl_trng_conf_scan_combo conf_clk conf_in conf_rst core_rst data_out data_ready ext_clk
+                                  + ro_out scan_clk scan_out scan_rst scan_ser ser_clk vdd_core
+                                  + vdd_dc vdd_tdc vss
+    Xi0 scan<26> scan<27> scan<28> scan<29> scan<30> scan<31> scan<32> scan<33> conf_clk conf_in
+        + conf_rst core_rst data_out data_ready ext_clk ro_out scan<0> scan<1> scan<2> scan<3>
+        + scan<4> scan<5> scan<6> scan<7> scan<8> scan<9> scan<10> scan<11> scan<12> scan<13>
+        + scan<14> scan<15> scan<16> scan<17> scan<18> scan<19> scan<20> scan<21> scan<22> scan<23>
+        + scan<24> scan<25> net21 ser_clk vdd_core vdd_dc vdd_tdc vss ctrl_trng_conf_combo
+    Xi1 scan_clk scan<0> scan<1> scan<2> scan<3> scan<4> scan<5> scan<6> scan<7> scan<8> scan<9>
+        + scan<10> scan<11> scan<12> scan<13> scan<14> scan<15> scan<16> scan<17> scan<18> scan<19>
+        + scan<20> scan<21> scan<22> scan<23> scan<24> scan<25> scan<26> scan<27> scan<28> scan<29>
+        + scan<30> scan<31> scan<32> scan<33> net21 scan_out scan_rst scan_ser vdd_core vss scan_34
+.ENDS
+
+.SUBCKT inv_jit in out vdd vss
+    Mm0 out in vdd vdd p_mos l=60n w=480.0n m=1
+    Mm1 out in vss vss n_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dc_jit_2 clk in last out<0> out<1> rst rst' vdd vss
+    Xi3 clk last out<1> net24 rst rst' vdd vss dff_st_ar
+    Xi2 clk int net25 out<0> rst rst' vdd vss dff_st_ar
+    Xi1 int last vdd vss inv_jit
+    Xi0 in int vdd vss inv_jit
+.ENDS
+
+.SUBCKT dc_jit_4 clk in last out<0> out<1> out<2> out<3> rst rst' vdd vss
+    Xi1 clk int last out<2> out<3> rst rst' vdd vss dc_jit_2
+    Xi0 clk in int out<0> out<1> rst rst' vdd vss dc_jit_2
+.ENDS
+
+.SUBCKT dc_jit_8 clk in last out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> rst rst' vdd
+                 + vss
+    Xi1 clk int last out<4> out<5> out<6> out<7> rst rst' vdd vss dc_jit_4
+    Xi0 clk in int out<0> out<1> out<2> out<3> rst rst' vdd vss dc_jit_4
+.ENDS
+
+.SUBCKT dc_jit_16 clk in last out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                  + out<10> out<11> out<12> out<13> out<14> out<15> rst rst' vdd vss
+    Xi1 clk int last out<8> out<9> out<10> out<11> out<12> out<13> out<14> out<15> rst rst' vdd vss
+        + dc_jit_8
+    Xi0 clk in int out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> rst rst' vdd vss dc_jit_8
+.ENDS
+
+.SUBCKT dc_jit_32 clk in last out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                  + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19>
+                  + out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29>
+                  + out<30> out<31> rst rst' vdd vss
+    Xi1 clk int last out<16> out<17> out<18> out<19> out<20> out<21> out<22> out<23> out<24> out<25>
+        + out<26> out<27> out<28> out<29> out<30> out<31> rst rst' vdd vss dc_jit_16
+    Xi0 clk in int out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+        + out<11> out<12> out<13> out<14> out<15> rst rst' vdd vss dc_jit_16
+.ENDS
+
+.SUBCKT dc_jit_64 clk in last out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                  + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19>
+                  + out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29>
+                  + out<30> out<31> out<32> out<33> out<34> out<35> out<36> out<37> out<38> out<39>
+                  + out<40> out<41> out<42> out<43> out<44> out<45> out<46> out<47> out<48> out<49>
+                  + out<50> out<51> out<52> out<53> out<54> out<55> out<56> out<57> out<58> out<59>
+                  + out<60> out<61> out<62> out<63> rst rst' vdd vss
+    Xi1 clk int last out<32> out<33> out<34> out<35> out<36> out<37> out<38> out<39> out<40> out<41>
+        + out<42> out<43> out<44> out<45> out<46> out<47> out<48> out<49> out<50> out<51> out<52>
+        + out<53> out<54> out<55> out<56> out<57> out<58> out<59> out<60> out<61> out<62> out<63>
+        + rst rst' vdd vss dc_jit_32
+    Xi0 clk in int out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+        + out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19> out<20> out<21>
+        + out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29> out<30> out<31> rst rst'
+        + vdd vss dc_jit_32
+.ENDS
+
+.SUBCKT dc_jit_128 clk in last out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                   + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19>
+                   + out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29>
+                   + out<30> out<31> out<32> out<33> out<34> out<35> out<36> out<37> out<38> out<39>
+                   + out<40> out<41> out<42> out<43> out<44> out<45> out<46> out<47> out<48> out<49>
+                   + out<50> out<51> out<52> out<53> out<54> out<55> out<56> out<57> out<58> out<59>
+                   + out<60> out<61> out<62> out<63> out<64> out<65> out<66> out<67> out<68> out<69>
+                   + out<70> out<71> out<72> out<73> out<74> out<75> out<76> out<77> out<78> out<79>
+                   + out<80> out<81> out<82> out<83> out<84> out<85> out<86> out<87> out<88> out<89>
+                   + out<90> out<91> out<92> out<93> out<94> out<95> out<96> out<97> out<98> out<99>
+                   + out<100> out<101> out<102> out<103> out<104> out<105> out<106> out<107>
+                   + out<108> out<109> out<110> out<111> out<112> out<113> out<114> out<115>
+                   + out<116> out<117> out<118> out<119> out<120> out<121> out<122> out<123>
+                   + out<124> out<125> out<126> out<127> rst rst' vdd vss
+    Xi1 clk int last out<64> out<65> out<66> out<67> out<68> out<69> out<70> out<71> out<72> out<73>
+        + out<74> out<75> out<76> out<77> out<78> out<79> out<80> out<81> out<82> out<83> out<84>
+        + out<85> out<86> out<87> out<88> out<89> out<90> out<91> out<92> out<93> out<94> out<95>
+        + out<96> out<97> out<98> out<99> out<100> out<101> out<102> out<103> out<104> out<105>
+        + out<106> out<107> out<108> out<109> out<110> out<111> out<112> out<113> out<114> out<115>
+        + out<116> out<117> out<118> out<119> out<120> out<121> out<122> out<123> out<124> out<125>
+        + out<126> out<127> rst rst' vdd vss dc_jit_64
+    Xi0 clk in int out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+        + out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19> out<20> out<21>
+        + out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29> out<30> out<31> out<32>
+        + out<33> out<34> out<35> out<36> out<37> out<38> out<39> out<40> out<41> out<42> out<43>
+        + out<44> out<45> out<46> out<47> out<48> out<49> out<50> out<51> out<52> out<53> out<54>
+        + out<55> out<56> out<57> out<58> out<59> out<60> out<61> out<62> out<63> rst rst' vdd vss
+        + dc_jit_64
+.ENDS
+
+.SUBCKT scan_jit_2 clk in_par<0> in_par<1> in_ser out rst rst' ser vdd vss
+    Xi1 clk net12 out net14 rst rst' vdd vss dff_st_ar
+    Xi0 clk net07 net11 net15 rst rst' vdd vss dff_st_ar
+    Xi4 in_par<0> in_ser net07 ser vdd vss mux2
+    Xi2 in_par<1> net11 net12 ser vdd vss mux2
+.ENDS
+
+.SUBCKT scan_jit_4 clk in_par<0> in_par<1> in_par<2> in_par<3> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_ser net8 rst rst' ser vdd vss scan_jit_2
+    Xi6 clk in_par<2> in_par<3> net8 out rst rst' ser vdd vss scan_jit_2
+.ENDS
+
+.SUBCKT scan_jit_8 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6>
+                   + in_par<7> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_par<2> in_par<3> in_ser net8 rst rst' ser vdd vss scan_jit_4
+    Xi6 clk in_par<4> in_par<5> in_par<6> in_par<7> net8 out rst rst' ser vdd vss scan_jit_4
+.ENDS
+
+.SUBCKT scan_jit_16 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6>
+                    + in_par<7> in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13>
+                    + in_par<14> in_par<15> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7> in_ser
+        + net8 rst rst' ser vdd vss scan_jit_8
+    Xi6 clk in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + net8 out rst rst' ser vdd vss scan_jit_8
+.ENDS
+
+.SUBCKT scan_jit_32 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6>
+                    + in_par<7> in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13>
+                    + in_par<14> in_par<15> in_par<16> in_par<17> in_par<18> in_par<19> in_par<20>
+                    + in_par<21> in_par<22> in_par<23> in_par<24> in_par<25> in_par<26> in_par<27>
+                    + in_par<28> in_par<29> in_par<30> in_par<31> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+        + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + in_ser net8 rst rst' ser vdd vss scan_jit_16
+    Xi6 clk in_par<16> in_par<17> in_par<18> in_par<19> in_par<20> in_par<21> in_par<22> in_par<23>
+        + in_par<24> in_par<25> in_par<26> in_par<27> in_par<28> in_par<29> in_par<30> in_par<31>
+        + net8 out rst rst' ser vdd vss scan_jit_16
+.ENDS
+
+.SUBCKT scan_jit_64 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6>
+                    + in_par<7> in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13>
+                    + in_par<14> in_par<15> in_par<16> in_par<17> in_par<18> in_par<19> in_par<20>
+                    + in_par<21> in_par<22> in_par<23> in_par<24> in_par<25> in_par<26> in_par<27>
+                    + in_par<28> in_par<29> in_par<30> in_par<31> in_par<32> in_par<33> in_par<34>
+                    + in_par<35> in_par<36> in_par<37> in_par<38> in_par<39> in_par<40> in_par<41>
+                    + in_par<42> in_par<43> in_par<44> in_par<45> in_par<46> in_par<47> in_par<48>
+                    + in_par<49> in_par<50> in_par<51> in_par<52> in_par<53> in_par<54> in_par<55>
+                    + in_par<56> in_par<57> in_par<58> in_par<59> in_par<60> in_par<61> in_par<62>
+                    + in_par<63> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+        + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + in_par<16> in_par<17> in_par<18> in_par<19> in_par<20> in_par<21> in_par<22> in_par<23>
+        + in_par<24> in_par<25> in_par<26> in_par<27> in_par<28> in_par<29> in_par<30> in_par<31>
+        + in_ser net8 rst rst' ser vdd vss scan_jit_32
+    Xi6 clk in_par<32> in_par<33> in_par<34> in_par<35> in_par<36> in_par<37> in_par<38> in_par<39>
+        + in_par<40> in_par<41> in_par<42> in_par<43> in_par<44> in_par<45> in_par<46> in_par<47>
+        + in_par<48> in_par<49> in_par<50> in_par<51> in_par<52> in_par<53> in_par<54> in_par<55>
+        + in_par<56> in_par<57> in_par<58> in_par<59> in_par<60> in_par<61> in_par<62> in_par<63>
+        + net8 out rst rst' ser vdd vss scan_jit_32
+.ENDS
+
+.SUBCKT scan_jit_128 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6>
+                     + in_par<7> in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13>
+                     + in_par<14> in_par<15> in_par<16> in_par<17> in_par<18> in_par<19> in_par<20>
+                     + in_par<21> in_par<22> in_par<23> in_par<24> in_par<25> in_par<26> in_par<27>
+                     + in_par<28> in_par<29> in_par<30> in_par<31> in_par<32> in_par<33> in_par<34>
+                     + in_par<35> in_par<36> in_par<37> in_par<38> in_par<39> in_par<40> in_par<41>
+                     + in_par<42> in_par<43> in_par<44> in_par<45> in_par<46> in_par<47> in_par<48>
+                     + in_par<49> in_par<50> in_par<51> in_par<52> in_par<53> in_par<54> in_par<55>
+                     + in_par<56> in_par<57> in_par<58> in_par<59> in_par<60> in_par<61> in_par<62>
+                     + in_par<63> in_par<64> in_par<65> in_par<66> in_par<67> in_par<68> in_par<69>
+                     + in_par<70> in_par<71> in_par<72> in_par<73> in_par<74> in_par<75> in_par<76>
+                     + in_par<77> in_par<78> in_par<79> in_par<80> in_par<81> in_par<82> in_par<83>
+                     + in_par<84> in_par<85> in_par<86> in_par<87> in_par<88> in_par<89> in_par<90>
+                     + in_par<91> in_par<92> in_par<93> in_par<94> in_par<95> in_par<96> in_par<97>
+                     + in_par<98> in_par<99> in_par<100> in_par<101> in_par<102> in_par<103>
+                     + in_par<104> in_par<105> in_par<106> in_par<107> in_par<108> in_par<109>
+                     + in_par<110> in_par<111> in_par<112> in_par<113> in_par<114> in_par<115>
+                     + in_par<116> in_par<117> in_par<118> in_par<119> in_par<120> in_par<121>
+                     + in_par<122> in_par<123> in_par<124> in_par<125> in_par<126> in_par<127>
+                     + in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+        + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + in_par<16> in_par<17> in_par<18> in_par<19> in_par<20> in_par<21> in_par<22> in_par<23>
+        + in_par<24> in_par<25> in_par<26> in_par<27> in_par<28> in_par<29> in_par<30> in_par<31>
+        + in_par<32> in_par<33> in_par<34> in_par<35> in_par<36> in_par<37> in_par<38> in_par<39>
+        + in_par<40> in_par<41> in_par<42> in_par<43> in_par<44> in_par<45> in_par<46> in_par<47>
+        + in_par<48> in_par<49> in_par<50> in_par<51> in_par<52> in_par<53> in_par<54> in_par<55>
+        + in_par<56> in_par<57> in_par<58> in_par<59> in_par<60> in_par<61> in_par<62> in_par<63>
+        + in_ser net8 rst rst' ser vdd vss scan_jit_64
+    Xi6 clk in_par<64> in_par<65> in_par<66> in_par<67> in_par<68> in_par<69> in_par<70> in_par<71>
+        + in_par<72> in_par<73> in_par<74> in_par<75> in_par<76> in_par<77> in_par<78> in_par<79>
+        + in_par<80> in_par<81> in_par<82> in_par<83> in_par<84> in_par<85> in_par<86> in_par<87>
+        + in_par<88> in_par<89> in_par<90> in_par<91> in_par<92> in_par<93> in_par<94> in_par<95>
+        + in_par<96> in_par<97> in_par<98> in_par<99> in_par<100> in_par<101> in_par<102>
+        + in_par<103> in_par<104> in_par<105> in_par<106> in_par<107> in_par<108> in_par<109>
+        + in_par<110> in_par<111> in_par<112> in_par<113> in_par<114> in_par<115> in_par<116>
+        + in_par<117> in_par<118> in_par<119> in_par<120> in_par<121> in_par<122> in_par<123>
+        + in_par<124> in_par<125> in_par<126> in_par<127> net8 out rst rst' ser vdd vss scan_jit_64
+.ENDS
+
+.SUBCKT dc_scan_jit_128 dc_clk dc_in dc_last dc_rst dc_rst' scan_clk scan_in_ser scan_out scan_rst
+                        + scan_rst' scan_ser vdd vss
+    Xi0 dc_clk dc_in dc_last dc_out<0> dc_out<1> dc_out<2> dc_out<3> dc_out<4> dc_out<5> dc_out<6>
+        + dc_out<7> dc_out<8> dc_out<9> dc_out<10> dc_out<11> dc_out<12> dc_out<13> dc_out<14>
+        + dc_out<15> dc_out<16> dc_out<17> dc_out<18> dc_out<19> dc_out<20> dc_out<21> dc_out<22>
+        + dc_out<23> dc_out<24> dc_out<25> dc_out<26> dc_out<27> dc_out<28> dc_out<29> dc_out<30>
+        + dc_out<31> dc_out<32> dc_out<33> dc_out<34> dc_out<35> dc_out<36> dc_out<37> dc_out<38>
+        + dc_out<39> dc_out<40> dc_out<41> dc_out<42> dc_out<43> dc_out<44> dc_out<45> dc_out<46>
+        + dc_out<47> dc_out<48> dc_out<49> dc_out<50> dc_out<51> dc_out<52> dc_out<53> dc_out<54>
+        + dc_out<55> dc_out<56> dc_out<57> dc_out<58> dc_out<59> dc_out<60> dc_out<61> dc_out<62>
+        + dc_out<63> dc_out<64> dc_out<65> dc_out<66> dc_out<67> dc_out<68> dc_out<69> dc_out<70>
+        + dc_out<71> dc_out<72> dc_out<73> dc_out<74> dc_out<75> dc_out<76> dc_out<77> dc_out<78>
+        + dc_out<79> dc_out<80> dc_out<81> dc_out<82> dc_out<83> dc_out<84> dc_out<85> dc_out<86>
+        + dc_out<87> dc_out<88> dc_out<89> dc_out<90> dc_out<91> dc_out<92> dc_out<93> dc_out<94>
+        + dc_out<95> dc_out<96> dc_out<97> dc_out<98> dc_out<99> dc_out<100> dc_out<101> dc_out<102>
+        + dc_out<103> dc_out<104> dc_out<105> dc_out<106> dc_out<107> dc_out<108> dc_out<109>
+        + dc_out<110> dc_out<111> dc_out<112> dc_out<113> dc_out<114> dc_out<115> dc_out<116>
+        + dc_out<117> dc_out<118> dc_out<119> dc_out<120> dc_out<121> dc_out<122> dc_out<123>
+        + dc_out<124> dc_out<125> dc_out<126> dc_out<127> dc_rst dc_rst' vdd vss dc_jit_128
+    Xi1 scan_clk dc_out<0> dc_out<1> dc_out<2> dc_out<3> dc_out<4> dc_out<5> dc_out<6> dc_out<7>
+        + dc_out<8> dc_out<9> dc_out<10> dc_out<11> dc_out<12> dc_out<13> dc_out<14> dc_out<15>
+        + dc_out<16> dc_out<17> dc_out<18> dc_out<19> dc_out<20> dc_out<21> dc_out<22> dc_out<23>
+        + dc_out<24> dc_out<25> dc_out<26> dc_out<27> dc_out<28> dc_out<29> dc_out<30> dc_out<31>
+        + dc_out<32> dc_out<33> dc_out<34> dc_out<35> dc_out<36> dc_out<37> dc_out<38> dc_out<39>
+        + dc_out<40> dc_out<41> dc_out<42> dc_out<43> dc_out<44> dc_out<45> dc_out<46> dc_out<47>
+        + dc_out<48> dc_out<49> dc_out<50> dc_out<51> dc_out<52> dc_out<53> dc_out<54> dc_out<55>
+        + dc_out<56> dc_out<57> dc_out<58> dc_out<59> dc_out<60> dc_out<61> dc_out<62> dc_out<63>
+        + dc_out<64> dc_out<65> dc_out<66> dc_out<67> dc_out<68> dc_out<69> dc_out<70> dc_out<71>
+        + dc_out<72> dc_out<73> dc_out<74> dc_out<75> dc_out<76> dc_out<77> dc_out<78> dc_out<79>
+        + dc_out<80> dc_out<81> dc_out<82> dc_out<83> dc_out<84> dc_out<85> dc_out<86> dc_out<87>
+        + dc_out<88> dc_out<89> dc_out<90> dc_out<91> dc_out<92> dc_out<93> dc_out<94> dc_out<95>
+        + dc_out<96> dc_out<97> dc_out<98> dc_out<99> dc_out<100> dc_out<101> dc_out<102>
+        + dc_out<103> dc_out<104> dc_out<105> dc_out<106> dc_out<107> dc_out<108> dc_out<109>
+        + dc_out<110> dc_out<111> dc_out<112> dc_out<113> dc_out<114> dc_out<115> dc_out<116>
+        + dc_out<117> dc_out<118> dc_out<119> dc_out<120> dc_out<121> dc_out<122> dc_out<123>
+        + dc_out<124> dc_out<125> dc_out<126> dc_out<127> scan_in_ser scan_out scan_rst scan_rst'
+        + scan_ser vdd vss scan_jit_128
+.ENDS
+
+.SUBCKT jit_top_half conf<15> conf_clk conf_in conf_rst conf_rst' core_rst core_rst' dc_clk
+                     + ro_enable ro_out scan_clk scan_in_ser scan_out scan_rst scan_rst' scan_ser
+                     + vdd_core vdd_jit vss
+    Xi0 ro conf<0> conf<1> conf<2> conf<3> conf<4> conf<5> conf<6> conf<7> conf<8> conf<9> conf<10>
+        + conf<11> ro_enable core_rst core_rst' vdd_jit vss clk_manager
+    Xi1 dc_clk ro last core_rst core_rst' scan_clk scan_in_ser scan_int scan_rst scan_rst' scan_ser
+        + vdd_core vss dc_scan_jit_128
+    Xi2 cnt_clk cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> cnt<8> cnt<9> cnt<10>
+        + cnt<11> cnt<12> cnt<13> cnt<14> cnt<15> cnt<16> cnt<17> cnt<18> cnt<19> cnt<20> cnt<21>
+        + cnt<22> cnt<23> cnt<24> cnt<25> cnt<26> cnt<27> cnt<28> cnt<29> cnt<30> cnt<31> net22
+        + core_rst core_rst' vdd_core vss async_counter_32
+    Xi3 cnt<8> cnt<9> cnt<10> cnt<11> cnt<12> cnt<13> cnt<14> cnt<15> cnt<16> cnt<17> cnt<18>
+        + cnt<19> cnt<20> cnt<21> cnt<22> cnt<23> ro_out_i conf<12> conf<13> conf<14> conf<15>
+        + vdd_core vss mux16
+    Xi4 conf_clk conf_in conf<0> conf<1> conf<2> conf<3> conf<4> conf<5> conf<6> conf<7> conf<8>
+        + conf<9> conf<10> conf<11> conf<12> conf<13> conf<14> conf<15> conf_rst conf_rst' vdd_core
+        + vss conf_16
+    Xi5 scan_clk cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> cnt<8> cnt<9> cnt<10>
+        + cnt<11> cnt<12> cnt<13> cnt<14> cnt<15> cnt<16> cnt<17> cnt<18> cnt<19> cnt<20> cnt<21>
+        + cnt<22> cnt<23> cnt<24> cnt<25> cnt<26> cnt<27> cnt<28> cnt<29> cnt<30> cnt<31> scan_int
+        + scan_out_i scan_rst scan_rst' scan_ser vdd_core vss scan_32
+    Xi7 scan_out_i scan_out vdd_core vss buffer_large
+    Xi6 ro_out_i ro_out vdd_core vss buffer_large
+    Xi8 last dc_clk cnt_clk vdd_core vss nor2
+.ENDS
+
+.SUBCKT jit_top_full conf_clk conf_in conf_rst core_rst dc_clk ro_enable ro_out0 ro_out1 scan_clk
+                     + scan_out scan_rst scan_ser vdd_core vdd_jit0 vdd_jit1 vss
+    Xi1 net034 conf_clk_i conf_int conf_rst_i conf_rst'_i core_rst_i core_rst'_i dc_clk_i ro_enable
+        + ro_out1 scan_clk_i scan_out_int scan_out scan_rst_i scan_rst'_i scan_ser_i vdd_core
+        + vdd_jit1 vss jit_top_half
+    Xi0 conf_int conf_clk_i conf_in conf_rst_i conf_rst'_i core_rst_i core_rst'_i dc_clk_i ro_enable
+        + ro_out0 scan_clk_i scan_out scan_out_int scan_rst_i scan_rst'_i scan_ser_i vdd_core
+        + vdd_jit0 vss jit_top_half
+    Xi4 scan_rst scan_rst' vdd_core vss inv
+    Xi3 conf_rst conf_rst' vdd_core vss inv
+    Xi2 core_rst core_rst' vdd_core vss inv
+    Xi14 dc_clk dc_clk_i vdd_core vss buffer_large
+    Xi13 conf_clk conf_clk_i vdd_core vss buffer_large
+    Xi12 scan_clk scan_clk_i vdd_core vss buffer_large
+    Xi11 scan_ser scan_ser_i vdd_core vss buffer_large
+    Xi10 scan_rst scan_rst_i vdd_core vss buffer_large
+    Xi9 scan_rst' scan_rst'_i vdd_core vss buffer_large
+    Xi8 conf_rst' conf_rst'_i vdd_core vss buffer_large
+    Xi7 conf_rst conf_rst_i vdd_core vss buffer_large
+    Xi6 core_rst core_rst_i vdd_core vss buffer_large
+    Xi5 core_rst' core_rst'_i vdd_core vss buffer_large
+.ENDS
+
+.SUBCKT top_core jit_conf_clk jit_conf_in jit_conf_rst jit_core_rst jit_dc_clk jit_ro_enable
+                 + jit_ro_out0 jit_ro_out1 jit_scan_clk jit_scan_out jit_scan_rst jit_scan_ser
+                 + jit_vdd_core jit_vdd_jit0 jit_vdd_jit1 trng_conf_clk trng_conf_in trng_conf_rst
+                 + trng_core_rst trng_data_out trng_data_ready trng_ext_clk trng_ro_out
+                 + trng_scan_clk trng_scan_out trng_scan_rst trng_scan_ser trng_ser_clk
+                 + trng_vdd_core trng_vdd_dc trng_vdd_tdc vss
+    Xi0 trng_conf_clk trng_conf_in trng_conf_rst trng_core_rst trng_data_out trng_data_ready
+        + trng_ext_clk trng_ro_out trng_scan_clk trng_scan_out trng_scan_rst trng_scan_ser
+        + trng_ser_clk trng_vdd_core trng_vdd_dc trng_vdd_tdc vss ctrl_trng_conf_scan_combo
+    Xi1 jit_conf_clk jit_conf_in jit_conf_rst jit_core_rst jit_dc_clk jit_ro_enable jit_ro_out0
+        + jit_ro_out1 jit_scan_clk jit_scan_out jit_scan_rst jit_scan_ser jit_vdd_core jit_vdd_jit0
+        + jit_vdd_jit1 vss jit_top_full
+.ENDS

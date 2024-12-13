@@ -14,7 +14,7 @@ Each folder contains the following files:
 
 ## ASIC Hierarchy
 
-The following hierarchy is used in the ASIC (each cell can be expanded to show its components):
+The following hierarchy is used in the ASIC, the number in bold gives the number of MOS pairs in that cell (each cell can be expanded to show its components):
 
 <details>
 <summary><code>top_level</code> <b>34631</b> <i></i></summary>

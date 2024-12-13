@@ -22,7 +22,6 @@ The scripts are divided in the following categories.
 - **noise_corner.py**: Generate flicker noise corner figure.
 - **allan_var.py**: Generate sample variance versus sample Allan variance figure.
 
-
 ## Script Options
 
 The following script arguments are available:

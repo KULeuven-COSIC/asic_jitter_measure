@@ -5,7 +5,7 @@ from os.path import join, isfile
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
-from measurements import read_asic_2021_1 as r_a
+from measurements import read_asic as r_a
 
 class Helper:
     """A class containing data helper functionality."""

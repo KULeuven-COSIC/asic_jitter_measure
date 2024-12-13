@@ -24,6 +24,8 @@ class GdsToSvg:
     _HW_FOLDER = 'hardware'
     _LAYER_DATA_FILE = join('lib', 'params', 'gds_to_svg_layers.json')
 
+    _MAX_LAYER_ELEMENTS = 10000
+
     def __init__(self, module_name: str, hw_folder: Optional[str]=None,
                  layer_data: Optional[str]=None, background_col: str='#ffffff',
                  padding: int=5,
@@ -207,6 +209,11 @@ class GdsToSvg:
             self._print(f'Processing layer: {l_name}')
             g_el = p_svg.find('ns:g', namespaces={'ns': self._SVG_NS})
             assert g_el is not None
+            # # Skip layer if too large:
+            # p_iter = g_el.findall('ns:polygon', namespaces={'ns': self._SVG_NS})
+            # u_iter = g_el.findall('ns:use', namespaces={'ns': self._SVG_NS})
+            # if len(p_iter) + len(u_iter) > self._MAX_LAYER_ELEMENTS:
+            #     self._print(f'Skipping layer: {l_name}, {len(p_iter) + len(u_iter)} elements')
             layer_g = et.Element('g', attrib={'id': l_name})
             polys_per_cls, classes = self._generate_poly(g_el)
             defs_el = p_svg.find('ns:defs', namespaces={'ns': self._SVG_NS})
@@ -277,7 +284,11 @@ class GdsToSvg:
         stuck_cnt = len(g_iter)
         while g_iter:
             self._print(f'   Assembling uses, remaining: {len(g_iter)}',
-                        cr=True)
+                        cr=False)
+            for id_, pols in zip(g_ids, g_polys):
+                nb_ps = sum((len(p) for p in pols))
+                if nb_ps > 100:
+                    self._print(f'{id_}: {nb_ps}')
             g = g_iter.pop(0)
             # Check if all required uses are available:
             req_uses = g.findall('ns:use', namespaces={'ns': self._SVG_NS})
@@ -313,9 +324,13 @@ class GdsToSvg:
                     # polys_per_cls[cls_index] \
                     #     = self._remove_overlap(polys_per_cls[cls_index],
                     #                            self._time_log)
-            # Maybe this is better?
             for cls_i, polys in enumerate(polys_per_cls):
-                polys_per_cls[cls_i] = self._remove_overlap(polys, self._time_log)
+                # Skip if number of polys becomes too large:
+                if len(polys) > self._MAX_LAYER_ELEMENTS:
+                    self._print(f'Skipping {g_id}, number polys: {len(polys)}')
+                    polys_per_cls[cls_i] = []
+                else:
+                    polys_per_cls[cls_i] = self._remove_overlap(polys, self._time_log)
             g_ids.append(g_id)
             g_polys.append(polys_per_cls)
             g_classes.append(classes)

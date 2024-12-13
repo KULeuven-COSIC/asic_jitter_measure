@@ -138,6 +138,60 @@
                 }
             }
         },
+        "30": {
+            "name": "CO",
+            "long_name": "contact opening",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#27ae60",
+                        "fill-opacity": 1,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "31": {
+            "name": "M1",
+            "long_name": "metal 1",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#85c1e9",
+                        "fill-opacity": 0.6,
+                        "stroke-width": 0,
+                        "stroke": "#000000",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 0
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
+        "51": {
+            "name": "VIA1",
+            "long_name": "via 1",
+            "data_types": {
+                "0": {
+                    "style": {
+                        "fill": "#f39c12",
+                        "fill-opacity": 1,
+                        "stroke-width": 10,
+                        "stroke": "#f39c12",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-opacity": 1
+                    },
+                    "purpose": "draw"
+                }
+            }
+        },
         "32": {
             "name": "M2",
             "long_name": "metal 2",

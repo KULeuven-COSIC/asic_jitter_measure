@@ -88,8 +88,8 @@ class CircParser:
         """Get the hierarchy for the given tree."""
         repeat_str = f'x{nb_repeats}' if nb_repeats > 1 else ''
         if not tree:
-            return f'<li><mark>{cell_name}</mark> <b>{mos_pairs:d}</b> <i>{repeat_str}</i></li>\n'
-        result = f'<details>\n<summary><mark>{cell_name}</mark> <b>{mos_pairs:d}</b> <i>{repeat_str}</i></summary>\n<blockquote>\n'
+            return f'<li><code>{cell_name}</code> <b>{mos_pairs:d}</b> <i>{repeat_str}</i></li>\n'
+        result = f'<details>\n<summary><code>{cell_name}</code> <b>{mos_pairs:d}</b> <i>{repeat_str}</i></summary>\n<blockquote>\n'
         has_child_leafs = False
         for child, (nb_child, child_tree) in tree.items():
             if not child_tree:
@@ -115,7 +115,7 @@ class CircParser:
         result += f'.SUBCKT {name}'
         start_nodes = len(result) + 1
         for node in circ.nodes:
-            result = CircParser._add_to_line(result, f' {node}',
+            result = CircParser._add_to_line(result, f' {node.lower()}',
                                              self._MAX_LINE_LEN, start_nodes)
         result += '\n'
         for sub_circ in circ:
@@ -133,7 +133,7 @@ class CircParser:
         start_nodes = len(result) + 1
         nodes: List[str] = [n for n in circ._nodes if n != '/'] # pylint: disable=protected-access
         for node in nodes:
-            result = CircParser._add_to_line(result, f' {node}',
+            result = CircParser._add_to_line(result, f' {node.lower()}',
                                              self._MAX_LINE_LEN, start_nodes)
         result = CircParser._add_to_line(result, f' {name}',
                                          self._MAX_LINE_LEN, start_nodes)

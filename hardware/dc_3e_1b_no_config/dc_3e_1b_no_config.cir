@@ -1,0 +1,101 @@
+* Top cell name: dc_3e_1b_no_config
+
+.SUBCKT buffer in out vdd vss
+    Mm1 out int vss vss n_mos l=60n w=480.0n m=4
+    Mm0 int in vss vss n_mos l=60n w=480.0n m=1
+    Mm3 out int vdd vdd p_mos l=60n w=480.0n m=4
+    Mm2 int in vdd vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar_buf clk d q q' rst rst' vdd vss
+    Xi0 clk d net17 net18 rst rst' vdd vss dff_st_ar
+    Xi2 net17 q' vdd vss inv
+    Xi1 net18 q vdd vss inv
+.ENDS
+
+.SUBCKT edge_to_level_3e edge enable out0 out1 out2 rst rst' vdd vss
+    Xi5 edge out1 out2 net17 rst rst' vdd vss dff_st_ar_buf
+    Xi4 edge out0 out1 net18 rst rst' vdd vss dff_st_ar_buf
+    Xi3 edge enable out0 net19 rst rst' vdd vss dff_st_ar_buf
+.ENDS
+
+.SUBCKT mero_nand2 in0 in1 out vdd vss
+    Mm1 out in1 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm2 out in0 net7 vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT mero_buf in out vdd vss
+    Mm1 out net1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 net1 in vss vss n_mos l=60n w=120.0n m=1
+    Mm3 out net1 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm2 net1 in vdd vdd p_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT mero_3e_1b enable out0 out1 out2 vdd vss
+    Xi2 out1 enable net5 vdd vss mero_nand2
+    Xi1 out0 enable net6 vdd vss mero_nand2
+    Xi0 out2 enable net7 vdd vss mero_nand2
+    Xi5 net5 out2 vdd vss mero_buf
+    Xi4 net6 out1 vdd vss mero_buf
+    Xi3 net7 out0 vdd vss mero_buf
+.ENDS
+
+.SUBCKT nor2 in0 in1 out vdd vss
+    Mm1 out in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm2 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dc_3e_1b_no_config enable_e2l enable_mero int0 int1 int2 out0 out1 out2 rst rst' vdd vss
+    Xi11 mero_out2 int2 vdd vss buffer
+    Xi9 mero_out0 int0 vdd vss buffer
+    Xi10 mero_out1 int1 vdd vss buffer
+    Xi1 int1 enable_e2l out0 out1 out2 rst rst' vdd vss edge_to_level_3e
+    Xi5 enable_int mero_out0 mero_out1 mero_out2 vdd vss mero_3e_1b
+    Xi12 out2 net10 enable_int vdd vss nor2
+    Xi13 enable_mero net10 vdd vss inv
+.ENDS

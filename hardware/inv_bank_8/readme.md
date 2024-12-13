@@ -9,15 +9,15 @@
 ## Netlist
 
 ```
-.SUBCKT inv_bank_8 IN<0> IN<1> IN<2> IN<3> IN<4> IN<5> IN<6> IN<7> OUT<0> OUT<1> OUT<2> OUT<3>
-                   + OUT<4> OUT<5> OUT<6> OUT<7> VDD VSS
-    Xi7 IN<7> OUT<7> VDD VSS inv
-    Xi6 IN<6> OUT<6> VDD VSS inv
-    Xi5 IN<5> OUT<5> VDD VSS inv
-    Xi4 IN<4> OUT<4> VDD VSS inv
-    Xi3 IN<3> OUT<3> VDD VSS inv
-    Xi2 IN<2> OUT<2> VDD VSS inv
-    Xi1 IN<1> OUT<1> VDD VSS inv
-    Xi0 IN<0> OUT<0> VDD VSS inv
+.SUBCKT inv_bank_8 in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> out<0> out<1> out<2> out<3>
+                   + out<4> out<5> out<6> out<7> vdd vss
+    Xi7 in<7> out<7> vdd vss inv
+    Xi6 in<6> out<6> vdd vss inv
+    Xi5 in<5> out<5> vdd vss inv
+    Xi4 in<4> out<4> vdd vss inv
+    Xi3 in<3> out<3> vdd vss inv
+    Xi2 in<2> out<2> vdd vss inv
+    Xi1 in<1> out<1> vdd vss inv
+    Xi0 in<0> out<0> vdd vss inv
 .ENDS
 ```

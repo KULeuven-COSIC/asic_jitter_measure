@@ -1,0 +1,73 @@
+* Top cell name: mero_collapse_3e
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT xor2 in0 in1 out vdd vss
+    Mm3 out in0' net20 vdd p_mos l=60n w=240.0n m=1
+    Mm2 net20 in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in0 net21 vdd p_mos l=60n w=240.0n m=1
+    Mm0 net21 in1' vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net19 in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm6 net18 in1' vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out in0' net18 vss n_mos l=60n w=120.0n m=1
+    Mm4 out in0 net19 vss n_mos l=60n w=120.0n m=1
+    Xi1 in1 in1' vdd vss inv
+    Xi0 in0 in0' vdd vss inv
+.ENDS
+
+.SUBCKT nor3 in0 in1 in2 out vdd vss
+    Mm2 out in0 net6 vdd p_mos l=60n w=480.0n m=1
+    Mm1 net6 in1 net7 vdd p_mos l=60n w=480.0n m=1
+    Mm0 net7 in2 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in2 vss vss n_mos l=60n w=120.0n m=1
+    Mm4 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 out in1 vss vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT mero_collapse_3e alarm enable_e2l int0 int1 int2 rst rst' vdd vss
+    Xi2 int2 int1 xor2 vdd vss xor2
+    Xi1 int0 int2 xor1 vdd vss xor2
+    Xi0 int1 int0 xor0 vdd vss xor2
+    Xi7 nor or vdd vss inv
+    Xi4 xor0 xor1 xor2 nor vdd vss nor3
+    Xi6 enable_e2l or alarm net016 rst rst' vdd vss dff_st_ar
+.ENDS

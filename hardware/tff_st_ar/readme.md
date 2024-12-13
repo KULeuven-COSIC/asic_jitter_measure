@@ -9,7 +9,7 @@
 ## Netlist
 
 ```
-.SUBCKT tff_st_ar CLK Q Q' RST RST' VDD VSS
-    Xi0 CLK Q' Q Q' RST RST' VDD VSS dff_st_ar
+.SUBCKT tff_st_ar clk q q' rst rst' vdd vss
+    Xi0 clk q' q q' rst rst' vdd vss dff_st_ar
 .ENDS
 ```

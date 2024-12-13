@@ -1,0 +1,35 @@
+* Top cell name: equal_to_52
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in3 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net21 in3 vss vss n_mos l=60n w=480.0n m=1
+    Mm6 net22 in2 net21 vss n_mos l=60n w=480.0n m=1
+    Mm5 net23 in1 net22 vss n_mos l=60n w=480.0n m=1
+    Mm4 out in0 net23 vss n_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT nor2 in0 in1 out vdd vss
+    Mm1 out in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm2 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT equal_to_52 equal in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> vdd vss
+    Xi4 in<0> in'<0> vdd vss inv
+    Xi3 in<1> in'<1> vdd vss inv
+    Xi2 in<3> in'<3> vdd vss inv
+    Xi1 in<6> in'<6> vdd vss inv
+    Xi0 in<7> in'<7> vdd vss inv
+    Xi6 in'<3> in<2> in'<1> in'<0> net7 vdd vss nand4
+    Xi5 in'<7> in'<6> in<5> in<4> net8 vdd vss nand4
+    Xi7 net8 net7 equal vdd vss nor2
+.ENDS

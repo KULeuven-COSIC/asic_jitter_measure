@@ -1,0 +1,110 @@
+* Top cell name: max_ready
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT tff_st_ar clk q q' rst rst' vdd vss
+    Xi0 clk q' q q' rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT async_counter_8 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> q' rst rst' vdd
+                        + vss
+    Xi7 net4 out<4> net5 rst rst' vdd vss tff_st_ar
+    Xi6 net6 out<6> net7 rst rst' vdd vss tff_st_ar
+    Xi5 net7 out<7> q' rst rst' vdd vss tff_st_ar
+    Xi4 net5 out<5> net6 rst rst' vdd vss tff_st_ar
+    Xi3 net2 out<2> net3 rst rst' vdd vss tff_st_ar
+    Xi2 net3 out<3> net4 rst rst' vdd vss tff_st_ar
+    Xi1 net1 out<1> net2 rst rst' vdd vss tff_st_ar
+    Xi0 clk out<0> net1 rst rst' vdd vss tff_st_ar
+.ENDS
+
+.SUBCKT nand4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in3 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net21 in3 vss vss n_mos l=60n w=480.0n m=1
+    Mm6 net22 in2 net21 vss n_mos l=60n w=480.0n m=1
+    Mm5 net23 in1 net22 vss n_mos l=60n w=480.0n m=1
+    Mm4 out in0 net23 vss n_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT nor2 in0 in1 out vdd vss
+    Mm1 out in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm2 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT inv_wn in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=240.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar_dh clk q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+    Xi6 n1 n3 vdd vss inv_wn
+.ENDS
+
+.SUBCKT max_ready conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2> conf_maxcycles<3>
+                  + conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7> int
+                  + max_ready rst rst' vdd vss
+    Xi0 int cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> net020 rst rst' vdd vss
+        + async_counter_8
+    Xi8 cnt<7> conf_maxcycles<7> cnt_high<7> vdd vss nand2
+    Xi7 cnt<6> conf_maxcycles<6> cnt_high<6> vdd vss nand2
+    Xi6 cnt<5> conf_maxcycles<5> cnt_high<5> vdd vss nand2
+    Xi5 cnt<4> conf_maxcycles<4> cnt_high<4> vdd vss nand2
+    Xi4 cnt<3> conf_maxcycles<3> cnt_high<3> vdd vss nand2
+    Xi3 cnt<2> conf_maxcycles<2> cnt_high<2> vdd vss nand2
+    Xi2 cnt<1> conf_maxcycles<1> cnt_high<1> vdd vss nand2
+    Xi1 cnt<0> conf_maxcycles<0> cnt_high<0> vdd vss nand2
+    Xi10 cnt_high<4> cnt_high<5> cnt_high<6> cnt_high<7> net09 vdd vss nand4
+    Xi9 cnt_high<0> cnt_high<1> cnt_high<2> cnt_high<3> net010 vdd vss nand4
+    Xi11 net010 net09 net021 vdd vss nor2
+    Xi12 net021 ready vdd vss inv
+    Xi13 ready max_ready net018 rst rst' vdd vss dff_st_ar_dh
+.ENDS

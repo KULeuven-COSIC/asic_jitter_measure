@@ -9,13 +9,13 @@
 ## Netlist
 
 ```
-.SUBCKT dc_jit_32 CLK IN LAST OUT<0> OUT<1> OUT<2> OUT<3> OUT<4> OUT<5> OUT<6> OUT<7> OUT<8> OUT<9>
-                  + OUT<10> OUT<11> OUT<12> OUT<13> OUT<14> OUT<15> OUT<16> OUT<17> OUT<18> OUT<19>
-                  + OUT<20> OUT<21> OUT<22> OUT<23> OUT<24> OUT<25> OUT<26> OUT<27> OUT<28> OUT<29>
-                  + OUT<30> OUT<31> RST RST' VDD VSS
-    Xi1 CLK INT LAST OUT<16> OUT<17> OUT<18> OUT<19> OUT<20> OUT<21> OUT<22> OUT<23> OUT<24> OUT<25>
-        + OUT<26> OUT<27> OUT<28> OUT<29> OUT<30> OUT<31> RST RST' VDD VSS dc_jit_16
-    Xi0 CLK IN INT OUT<0> OUT<1> OUT<2> OUT<3> OUT<4> OUT<5> OUT<6> OUT<7> OUT<8> OUT<9> OUT<10>
-        + OUT<11> OUT<12> OUT<13> OUT<14> OUT<15> RST RST' VDD VSS dc_jit_16
+.SUBCKT dc_jit_32 clk in last out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                  + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18> out<19>
+                  + out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27> out<28> out<29>
+                  + out<30> out<31> rst rst' vdd vss
+    Xi1 clk int last out<16> out<17> out<18> out<19> out<20> out<21> out<22> out<23> out<24> out<25>
+        + out<26> out<27> out<28> out<29> out<30> out<31> rst rst' vdd vss dc_jit_16
+    Xi0 clk in int out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10>
+        + out<11> out<12> out<13> out<14> out<15> rst rst' vdd vss dc_jit_16
 .ENDS
 ```

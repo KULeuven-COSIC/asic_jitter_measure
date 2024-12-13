@@ -9,9 +9,9 @@
 ## Netlist
 
 ```
-.SUBCKT mux4 IN<0> IN<1> IN<2> IN<3> OUT SEL<0> SEL<1> VDD VSS
-    Xi2 net8 net7 OUT SEL<1> VDD VSS mux2
-    Xi1 IN<2> IN<3> net7 SEL<0> VDD VSS mux2
-    Xi0 IN<0> IN<1> net8 SEL<0> VDD VSS mux2
+.SUBCKT mux4 in<0> in<1> in<2> in<3> out sel<0> sel<1> vdd vss
+    Xi2 net8 net7 out sel<1> vdd vss mux2
+    Xi1 in<2> in<3> net7 sel<0> vdd vss mux2
+    Xi0 in<0> in<1> net8 sel<0> vdd vss mux2
 .ENDS
 ```

@@ -10,11 +10,11 @@
 ## Netlist
 
 ```
-.SUBCKT ro_2i CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF'<4> CONF'<5> CONF'<6> CONF'<7> CONF<0>
-              + CONF<1> CONF<2> CONF<3> CONF<4> CONF<5> CONF<6> CONF<7> ENABLE OUT VDD VSS
-    Xi1 CONF'<4> CONF'<5> CONF'<6> CONF'<7> CONF<4> CONF<5> CONF<6> CONF<7> INT OUT VDD VSS inv_conf
-    Xi0 CONF'<0> CONF'<1> CONF'<2> CONF'<3> CONF<0> CONF<1> CONF<2> CONF<3> NAND_OUT INT VDD VSS
+.SUBCKT ro_2i conf'<0> conf'<1> conf'<2> conf'<3> conf'<4> conf'<5> conf'<6> conf'<7> conf<0>
+              + conf<1> conf<2> conf<3> conf<4> conf<5> conf<6> conf<7> enable out vdd vss
+    Xi1 conf'<4> conf'<5> conf'<6> conf'<7> conf<4> conf<5> conf<6> conf<7> int out vdd vss inv_conf
+    Xi0 conf'<0> conf'<1> conf'<2> conf'<3> conf<0> conf<1> conf<2> conf<3> nand_out int vdd vss
         + inv_conf
-    Xi2 OUT ENABLE NAND_OUT VDD VSS nand2
+    Xi2 out enable nand_out vdd vss nand2
 .ENDS
 ```

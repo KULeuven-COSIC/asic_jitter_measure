@@ -1,0 +1,85 @@
+* Top cell name: scan_jit_32
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT mux2 in0 in1 out sel vdd vss
+    Xi2 net16 net15 out vdd vss nand2
+    Xi1 sel in1 net15 vdd vss nand2
+    Xi0 in0 net14 net16 vdd vss nand2
+    Mm0 net14 sel vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 net14 sel vss vss n_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT scan_jit_2 clk in_par<0> in_par<1> in_ser out rst rst' ser vdd vss
+    Xi1 clk net12 out net14 rst rst' vdd vss dff_st_ar
+    Xi0 clk net07 net11 net15 rst rst' vdd vss dff_st_ar
+    Xi4 in_par<0> in_ser net07 ser vdd vss mux2
+    Xi2 in_par<1> net11 net12 ser vdd vss mux2
+.ENDS
+
+.SUBCKT scan_jit_4 clk in_par<0> in_par<1> in_par<2> in_par<3> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_ser net8 rst rst' ser vdd vss scan_jit_2
+    Xi6 clk in_par<2> in_par<3> net8 out rst rst' ser vdd vss scan_jit_2
+.ENDS
+
+.SUBCKT scan_jit_8 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6>
+                   + in_par<7> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_par<2> in_par<3> in_ser net8 rst rst' ser vdd vss scan_jit_4
+    Xi6 clk in_par<4> in_par<5> in_par<6> in_par<7> net8 out rst rst' ser vdd vss scan_jit_4
+.ENDS
+
+.SUBCKT scan_jit_16 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6>
+                    + in_par<7> in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13>
+                    + in_par<14> in_par<15> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7> in_ser
+        + net8 rst rst' ser vdd vss scan_jit_8
+    Xi6 clk in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + net8 out rst rst' ser vdd vss scan_jit_8
+.ENDS
+
+.SUBCKT scan_jit_32 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6>
+                    + in_par<7> in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13>
+                    + in_par<14> in_par<15> in_par<16> in_par<17> in_par<18> in_par<19> in_par<20>
+                    + in_par<21> in_par<22> in_par<23> in_par<24> in_par<25> in_par<26> in_par<27>
+                    + in_par<28> in_par<29> in_par<30> in_par<31> in_ser out rst rst' ser vdd vss
+    Xi5 clk in_par<0> in_par<1> in_par<2> in_par<3> in_par<4> in_par<5> in_par<6> in_par<7>
+        + in_par<8> in_par<9> in_par<10> in_par<11> in_par<12> in_par<13> in_par<14> in_par<15>
+        + in_ser net8 rst rst' ser vdd vss scan_jit_16
+    Xi6 clk in_par<16> in_par<17> in_par<18> in_par<19> in_par<20> in_par<21> in_par<22> in_par<23>
+        + in_par<24> in_par<25> in_par<26> in_par<27> in_par<28> in_par<29> in_par<30> in_par<31>
+        + net8 out rst rst' ser vdd vss scan_jit_16
+.ENDS

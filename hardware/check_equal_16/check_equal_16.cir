@@ -1,0 +1,71 @@
+* Top cell name: check_equal_16
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT xnor2 in0 in1 out vdd vss
+    Mm3 out in0' net20 vdd p_mos l=60n w=240.0n m=1
+    Mm2 net20 in1' vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in0 net21 vdd p_mos l=60n w=240.0n m=1
+    Mm0 net21 in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net19 in1' vss vss n_mos l=60n w=120.0n m=1
+    Mm6 net18 in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out in0' net18 vss n_mos l=60n w=120.0n m=1
+    Mm4 out in0 net19 vss n_mos l=60n w=120.0n m=1
+    Xi1 in1 in1' vdd vss inv
+    Xi0 in0 in0' vdd vss inv
+.ENDS
+
+.SUBCKT nand4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in3 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net21 in3 vss vss n_mos l=60n w=480.0n m=1
+    Mm6 net22 in2 net21 vss n_mos l=60n w=480.0n m=1
+    Mm5 net23 in1 net22 vss n_mos l=60n w=480.0n m=1
+    Mm4 out in0 net23 vss n_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT nor2 in0 in1 out vdd vss
+    Mm1 out in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm2 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT check_equal_8 equal in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in1<0> in1<1>
+                      + in1<2> in1<3> in1<4> in1<5> in1<6> in1<7> vdd vss
+    Xi9 in0<4> in1<4> xnor<4> vdd vss xnor2
+    Xi7 in0<7> in1<7> xnor<7> vdd vss xnor2
+    Xi6 in0<6> in1<6> xnor<6> vdd vss xnor2
+    Xi5 in0<5> in1<5> xnor<5> vdd vss xnor2
+    Xi3 in0<3> in1<3> xnor<3> vdd vss xnor2
+    Xi2 in0<2> in1<2> xnor<2> vdd vss xnor2
+    Xi1 in0<1> in1<1> xnor<1> vdd vss xnor2
+    Xi0 in0<0> in1<0> xnor<0> vdd vss xnor2
+    Xi8 xnor<4> xnor<5> xnor<6> xnor<7> nand1 vdd vss nand4
+    Xi4 xnor<0> xnor<1> xnor<2> xnor<3> nand0 vdd vss nand4
+    Xi10 nand0 nand1 equal vdd vss nor2
+.ENDS
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT check_equal_16 equal in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in0<8> in0<9>
+                       + in0<10> in0<11> in0<12> in0<13> in0<14> in0<15> in1<0> in1<1> in1<2> in1<3>
+                       + in1<4> in1<5> in1<6> in1<7> in1<8> in1<9> in1<10> in1<11> in1<12> in1<13>
+                       + in1<14> in1<15> vdd vss
+    Xi1 eq1 in0<8> in0<9> in0<10> in0<11> in0<12> in0<13> in0<14> in0<15> in1<8> in1<9> in1<10>
+        + in1<11> in1<12> in1<13> in1<14> in1<15> vdd vss check_equal_8
+    Xi0 eq0 in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in1<0> in1<1> in1<2> in1<3>
+        + in1<4> in1<5> in1<6> in1<7> vdd vss check_equal_8
+    Xi2 eq0 eq1 net3 vdd vss nand2
+    Xi3 net3 equal vdd vss inv
+.ENDS

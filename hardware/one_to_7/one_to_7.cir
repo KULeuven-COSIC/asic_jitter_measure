@@ -1,0 +1,16 @@
+* Top cell name: one_to_7
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT one_to_7 in out<0> out<1> out<2> out<3> out<4> out<5> out<6> vdd vss
+    Xi6 in out<6> vdd vss inv
+    Xi5 in out<3> vdd vss inv
+    Xi4 in out<5> vdd vss inv
+    Xi3 in out<4> vdd vss inv
+    Xi2 in out<2> vdd vss inv
+    Xi1 in out<1> vdd vss inv
+    Xi0 in out<0> vdd vss inv
+.ENDS

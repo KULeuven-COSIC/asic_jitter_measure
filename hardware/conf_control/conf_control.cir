@@ -1,0 +1,92 @@
+* Top cell name: conf_control
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT nand4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in3 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net21 in3 vss vss n_mos l=60n w=480.0n m=1
+    Mm6 net22 in2 net21 vss n_mos l=60n w=480.0n m=1
+    Mm5 net23 in1 net22 vss n_mos l=60n w=480.0n m=1
+    Mm4 out in0 net23 vss n_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT buffer in out vdd vss
+    Mm1 out int vss vss n_mos l=60n w=480.0n m=4
+    Mm0 int in vss vss n_mos l=60n w=480.0n m=1
+    Mm3 out int vdd vdd p_mos l=60n w=480.0n m=4
+    Mm2 int in vdd vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT conf_control cal_en cal_ro_en clk ctrl_rst data_ready rst rst' ser_ready state<0> state<1>
+                     + state<2> sta_ready tdc_ready vdd vss
+    Xi2 clk nextstate<2> state<2> state'<2> rst rst' vdd vss dff_st_ar
+    Xi1 clk nextstate<1> state<1> state'<1> rst rst' vdd vss dff_st_ar
+    Xi0 clk nextstate<0> state<0> state'<0> rst rst' vdd vss dff_st_ar
+    Xi14 state0_int<0> state0_int<1> state0_int<2> state0_int<3> nextstate<0> vdd vss nand4
+    Xi30 state'<0> state<1> state<2> net037 vdd vss nand3
+    Xi28 state<0> state'<1> state<2> net038 vdd vss nand3
+    Xi42 state'<0> state<1> state<2> state2_int<2> vdd vss nand3
+    Xi23 state'<0> state<1> sta_ready state2_int<1> vdd vss nand3
+    Xi43 state2_int<0> state2_int<1> state2_int<2> nextstate<2> vdd vss nand3
+    Xi11 state<0> state<2> ser_ready' state0_int<1> vdd vss nand3
+    Xi12 state<0> state<1> state<2> state0_int<2> vdd vss nand3
+    Xi38 state<1> state<2> tdc_ready state0_int<3> vdd vss nand3
+    Xi33 net044 cal_ro_en_i vdd vss inv
+    Xi31 net037 cal_en_i vdd vss inv
+    Xi29 net038 data_ready_i vdd vss inv
+    Xi45 ser_ready ser_ready' vdd vss inv
+    Xi32 state'<0> state<1> net044 vdd vss nand2
+    Xi34 ctrl_rst_int<0> ctrl_rst_int<1> ctrl_rst vdd vss nand2
+    Xi36 state'<1> state'<2> ctrl_rst_int<0> vdd vss nand2
+    Xi22 state<0> state<2> state2_int<0> vdd vss nand2
+    Xi41 state1_int<0> state1_int<1> nextstate<1> vdd vss nand2
+    Xi40 state<0> state'<2> state1_int<1> vdd vss nand2
+    Xi39 state'<0> state<1> state1_int<0> vdd vss nand2
+    Xi10 state'<1> state'<2> state0_int<0> vdd vss nand2
+    Xi44 state<0> state'<2> ctrl_rst_int<1> vdd vss nand2
+    Xi48 data_ready_i data_ready vdd vss buffer
+    Xi49 cal_en_i cal_en vdd vss buffer
+    Xi46 cal_ro_en_i cal_ro_en vdd vss buffer
+.ENDS

@@ -1,0 +1,352 @@
+* Top cell name: async_top_level
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT buffer in out vdd vss
+    Mm1 out int vss vss n_mos l=60n w=480.0n m=4
+    Mm0 int in vss vss n_mos l=60n w=480.0n m=1
+    Mm3 out int vdd vdd p_mos l=60n w=480.0n m=4
+    Mm2 int in vdd vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT async_control_0 clk mero_e2l mero_en rst rst' state<0> state<1> sta_ready tdc_ready trng_rst
+                        + vdd vss
+    Xi1 clk nextstate<1> state<1> trng_rst rst rst' vdd vss dff_st_ar
+    Xi0 clk nextstate<0> state<0> state'<0> rst rst' vdd vss dff_st_ar
+    Xi8 state'<0> state<1> net08 vdd vss nand2
+    Xi7 state1_int state'<0> nextstate<1> vdd vss nand2
+    Xi6 state<1> tdc_ready' state1_int vdd vss nand2
+    Xi3 state0_int state<1> nextstate<0> vdd vss nand2
+    Xi2 state<0> sta_ready' state0_int vdd vss nand2
+    Xi9 net08 mero_e2l_i vdd vss inv
+    Xi5 tdc_ready tdc_ready' vdd vss inv
+    Xi4 sta_ready sta_ready' vdd vss inv
+    Xi11 state<1> mero_en vdd vss buffer
+    Xi10 mero_e2l_i mero_e2l vdd vss buffer
+.ENDS
+
+.SUBCKT nor2 in0 in1 out vdd vss
+    Mm1 out in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm2 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT nand4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in3 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net21 in3 vss vss n_mos l=60n w=480.0n m=1
+    Mm6 net22 in2 net21 vss n_mos l=60n w=480.0n m=1
+    Mm5 net23 in1 net22 vss n_mos l=60n w=480.0n m=1
+    Mm4 out in0 net23 vss n_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT nor3 in0 in1 in2 out vdd vss
+    Mm2 out in0 net6 vdd p_mos l=60n w=480.0n m=1
+    Mm1 net6 in1 net7 vdd p_mos l=60n w=480.0n m=1
+    Mm0 net7 in2 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in2 vss vss n_mos l=60n w=120.0n m=1
+    Mm4 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 out in1 vss vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT async_control_1 clk clk_en clk_ready ctrl_rst data_ready rst rst' ser_ready state<0>
+                        + state<1> state<2> vdd vss
+    Xi2 clk nextstate<2> state<2> state'<2> rst rst' vdd vss dff_st_ar
+    Xi1 clk nextstate<1> state<1> state'<1> rst rst' vdd vss dff_st_ar
+    Xi0 clk nextstate<0> state<0> state'<0> rst rst' vdd vss dff_st_ar
+    Xi15 state'<1> state'<2> data_ready_i vdd vss nor2
+    Xi13 state<1> state<2> clk_en_i vdd vss nor2
+    Xi3 state<1> state<2> nextstate<0> vdd vss nor2
+    Xi9 state'<0> state<1> net05 vdd vss nand2
+    Xi7 state<0> clk_ready state1_int<3> vdd vss nand2
+    Xi6 state<1> state'<2> state1_int<2> vdd vss nand2
+    Xi5 state<0> state<1> state1_int<1> vdd vss nand2
+    Xi4 state<1> ser_ready' state1_int<0> vdd vss nand2
+    Xi8 state1_int<0> state1_int<1> state1_int<2> state1_int<3> nextstate<1> vdd vss nand4
+    Xi11 ser_ready ser_ready' vdd vss inv
+    Xi10 net05 nextstate<2> vdd vss inv
+    Xi14 state<0> state<1> state<2> ctrl_rst vdd vss nor3
+    Xi17 data_ready_i data_ready vdd vss buffer
+    Xi16 clk_en_i clk_en vdd vss buffer
+.ENDS
+
+.SUBCKT dff_st_ar_buf clk d q q' rst rst' vdd vss
+    Xi0 clk d net17 net18 rst rst' vdd vss dff_st_ar
+    Xi2 net17 q' vdd vss inv
+    Xi1 net18 q vdd vss inv
+.ENDS
+
+.SUBCKT synchronizer clk in out rst rst' vdd vss
+    Xi1 clk net18 out net16 rst rst' vdd vss dff_st_ar_buf
+    Xi0 clk in net18 net19 rst rst' vdd vss dff_st_ar_buf
+.ENDS
+
+.SUBCKT tff_st_ar clk q q' rst rst' vdd vss
+    Xi0 clk q' q q' rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT async_counter_8 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> q' rst rst' vdd
+                        + vss
+    Xi7 net4 out<4> net5 rst rst' vdd vss tff_st_ar
+    Xi6 net6 out<6> net7 rst rst' vdd vss tff_st_ar
+    Xi5 net7 out<7> q' rst rst' vdd vss tff_st_ar
+    Xi4 net5 out<5> net6 rst rst' vdd vss tff_st_ar
+    Xi3 net2 out<2> net3 rst rst' vdd vss tff_st_ar
+    Xi2 net3 out<3> net4 rst rst' vdd vss tff_st_ar
+    Xi1 net1 out<1> net2 rst rst' vdd vss tff_st_ar
+    Xi0 clk out<0> net1 rst rst' vdd vss tff_st_ar
+.ENDS
+
+.SUBCKT async_counter_16 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                         + out<10> out<11> out<12> out<13> out<14> out<15> q' rst rst' vdd vss
+    Xi1 net12 out<8> out<9> out<10> out<11> out<12> out<13> out<14> out<15> q' rst rst' vdd vss
+        + async_counter_8
+    Xi0 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> net12 rst rst' vdd vss
+        + async_counter_8
+.ENDS
+
+.SUBCKT xnor2 in0 in1 out vdd vss
+    Mm3 out in0' net20 vdd p_mos l=60n w=240.0n m=1
+    Mm2 net20 in1' vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in0 net21 vdd p_mos l=60n w=240.0n m=1
+    Mm0 net21 in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net19 in1' vss vss n_mos l=60n w=120.0n m=1
+    Mm6 net18 in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out in0' net18 vss n_mos l=60n w=120.0n m=1
+    Mm4 out in0 net19 vss n_mos l=60n w=120.0n m=1
+    Xi1 in1 in1' vdd vss inv
+    Xi0 in0 in0' vdd vss inv
+.ENDS
+
+.SUBCKT check_equal_8 equal in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in1<0> in1<1>
+                      + in1<2> in1<3> in1<4> in1<5> in1<6> in1<7> vdd vss
+    Xi9 in0<4> in1<4> xnor<4> vdd vss xnor2
+    Xi7 in0<7> in1<7> xnor<7> vdd vss xnor2
+    Xi6 in0<6> in1<6> xnor<6> vdd vss xnor2
+    Xi5 in0<5> in1<5> xnor<5> vdd vss xnor2
+    Xi3 in0<3> in1<3> xnor<3> vdd vss xnor2
+    Xi2 in0<2> in1<2> xnor<2> vdd vss xnor2
+    Xi1 in0<1> in1<1> xnor<1> vdd vss xnor2
+    Xi0 in0<0> in1<0> xnor<0> vdd vss xnor2
+    Xi8 xnor<4> xnor<5> xnor<6> xnor<7> nand1 vdd vss nand4
+    Xi4 xnor<0> xnor<1> xnor<2> xnor<3> nand0 vdd vss nand4
+    Xi10 nand0 nand1 equal vdd vss nor2
+.ENDS
+
+.SUBCKT check_equal_16 equal in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in0<8> in0<9>
+                       + in0<10> in0<11> in0<12> in0<13> in0<14> in0<15> in1<0> in1<1> in1<2> in1<3>
+                       + in1<4> in1<5> in1<6> in1<7> in1<8> in1<9> in1<10> in1<11> in1<12> in1<13>
+                       + in1<14> in1<15> vdd vss
+    Xi1 eq1 in0<8> in0<9> in0<10> in0<11> in0<12> in0<13> in0<14> in0<15> in1<8> in1<9> in1<10>
+        + in1<11> in1<12> in1<13> in1<14> in1<15> vdd vss check_equal_8
+    Xi0 eq0 in0<0> in0<1> in0<2> in0<3> in0<4> in0<5> in0<6> in0<7> in1<0> in1<1> in1<2> in1<3>
+        + in1<4> in1<5> in1<6> in1<7> vdd vss check_equal_8
+    Xi2 eq0 eq1 net3 vdd vss nand2
+    Xi3 net3 equal vdd vss inv
+.ENDS
+
+.SUBCKT async_counter_equal_16 clk conf_equal<0> conf_equal<1> conf_equal<2> conf_equal<3>
+                               + conf_equal<4> conf_equal<5> conf_equal<6> conf_equal<7>
+                               + conf_equal<8> conf_equal<9> conf_equal<10> conf_equal<11>
+                               + conf_equal<12> conf_equal<13> conf_equal<14> conf_equal<15> equal
+                               + rst rst' vdd vss
+    Xi0 clk cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> cnt<8> cnt<9> cnt<10> cnt<11>
+        + cnt<12> cnt<13> cnt<14> cnt<15> net13 rst rst' vdd vss async_counter_16
+    Xi1 equal cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> cnt<8> cnt<9> cnt<10> cnt<11>
+        + cnt<12> cnt<13> cnt<14> cnt<15> conf_equal<0> conf_equal<1> conf_equal<2> conf_equal<3>
+        + conf_equal<4> conf_equal<5> conf_equal<6> conf_equal<7> conf_equal<8> conf_equal<9>
+        + conf_equal<10> conf_equal<11> conf_equal<12> conf_equal<13> conf_equal<14> conf_equal<15>
+        + vdd vss check_equal_16
+.ENDS
+
+.SUBCKT async_datapath_0 clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3>
+                         + conf_statecnt<4> conf_statecnt<5> conf_statecnt<6> conf_statecnt<7>
+                         + conf_statecnt<8> conf_statecnt<9> conf_statecnt<10> conf_statecnt<11>
+                         + conf_statecnt<12> conf_statecnt<13> conf_statecnt<14> conf_statecnt<15>
+                         + rst rst' sta_ready tdc0_ready tdc1_ready tdc_ready vdd vss
+    Xi1 clk tdc1_ready tdc1_sync rst rst' vdd vss synchronizer
+    Xi0 clk tdc0_ready tdc0_sync rst rst' vdd vss synchronizer
+    Xi2 tdc0_sync tdc1_sync net7 vdd vss nand2
+    Xi3 net7 tdc_ready vdd vss inv
+    Xi5 clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3> conf_statecnt<4>
+        + conf_statecnt<5> conf_statecnt<6> conf_statecnt<7> conf_statecnt<8> conf_statecnt<9>
+        + conf_statecnt<10> conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+        + conf_statecnt<15> sta_ready rst rst' vdd vss async_counter_equal_16
+.ENDS
+
+.SUBCKT async_counter_32 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                         + out<10> out<11> out<12> out<13> out<14> out<15> out<16> out<17> out<18>
+                         + out<19> out<20> out<21> out<22> out<23> out<24> out<25> out<26> out<27>
+                         + out<28> out<29> out<30> out<31> q' rst rst' vdd vss
+    Xi1 net7 out<16> out<17> out<18> out<19> out<20> out<21> out<22> out<23> out<24> out<25> out<26>
+        + out<27> out<28> out<29> out<30> out<31> q' rst rst' vdd vss async_counter_16
+    Xi0 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9> out<10> out<11>
+        + out<12> out<13> out<14> out<15> net7 rst rst' vdd vss async_counter_16
+.ENDS
+
+.SUBCKT mux2 in0 in1 out sel vdd vss
+    Xi2 net16 net15 out vdd vss nand2
+    Xi1 sel in1 net15 vdd vss nand2
+    Xi0 in0 net14 net16 vdd vss nand2
+    Mm0 net14 sel vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 net14 sel vss vss n_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT shift_reg_4 clk in<0> in<1> in<2> in<3> in_ser out rst rst' sel_ser vdd vss
+    Xi7 in<0> in_ser net3 sel_ser vdd vss mux2
+    Xi6 in<1> int<0> net42 sel_ser vdd vss mux2
+    Xi5 in<2> int<1> net35 sel_ser vdd vss mux2
+    Xi4 in<3> int<2> net17 sel_ser vdd vss mux2
+    Xi9 clk net42 int<1> net40 rst rst' vdd vss dff_st_ar
+    Xi10 clk net35 int<2> net32 rst rst' vdd vss dff_st_ar
+    Xi11 clk net17 out net24 rst rst' vdd vss dff_st_ar
+    Xi8 clk net3 int<0> net45 rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT shift_reg_8 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in_ser out rst rst' sel_ser
+                    + vdd vss
+    Xi1 clk in<4> in<5> in<6> in<7> net3 out rst rst' sel_ser vdd vss shift_reg_4
+    Xi0 clk in<0> in<1> in<2> in<3> in_ser net3 rst rst' sel_ser vdd vss shift_reg_4
+.ENDS
+
+.SUBCKT shift_reg_16 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11>
+                     + in<12> in<13> in<14> in<15> in_ser out rst rst' sel_ser vdd vss
+    Xi1 clk in<8> in<9> in<10> in<11> in<12> in<13> in<14> in<15> net016 out rst rst' sel_ser vdd
+        + vss shift_reg_8
+    Xi0 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in_ser net016 rst rst' sel_ser vdd vss
+        + shift_reg_8
+.ENDS
+
+.SUBCKT shift_reg_32 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11>
+                     + in<12> in<13> in<14> in<15> in<16> in<17> in<18> in<19> in<20> in<21> in<22>
+                     + in<23> in<24> in<25> in<26> in<27> in<28> in<29> in<30> in<31> in_ser out rst
+                     + rst' sel_ser vdd vss
+    Xi1 clk in<16> in<17> in<18> in<19> in<20> in<21> in<22> in<23> in<24> in<25> in<26> in<27>
+        + in<28> in<29> in<30> in<31> net7 out rst rst' sel_ser vdd vss shift_reg_16
+    Xi0 clk in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> in<8> in<9> in<10> in<11> in<12> in<13>
+        + in<14> in<15> in_ser net7 rst rst' sel_ser vdd vss shift_reg_16
+.ENDS
+
+.SUBCKT equal_to_32 equal in<0> in<1> in<2> in<3> in<4> in<5> in<6> in<7> vdd vss
+    Xi8 in<4> in'<4> vdd vss inv
+    Xi7 in<6> in'<6> vdd vss inv
+    Xi6 in<7> in'<7> vdd vss inv
+    Xi5 in<3> in'<3> vdd vss inv
+    Xi3 in<1> in'<1> vdd vss inv
+    Xi4 in<2> in'<2> vdd vss inv
+    Xi0 in<0> in'<0> vdd vss inv
+    Xi10 in'<4> in<5> in'<6> in'<7> net013 vdd vss nand4
+    Xi9 in'<0> in'<1> in'<2> in'<3> net014 vdd vss nand4
+    Xi11 net014 net013 equal vdd vss nor2
+.ENDS
+
+.SUBCKT async_datapath_1 clk clk_en clk_ready conf_tdccnt<0> conf_tdccnt<1> conf_tdccnt<2>
+                         + conf_tdccnt<3> conf_tdccnt<4> conf_tdccnt<5> conf_tdccnt<6>
+                         + conf_tdccnt<7> conf_tdccnt<8> conf_tdccnt<9> conf_tdccnt<10>
+                         + conf_tdccnt<11> conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14>
+                         + conf_tdccnt<15> data_out data_ready rst rst' ser_clk ser_ready tdc_ready
+                         + vdd vss
+    Xi0 tdc_ready conf_tdccnt<0> conf_tdccnt<1> conf_tdccnt<2> conf_tdccnt<3> conf_tdccnt<4>
+        + conf_tdccnt<5> conf_tdccnt<6> conf_tdccnt<7> conf_tdccnt<8> conf_tdccnt<9> conf_tdccnt<10>
+        + conf_tdccnt<11> conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14> conf_tdccnt<15> clk_ready
+        + rst rst' vdd vss async_counter_equal_16
+    Xi1 net04 clk_cnt<0> clk_cnt<1> clk_cnt<2> clk_cnt<3> clk_cnt<4> clk_cnt<5> clk_cnt<6>
+        + clk_cnt<7> clk_cnt<8> clk_cnt<9> clk_cnt<10> clk_cnt<11> clk_cnt<12> clk_cnt<13>
+        + clk_cnt<14> clk_cnt<15> clk_cnt<16> clk_cnt<17> clk_cnt<18> clk_cnt<19> clk_cnt<20>
+        + clk_cnt<21> clk_cnt<22> clk_cnt<23> clk_cnt<24> clk_cnt<25> clk_cnt<26> clk_cnt<27>
+        + clk_cnt<28> clk_cnt<29> clk_cnt<30> clk_cnt<31> net09 rst rst' vdd vss async_counter_32
+    Xi2 clk clk_en net05 vdd vss nand2
+    Xi3 net05 net04 vdd vss inv
+    Xi4 shift_clk clk_cnt<0> clk_cnt<1> clk_cnt<2> clk_cnt<3> clk_cnt<4> clk_cnt<5> clk_cnt<6>
+        + clk_cnt<7> clk_cnt<8> clk_cnt<9> clk_cnt<10> clk_cnt<11> clk_cnt<12> clk_cnt<13>
+        + clk_cnt<14> clk_cnt<15> clk_cnt<16> clk_cnt<17> clk_cnt<18> clk_cnt<19> clk_cnt<20>
+        + clk_cnt<21> clk_cnt<22> clk_cnt<23> clk_cnt<24> clk_cnt<25> clk_cnt<26> clk_cnt<27>
+        + clk_cnt<28> clk_cnt<29> clk_cnt<30> clk_cnt<31> clk_cnt<0> data_out rst rst' data_ready
+        + vdd vss shift_reg_32
+    Xi5 clk ser_clk net021 data_ready vdd vss mux2
+    Xi6 clk ser_clk net027 rst rst' vdd vss synchronizer
+    Xi7 net027 ser_cnt<0> ser_cnt<1> ser_cnt<2> ser_cnt<3> ser_cnt<4> ser_cnt<5> ser_cnt<6>
+        + ser_cnt<7> net025 rst rst' vdd vss async_counter_8
+    Xi8 ser_ready ser_cnt<0> ser_cnt<1> ser_cnt<2> ser_cnt<3> ser_cnt<4> ser_cnt<5> ser_cnt<6>
+        + ser_cnt<7> vdd vss equal_to_32
+    Xi9 net021 shift_clk vdd vss buffer
+.ENDS
+
+.SUBCKT async_top_level clk clk_en clk_ready conf_statecnt<0> conf_statecnt<1> conf_statecnt<2>
+                        + conf_statecnt<3> conf_statecnt<4> conf_statecnt<5> conf_statecnt<6>
+                        + conf_statecnt<7> conf_statecnt<8> conf_statecnt<9> conf_statecnt<10>
+                        + conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+                        + conf_statecnt<15> conf_tdccnt<0> conf_tdccnt<1> conf_tdccnt<2>
+                        + conf_tdccnt<3> conf_tdccnt<4> conf_tdccnt<5> conf_tdccnt<6> conf_tdccnt<7>
+                        + conf_tdccnt<8> conf_tdccnt<9> conf_tdccnt<10> conf_tdccnt<11>
+                        + conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14> conf_tdccnt<15> data_out
+                        + data_ready dp0_rst dp0_rst' dp1_rst mero_e2l mero_en rst rst' ser_clk
+                        + ser_ready state0<0> state0<1> state1<0> state1<1> state1<2> sta_ready
+                        + tdc0_ready tdc1_ready tdc_ready vdd vss
+    Xi0 clk mero_e2l mero_en rst rst' state0<0> state0<1> sta_ready tdc_ready ctrl0_rst vdd vss
+        + async_control_0
+    Xi1 clk clk_en clk_ready ctrl1_rst data_ready rst rst' ser_ready state1<0> state1<1> state1<2>
+        + vdd vss async_control_1
+    Xi2 clk conf_statecnt<0> conf_statecnt<1> conf_statecnt<2> conf_statecnt<3> conf_statecnt<4>
+        + conf_statecnt<5> conf_statecnt<6> conf_statecnt<7> conf_statecnt<8> conf_statecnt<9>
+        + conf_statecnt<10> conf_statecnt<11> conf_statecnt<12> conf_statecnt<13> conf_statecnt<14>
+        + conf_statecnt<15> dp0_rst dp0_rst' sta_ready tdc0_ready tdc1_ready tdc_ready vdd vss
+        + async_datapath_0
+    Xi3 clk clk_en clk_ready conf_tdccnt<0> conf_tdccnt<1> conf_tdccnt<2> conf_tdccnt<3>
+        + conf_tdccnt<4> conf_tdccnt<5> conf_tdccnt<6> conf_tdccnt<7> conf_tdccnt<8> conf_tdccnt<9>
+        + conf_tdccnt<10> conf_tdccnt<11> conf_tdccnt<12> conf_tdccnt<13> conf_tdccnt<14>
+        + conf_tdccnt<15> data_out data_ready dp1_rst dp1_rst' ser_clk ser_ready tdc_ready vdd vss
+        + async_datapath_1
+    Xi5 ctrl1_rst' rst' dp1_rst_i vdd vss nand2
+    Xi4 ctrl0_rst' rst' dp0_rst_i vdd vss nand2
+    Xi7 ctrl1_rst rst dp1_rst'_i vdd vss nor2
+    Xi6 ctrl0_rst rst dp0_rst'_i vdd vss nor2
+    Xi11 dp1_rst'_i dp1_rst' vdd vss buffer
+    Xi10 dp1_rst_i dp1_rst vdd vss buffer
+    Xi9 dp0_rst'_i dp0_rst' vdd vss buffer
+    Xi8 dp0_rst_i dp0_rst vdd vss buffer
+    Xi13 ctrl1_rst ctrl1_rst' vdd vss inv
+    Xi12 ctrl0_rst ctrl0_rst' vdd vss inv
+.ENDS

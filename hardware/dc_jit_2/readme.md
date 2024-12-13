@@ -10,10 +10,10 @@
 ## Netlist
 
 ```
-.SUBCKT dc_jit_2 CLK IN LAST OUT<0> OUT<1> RST RST' VDD VSS
-    Xi3 CLK LAST OUT<1> net24 RST RST' VDD VSS dff_st_ar
-    Xi2 CLK INT net25 OUT<0> RST RST' VDD VSS dff_st_ar
-    Xi1 INT LAST VDD VSS inv_jit
-    Xi0 IN INT VDD VSS inv_jit
+.SUBCKT dc_jit_2 clk in last out<0> out<1> rst rst' vdd vss
+    Xi3 clk last out<1> net24 rst rst' vdd vss dff_st_ar
+    Xi2 clk int net25 out<0> rst rst' vdd vss dff_st_ar
+    Xi1 int last vdd vss inv_jit
+    Xi0 in int vdd vss inv_jit
 .ENDS
 ```

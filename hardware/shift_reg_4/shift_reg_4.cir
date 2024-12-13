@@ -1,0 +1,56 @@
+* Top cell name: shift_reg_4
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT mux2 in0 in1 out sel vdd vss
+    Xi2 net16 net15 out vdd vss nand2
+    Xi1 sel in1 net15 vdd vss nand2
+    Xi0 in0 net14 net16 vdd vss nand2
+    Mm0 net14 sel vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 net14 sel vss vss n_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT shift_reg_4 clk in<0> in<1> in<2> in<3> in_ser out rst rst' sel_ser vdd vss
+    Xi7 in<0> in_ser net3 sel_ser vdd vss mux2
+    Xi6 in<1> int<0> net42 sel_ser vdd vss mux2
+    Xi5 in<2> int<1> net35 sel_ser vdd vss mux2
+    Xi4 in<3> int<2> net17 sel_ser vdd vss mux2
+    Xi9 clk net42 int<1> net40 rst rst' vdd vss dff_st_ar
+    Xi10 clk net35 int<2> net32 rst rst' vdd vss dff_st_ar
+    Xi11 clk net17 out net24 rst rst' vdd vss dff_st_ar
+    Xi8 clk net3 int<0> net45 rst rst' vdd vss dff_st_ar
+.ENDS

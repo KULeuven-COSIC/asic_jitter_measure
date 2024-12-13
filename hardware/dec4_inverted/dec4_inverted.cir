@@ -1,0 +1,22 @@
+* Top cell name: dec4_inverted
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT dec4_inverted out<0> out<1> out<2> out<3> sel<0> sel<1> vdd vss
+    Xi1 sel<1> sel'<1> vdd vss inv
+    Xi0 sel<0> sel'<0> vdd vss inv
+    Xi6 sel<0> sel<1> out<3> vdd vss nand2
+    Xi5 sel'<0> sel<1> out<2> vdd vss nand2
+    Xi4 sel<0> sel'<1> out<1> vdd vss nand2
+    Xi3 sel'<0> sel'<1> out<0> vdd vss nand2
+.ENDS

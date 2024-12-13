@@ -9,8 +9,8 @@
 ## Netlist
 
 ```
-.SUBCKT freq_scaler2 CLK OUT<0> OUT<1> Q' RST RST' VDD VSS
-    Xi1 INT OUT<1> Q' RST RST' VDD VSS tff_st_ar
-    Xi0 CLK OUT<0> INT RST RST' VDD VSS tff_st_ar
+.SUBCKT freq_scaler2 clk out<0> out<1> q' rst rst' vdd vss
+    Xi1 int out<1> q' rst rst' vdd vss tff_st_ar
+    Xi0 clk out<0> int rst rst' vdd vss tff_st_ar
 .ENDS
 ```

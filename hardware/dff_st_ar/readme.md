@@ -11,12 +11,12 @@
 ## Netlist
 
 ```
-.SUBCKT dff_st_ar CLK D Q Q' RST RST' VDD VSS
-    Xi5 Q N1 Q' VDD VSS nand2
-    Xi4 N0 Q' Q VDD VSS nand2
-    Xi3 N1 D N3 VDD VSS nand2
-    Xi0 N3 N0 N2 VDD VSS nand2
-    Xi1 CLK N2 RST' N0 VDD VSS nand3
-    Xi2 CLK N0 N3 N1 RST VDD VSS nand3_r
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
 .ENDS
 ```

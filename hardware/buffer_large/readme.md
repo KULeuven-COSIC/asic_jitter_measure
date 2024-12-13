@@ -10,14 +10,14 @@
 ## Netlist
 
 ```
-.SUBCKT buffer_large IN OUT VDD VSS
-    Mm7 OUT INT<2> VSS VSS n_mos l=60n w=480.0n m=16
-    Mm5 INT<2> INT<1> VSS VSS n_mos l=60n w=480.0n m=4
-    Mm2 INT<1> INT<0> VSS VSS n_mos l=60n w=480.0n m=1
-    Mm0 INT<0> IN VSS VSS n_mos l=60n w=120.0n m=1
-    Mm6 OUT INT<2> VDD VDD p_mos l=60n w=480.0n m=16
-    Mm4 INT<2> INT<1> VDD VDD p_mos l=60n w=480.0n m=4
-    Mm3 INT<1> INT<0> VDD VDD p_mos l=60n w=480.0n m=1
-    Mm1 INT<0> IN VDD VDD p_mos l=60n w=120.0n m=1
+.SUBCKT buffer_large in out vdd vss
+    Mm7 out int<2> vss vss n_mos l=60n w=480.0n m=16
+    Mm5 int<2> int<1> vss vss n_mos l=60n w=480.0n m=4
+    Mm2 int<1> int<0> vss vss n_mos l=60n w=480.0n m=1
+    Mm0 int<0> in vss vss n_mos l=60n w=120.0n m=1
+    Mm6 out int<2> vdd vdd p_mos l=60n w=480.0n m=16
+    Mm4 int<2> int<1> vdd vdd p_mos l=60n w=480.0n m=4
+    Mm3 int<1> int<0> vdd vdd p_mos l=60n w=480.0n m=1
+    Mm1 int<0> in vdd vdd p_mos l=60n w=120.0n m=1
 .ENDS
 ```

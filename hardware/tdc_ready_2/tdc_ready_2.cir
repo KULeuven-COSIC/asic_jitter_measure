@@ -1,0 +1,189 @@
+* Top cell name: tdc_ready_2
+
+.SUBCKT nand2 in0 in1 out vdd vss
+    Mm1 net13 in1 vss vss n_mos l=60n w=240.0n m=1
+    Mm0 out in0 net13 vss n_mos l=60n w=240.0n m=1
+    Mm3 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT nand3 in0 in1 in2 out vdd vss
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm5 net17 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm4 net18 in1 net17 vss n_mos l=60n w=360.0n m=1
+    Mm3 out in0 net18 vss n_mos l=60n w=360.0n m=1
+.ENDS
+
+.SUBCKT nand3_r in0 in1 in2 out rst vdd vss
+    Mm3 out rst vss vss n_mos l=60n w=360.0n m=1
+    Mm2 net5 in2 vss vss n_mos l=60n w=360.0n m=1
+    Mm1 net16 in1 net5 vss n_mos l=60n w=360.0n m=1
+    Mm0 out in0 net16 vss n_mos l=60n w=360.0n m=1
+    Mm7 net32 rst vdd vdd p_mos l=60n w=480.0n m=1
+    Mm6 out in2 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm5 out in1 net32 vdd p_mos l=60n w=480.0n m=1
+    Mm4 out in0 net32 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar clk d q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi3 n1 d n3 vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+.ENDS
+
+.SUBCKT tff_st_ar clk q q' rst rst' vdd vss
+    Xi0 clk q' q q' rst rst' vdd vss dff_st_ar
+.ENDS
+
+.SUBCKT async_counter_8 clk out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> q' rst rst' vdd
+                        + vss
+    Xi7 net4 out<4> net5 rst rst' vdd vss tff_st_ar
+    Xi6 net6 out<6> net7 rst rst' vdd vss tff_st_ar
+    Xi5 net7 out<7> q' rst rst' vdd vss tff_st_ar
+    Xi4 net5 out<5> net6 rst rst' vdd vss tff_st_ar
+    Xi3 net2 out<2> net3 rst rst' vdd vss tff_st_ar
+    Xi2 net3 out<3> net4 rst rst' vdd vss tff_st_ar
+    Xi1 net1 out<1> net2 rst rst' vdd vss tff_st_ar
+    Xi0 clk out<0> net1 rst rst' vdd vss tff_st_ar
+.ENDS
+
+.SUBCKT nand4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in3 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm2 out in2 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm1 out in1 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=240.0n m=1
+    Mm7 net21 in3 vss vss n_mos l=60n w=480.0n m=1
+    Mm6 net22 in2 net21 vss n_mos l=60n w=480.0n m=1
+    Mm5 net23 in1 net22 vss n_mos l=60n w=480.0n m=1
+    Mm4 out in0 net23 vss n_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT nor2 in0 in1 out vdd vss
+    Mm1 out in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm2 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT inv in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=120.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT inv_wn in out vdd vss
+    Mm0 out in vss vss n_mos l=60n w=240.0n m=1
+    Mm1 out in vdd vdd p_mos l=60n w=240.0n m=1
+.ENDS
+
+.SUBCKT dff_st_ar_dh clk q q' rst rst' vdd vss
+    Xi5 q n1 q' vdd vss nand2
+    Xi4 n0 q' q vdd vss nand2
+    Xi0 n3 n0 n2 vdd vss nand2
+    Xi1 clk n2 rst' n0 vdd vss nand3
+    Xi2 clk n0 n3 n1 rst vdd vss nand3_r
+    Xi6 n1 n3 vdd vss inv_wn
+.ENDS
+
+.SUBCKT max_ready conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2> conf_maxcycles<3>
+                  + conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7> int
+                  + max_ready rst rst' vdd vss
+    Xi0 int cnt<0> cnt<1> cnt<2> cnt<3> cnt<4> cnt<5> cnt<6> cnt<7> net020 rst rst' vdd vss
+        + async_counter_8
+    Xi8 cnt<7> conf_maxcycles<7> cnt_high<7> vdd vss nand2
+    Xi7 cnt<6> conf_maxcycles<6> cnt_high<6> vdd vss nand2
+    Xi6 cnt<5> conf_maxcycles<5> cnt_high<5> vdd vss nand2
+    Xi5 cnt<4> conf_maxcycles<4> cnt_high<4> vdd vss nand2
+    Xi4 cnt<3> conf_maxcycles<3> cnt_high<3> vdd vss nand2
+    Xi3 cnt<2> conf_maxcycles<2> cnt_high<2> vdd vss nand2
+    Xi2 cnt<1> conf_maxcycles<1> cnt_high<1> vdd vss nand2
+    Xi1 cnt<0> conf_maxcycles<0> cnt_high<0> vdd vss nand2
+    Xi10 cnt_high<4> cnt_high<5> cnt_high<6> cnt_high<7> net09 vdd vss nand4
+    Xi9 cnt_high<0> cnt_high<1> cnt_high<2> cnt_high<3> net010 vdd vss nand4
+    Xi11 net010 net09 net021 vdd vss nor2
+    Xi12 net021 ready vdd vss inv
+    Xi13 ready max_ready net018 rst rst' vdd vss dff_st_ar_dh
+.ENDS
+
+.SUBCKT nor4 in0 in1 in2 in3 out vdd vss
+    Mm3 out in0 net7 vdd p_mos l=60n w=480.0n m=1
+    Mm2 net7 in1 net6 vdd p_mos l=60n w=480.0n m=1
+    Mm1 net6 in2 net5 vdd p_mos l=60n w=480.0n m=1
+    Mm0 net5 in3 vdd vdd p_mos l=60n w=480.0n m=1
+    Mm7 out in3 vss vss n_mos l=60n w=120.0n m=1
+    Mm6 out in2 vss vss n_mos l=60n w=120.0n m=1
+    Mm5 out in0 vss vss n_mos l=60n w=120.0n m=1
+    Mm4 out in1 vss vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT buffer in out vdd vss
+    Mm1 out int vss vss n_mos l=60n w=480.0n m=4
+    Mm0 int in vss vss n_mos l=60n w=480.0n m=1
+    Mm3 out int vdd vdd p_mos l=60n w=480.0n m=4
+    Mm2 int in vdd vdd p_mos l=60n w=480.0n m=1
+.ENDS
+
+.SUBCKT wait_ready clk conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+                   + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7>
+                   + enable_e2l int rst rst' vdd vss wait_ready
+    Xi4 clk_int wait_cnt<0> wait_cnt<1> wait_cnt<2> wait_cnt<3> wait_cnt<4> wait_cnt<5> wait_cnt<6>
+        + wait_cnt<7> net044 cnt_rst cnt_rst' vdd vss async_counter_8
+    Xi26 clk net049 net052 vdd vss nand2
+    Xi19 wait_cnt<7> conf_waitcycles<7> waithigh<7> vdd vss nand2
+    Xi18 wait_cnt<6> conf_waitcycles<6> waithigh<6> vdd vss nand2
+    Xi17 wait_cnt<5> conf_waitcycles<5> waithigh<5> vdd vss nand2
+    Xi10 wait_cnt<4> conf_waitcycles<4> waithigh<4> vdd vss nand2
+    Xi3 wait_cnt<3> conf_waitcycles<3> waithigh<3> vdd vss nand2
+    Xi2 wait_cnt<2> conf_waitcycles<2> waithigh<2> vdd vss nand2
+    Xi1 wait_cnt<1> conf_waitcycles<1> waithigh<1> vdd vss nand2
+    Xi0 wait_cnt<0> conf_waitcycles<0> waithigh<0> vdd vss nand2
+    Xi15 net14 net13 wait_rst_rst' vdd vss nand2
+    Xi11 net19 net18 wait_rst vdd vss nand2
+    Xi5 wait_rst' rst' cnt_rst vdd vss nand2
+    Xi22 net025 net030 net029 vdd vss nor2
+    Xi12 edge edge' wait_rst' vdd vss nor2
+    Xi6 wait_rst rst cnt_rst' vdd vss nor2
+    Xi25 enable_e2l net049 net050 rst rst' vdd vss dff_st_ar_dh
+    Xi24 ready wait_ready net034 rst rst' vdd vss dff_st_ar_dh
+    Xi8 int edge net18 wait_rst_rst wait_rst_rst' vdd vss dff_st_ar_dh
+    Xi7 net15 edge' net19 wait_rst_rst wait_rst_rst' vdd vss dff_st_ar_dh
+    Xi23 net029 ready vdd vss inv
+    Xi16 wait_rst_rst' wait_rst_rst vdd vss inv
+    Xi9 int net15 vdd vss inv
+    Xi14 wait_cnt<4> wait_cnt<5> wait_cnt<6> wait_cnt<7> net13 vdd vss nor4
+    Xi13 wait_cnt<0> wait_cnt<1> wait_cnt<2> wait_cnt<3> net14 vdd vss nor4
+    Xi21 waithigh<0> waithigh<1> waithigh<2> waithigh<3> net025 vdd vss nand4
+    Xi20 waithigh<4> waithigh<5> waithigh<6> waithigh<7> net030 vdd vss nand4
+    Xi27 net052 clk_int vdd vss buffer
+.ENDS
+
+.SUBCKT ff_ready_2 ff0<0> ff0<1> ff1<0> ff1<1> ff_ready rst rst' vdd vss
+    Xi2 ff_nor0 ff_nor1 ff_nand vdd vss nand2
+    Xi3 ff_nand ff_ready net18 rst rst' vdd vss dff_st_ar_dh
+    Xi0 ff0<0> ff0<1> ff_nor0 vdd vss nor2
+    Xi1 ff1<0> ff1<1> ff_nor1 vdd vss nor2
+.ENDS
+
+.SUBCKT tdc_ready_2 alarm<0> alarm<1> clk conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2>
+                    + conf_maxcycles<3> conf_maxcycles<4> conf_maxcycles<5> conf_maxcycles<6>
+                    + conf_maxcycles<7> conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2>
+                    + conf_waitcycles<3> conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6>
+                    + conf_waitcycles<7> enable_e2l ff0<0> ff0<1> ff1<0> ff1<1> int ready rst rst'
+                    + vdd vss
+    Xi20 conf_maxcycles<0> conf_maxcycles<1> conf_maxcycles<2> conf_maxcycles<3> conf_maxcycles<4>
+         + conf_maxcycles<5> conf_maxcycles<6> conf_maxcycles<7> int net017 rst rst' vdd vss
+         + max_ready
+    Xi32 alarm<0> net19 net027 ready_i vdd vss nand3
+    Xi19 clk conf_waitcycles<0> conf_waitcycles<1> conf_waitcycles<2> conf_waitcycles<3>
+         + conf_waitcycles<4> conf_waitcycles<5> conf_waitcycles<6> conf_waitcycles<7> enable_e2l
+         + int rst rst' vdd vss wait_ready wait_ready
+    Xi28 wait_ready net19 vdd vss inv
+    Xi27 ff_ready alarm<0> vdd vss inv
+    Xi30 ready_i ready ready' rst rst' vdd vss dff_st_ar_dh
+    Xi33 net017 ready' alarm<1> net027 rst rst' vdd vss dff_st_ar
+    Xi18 ff0<0> ff0<1> ff1<0> ff1<1> ff_ready rst rst' vdd vss ff_ready_2
+.ENDS

@@ -1,0 +1,6 @@
+* Top cell name: vdd_gate_1ma
+
+.SUBCKT vdd_gate_1ma enable' vdd_in vdd_out vss
+    Mm0 vdd_out enable' vdd_in vdd_in p_mos_lvt l=60n w=4u m=40
+    Mm1 vdd_out enable' vss vss n_mos_lvt l=60n w=4u m=40
+.ENDS

@@ -1,0 +1,33 @@
+* Top cell name: mero_3e_4b
+
+.SUBCKT mero_nand2 in0 in1 out vdd vss
+    Mm1 out in1 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm0 out in0 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm3 net7 in1 vss vss n_mos l=60n w=120.0n m=1
+    Mm2 out in0 net7 vss n_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT mero_buf in out vdd vss
+    Mm1 out net1 vss vss n_mos l=60n w=120.0n m=1
+    Mm0 net1 in vss vss n_mos l=60n w=120.0n m=1
+    Mm3 out net1 vdd vdd p_mos l=60n w=120.0n m=1
+    Mm2 net1 in vdd vdd p_mos l=60n w=120.0n m=1
+.ENDS
+
+.SUBCKT mero_3e_4b enable out0 out1 out2 vdd vss
+    Xi2 out1 enable int2<0> vdd vss mero_nand2
+    Xi1 out0 enable int1<0> vdd vss mero_nand2
+    Xi0 out2 enable int0<0> vdd vss mero_nand2
+    Xi14 int2<3> out2 vdd vss mero_buf
+    Xi13 int1<3> out1 vdd vss mero_buf
+    Xi12 int0<3> out0 vdd vss mero_buf
+    Xi11 int2<2> int2<3> vdd vss mero_buf
+    Xi10 int1<2> int1<3> vdd vss mero_buf
+    Xi9 int0<2> int0<3> vdd vss mero_buf
+    Xi8 int2<1> int2<2> vdd vss mero_buf
+    Xi7 int2<0> int2<1> vdd vss mero_buf
+    Xi6 int1<1> int1<2> vdd vss mero_buf
+    Xi5 int1<0> int1<1> vdd vss mero_buf
+    Xi4 int0<1> int0<2> vdd vss mero_buf
+    Xi3 int0<0> int0<1> vdd vss mero_buf
+.ENDS

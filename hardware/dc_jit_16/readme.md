@@ -9,10 +9,10 @@
 ## Netlist
 
 ```
-.SUBCKT dc_jit_16 CLK IN LAST OUT<0> OUT<1> OUT<2> OUT<3> OUT<4> OUT<5> OUT<6> OUT<7> OUT<8> OUT<9>
-                  + OUT<10> OUT<11> OUT<12> OUT<13> OUT<14> OUT<15> RST RST' VDD VSS
-    Xi1 CLK INT LAST OUT<8> OUT<9> OUT<10> OUT<11> OUT<12> OUT<13> OUT<14> OUT<15> RST RST' VDD VSS
+.SUBCKT dc_jit_16 clk in last out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> out<8> out<9>
+                  + out<10> out<11> out<12> out<13> out<14> out<15> rst rst' vdd vss
+    Xi1 clk int last out<8> out<9> out<10> out<11> out<12> out<13> out<14> out<15> rst rst' vdd vss
         + dc_jit_8
-    Xi0 CLK IN INT OUT<0> OUT<1> OUT<2> OUT<3> OUT<4> OUT<5> OUT<6> OUT<7> RST RST' VDD VSS dc_jit_8
+    Xi0 clk in int out<0> out<1> out<2> out<3> out<4> out<5> out<6> out<7> rst rst' vdd vss dc_jit_8
 .ENDS
 ```
